@@ -1,39 +1,30 @@
-import { LightBulbIcon, SearchIcon } from '@primer/octicons-react'
-import { useState } from 'preact/hooks'
-import { TriggerMode } from '../config'
-import ChatGPTQuery, { QueryStatus } from './ChatGPTQuery'
-import { endsWithQuestionMark } from './utils.js'
+import { useState } from 'preact/hooks';
+import ChatGPTQuery, { QueryStatus } from './ChatGPTQuery';
+import logo from '../logo.png';
 
-interface Props {
-  question: string
-  triggerMode: TriggerMode
-  onStatusChange?: (status: QueryStatus) => void
+
+interface ChatGPTCardProps {
+  question: string;
+  onStatusChange: (status: QueryStatus) => void;
 }
 
-function ChatGPTCard(props: Props) {
-  const [triggered, setTriggered] = useState(false)
-
-  if (props.triggerMode === TriggerMode.Always) {
-    return <ChatGPTQuery question={props.question} onStatusChange={props.onStatusChange} />
-  }
-  if (props.triggerMode === TriggerMode.QuestionMark) {
-    if (endsWithQuestionMark(props.question.trim())) {
-      return <ChatGPTQuery question={props.question} onStatusChange={props.onStatusChange} />
-    }
-    return (
-      <p className="icon-and-text">
-        <LightBulbIcon size="small" /> Trigger ChatGPT by appending a question mark after your query
-      </p>
-    )
-  }
-  if (triggered) {
-    return <ChatGPTQuery question={props.question} onStatusChange={props.onStatusChange} />
-  }
+function ChatGPTCard({ question, onStatusChange }: ChatGPTCardProps) {
   return (
-    <p className="icon-and-text cursor-pointer" onClick={() => setTriggered(true)}>
-      <SearchIcon size="small" /> Ask ChatGPT for this query
-    </p>
-  )
+    <>
+      <div
+        className="gpt-card"
+        aria-label="ChatGPT Answer Card"
+      >
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
+          <img src={logo} alt="ChatGPT" style={{ width: 32, height: 32, borderRadius: 8, marginRight: 12 }} />
+          <span style={{ fontWeight: 600, fontSize: '1.1em' }}>ChatGPT Answer</span>
+          <span style={{ flex: 1 }} />
+        </div>
+        <ChatGPTQuery question={question} onStatusChange={onStatusChange} />
+      </div>
+      {/* 스타일은 styles.scss에서 관리 */}
+    </>
+  );
 }
 
-export default ChatGPTCard
+export default ChatGPTCard;

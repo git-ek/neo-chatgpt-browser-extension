@@ -6,6 +6,11 @@ import rehypeHighlight from 'rehype-highlight'
 import Browser from 'webextension-polyfill'
 import { captureEvent } from '../analytics'
 import { Answer } from '../messaging'
+
+interface ErrorEvent {
+  error: string
+  code?: string
+}
 import ChatGPTFeedback from './ChatGPTFeedback'
 import { isBraveBrowser, shouldShowRatingTip } from './utils.js'
 
@@ -30,11 +35,11 @@ function ChatGPTQuery(props: Props) {
 
   useEffect(() => {
     const port = Browser.runtime.connect()
-    const listener = (msg: any) => {
-      if (msg.text) {
-        setAnswer(msg)
+    const listener = (msg: Answer | ErrorEvent | { event?: string }) => {
+      if ('text' in msg) {
+        setAnswer(msg as Answer)
         setStatus('success')
-      } else if (msg.error) {
+      } else if ('error' in msg) {
         setError(msg.error)
         setStatus('error')
       } else if (msg.event === 'DONE') {
@@ -141,12 +146,21 @@ function ChatGPTQuery(props: Props) {
     )
   }
   if (error) {
+    // 에러 코드별 안내 강화
+    let helpMsg = 'If this issue persists, please check your API key, model settings, or network connection.'
+    if (error.includes('network') || error.includes('Failed to fetch')) {
+      helpMsg = 'Network error: Please check your internet connection or try again later.'
+    } else if (error.includes('model')) {
+      helpMsg = 'Model error: Please check your model selection in the extension options.'
+    } else if (error.includes('API key') || error.includes('unauthorized')) {
+      helpMsg = 'API key error: Please check your API key validity and permissions.'
+    }
     return (
       <div className="gpt-error-message" style={{ color: '#d32f2f', background: '#fff0f0', border: '1px solid #d32f2f', padding: '12px', borderRadius: '8px', marginTop: '8px' }}>
         <span style={{ fontWeight: 'bold', marginRight: '8px' }}>⚠️ Error:</span>
         <span className="break-all block">{error}</span>
         <div style={{ marginTop: '8px', fontSize: '0.95em' }}>
-          <span>If this issue persists, please check your API key, model settings, or network connection.</span>
+          <span>{helpMsg}</span>
         </div>
       </div>
     )

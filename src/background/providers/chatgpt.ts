@@ -2,6 +2,7 @@ import ExpiryMap from 'expiry-map'
 import { v4 as uuidv4 } from 'uuid'
 import { fetchSSE } from '../fetch-sse'
 import { GenerateAnswerParams, Provider } from '../types'
+import { handleProviderError } from '../utils'
 
 async function request(token: string, method: string, path: string, data?: unknown) {
   return fetch(`https://chat.openai.com/backend-api${path}`, {
@@ -114,10 +115,7 @@ export class ChatGPTProvider implements Provider {
           data = JSON.parse(message)
         } catch (err) {
           console.error(err)
-          params.onEvent({
-            type: 'error',
-            data: { error: err instanceof Error ? err.message : String(err) },
-          })
+          handleProviderError(params.onEvent, err)
           return
         }
         const text = data.message?.content?.parts?.[0]

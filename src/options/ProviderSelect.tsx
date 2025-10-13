@@ -120,6 +120,11 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
               </Select>
               <Input htmlType="password" label="API key" scale={2 / 3} {...apiKeyBindings} />
             </div>
+            <div className="text-xs text-red-500 mt-1">
+              ⚠️ Your API key is stored in your browser's extension storage in <b>plain text</b>.<br />
+              For your security: do not share your browser profile, remove unused keys, and prefer limited-scope keys.<br />
+              See <a href="https://github.com/git-ek/neo-chatgpt-browser-extension/blob/main/PRIVACY.md" target="_blank" rel="noreferrer">Privacy Policy</a> for details.
+            </div>
             <span className="italic text-xs">
               You can find or create your API key{' '}
               <a
@@ -152,6 +157,11 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
                 ))}
               </Select>
               <Input htmlType="password" label="API key" scale={2 / 3} {...geminiKeyBindings} />
+            </div>
+            <div className="text-xs text-red-500 mt-1">
+              ⚠️ Your API key is stored in your browser's extension storage in <b>plain text</b>.<br />
+              For your security: do not share your browser profile, remove unused keys, and prefer limited-scope keys.<br />
+              See <a href="https://github.com/git-ek/neo-chatgpt-browser-extension/blob/main/PRIVACY.md" target="_blank" rel="noreferrer">Privacy Policy</a> for details.
             </div>
             <span className="italic text-xs">
               You can get your Gemini API key{' '}

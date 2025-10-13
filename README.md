@@ -91,9 +91,23 @@ Please refer to each library's documentation for details. Only GPL-compatible re
 
 Future versions may support encrypted storage, but currently, browser extension APIs do not guarantee full protection for sensitive keys.
 
+
+
 ## Privacy & Data Policy
 
-This extension may process user data (e.g., API keys, search queries) for functional purposes only. No personal data is stored or shared externally. For details, refer to the Privacy Policy (to be provided if required by browser store).
+This extension may process user data (e.g., API keys, search queries) for functional purposes only. No personal data is stored or shared externally.
+
+- See [PRIVACY.md](./PRIVACY.md) for full privacy policy details.
+- See [docs/API_KEY_ENCRYPTION_RESEARCH.md](./docs/API_KEY_ENCRYPTION_RESEARCH.md) for API Key encryption/storage research.
+
+## OS Compatibility
+
+Multi-OS build and runtime test results are documented in [docs/OS_COMPATIBILITY_TEST.md](./docs/OS_COMPATIBILITY_TEST.md).
+
+## Changelog
+
+All major changes and release notes are documented in [CHANGELOG.md](./CHANGELOG.md).
+
 
 ## Trademark Notice
 

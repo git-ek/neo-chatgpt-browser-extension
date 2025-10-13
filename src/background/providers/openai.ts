@@ -1,5 +1,6 @@
 import { fetchSSE } from '../fetch-sse'
 import { GenerateAnswerParams, Provider } from '../types'
+import { handleProviderError } from '../utils'
 
 export class OpenAIProvider implements Provider {
   constructor(private token: string, private model: string) {
@@ -53,10 +54,7 @@ export class OpenAIProvider implements Provider {
           })
         } catch (err) {
           console.error(err)
-          params.onEvent({
-            type: 'error',
-            data: { error: err instanceof Error ? err.message : String(err) },
-          })
+          handleProviderError(params.onEvent, err)
           return
         }
       },

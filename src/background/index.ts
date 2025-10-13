@@ -44,11 +44,15 @@ async function generateAnswers(port: Browser.Runtime.Port, question: string) {
 
 Browser.runtime.onConnect.addListener((port: Browser.Runtime.Port) => {
   port.onMessage.addListener(async (msg: { question: string }) => {
-    console.debug('received msg', msg)
+    if (process.env.NODE_ENV !== 'production') {
+      console.debug('received msg', msg)
+    }
     try {
       await generateAnswers(port, msg.question)
     } catch (err: any) {
-      console.error(err)
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(err)
+      }
       port.postMessage({ error: err.message })
     }
   })
