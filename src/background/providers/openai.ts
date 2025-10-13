@@ -53,6 +53,10 @@ export class OpenAIProvider implements Provider {
           })
         } catch (err) {
           console.error(err)
+          params.onEvent({
+            type: 'error',
+            data: { error: err instanceof Error ? err.message : String(err) },
+          })
           return
         }
       },

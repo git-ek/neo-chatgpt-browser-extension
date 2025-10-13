@@ -114,6 +114,10 @@ export class ChatGPTProvider implements Provider {
           data = JSON.parse(message)
         } catch (err) {
           console.error(err)
+          params.onEvent({
+            type: 'error',
+            data: { error: err instanceof Error ? err.message : String(err) },
+          })
           return
         }
         const text = data.message?.content?.parts?.[0]

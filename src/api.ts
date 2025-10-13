@@ -23,6 +23,7 @@ export async function fetchPromotion(): Promise<PromotionResponse | null> {
 export async function fetchExtensionConfigs(): Promise<{
   chatgpt_webapp_model_name: string
   openai_model_names: string[]
+  gemini_model_names?: string[]
 }> {
   return fetch(`${API_HOST}/api/config`, {
     headers: {

@@ -1,5 +1,6 @@
 import { Answer } from '../messaging'
 
+
 export type Event =
   | {
       type: 'answer'
@@ -7,6 +8,10 @@ export type Event =
     }
   | {
       type: 'done'
+    }
+  | {
+      type: 'error'
+      data: { error: string }
     }
 
 export interface GenerateAnswerParams {

@@ -2,6 +2,7 @@ import Browser from 'webextension-polyfill'
 import { getProviderConfigs, ProviderType } from '../config'
 import { ChatGPTProvider, getChatGPTAccessToken, sendMessageFeedback } from './providers/chatgpt'
 import { OpenAIProvider } from './providers/openai'
+import { GeminiProvider } from './providers/gemini'
 import { Provider } from './types'
 
 async function generateAnswers(port: Browser.Runtime.Port, question: string) {
@@ -14,6 +15,9 @@ async function generateAnswers(port: Browser.Runtime.Port, question: string) {
   } else if (providerConfigs.provider === ProviderType.GPT3) {
     const { apiKey, model } = providerConfigs.configs[ProviderType.GPT3]!
     provider = new OpenAIProvider(apiKey, model)
+  } else if (providerConfigs.provider === ProviderType.Gemini) {
+    const { apiKey, model } = providerConfigs.configs[ProviderType.Gemini]!
+    provider = new GeminiProvider(apiKey, model)
   } else {
     throw new Error(`Unknown provider ${providerConfigs.provider}`)
   }
@@ -37,8 +41,9 @@ async function generateAnswers(port: Browser.Runtime.Port, question: string) {
   })
 }
 
-Browser.runtime.onConnect.addListener((port) => {
-  port.onMessage.addListener(async (msg) => {
+
+Browser.runtime.onConnect.addListener((port: Browser.Runtime.Port) => {
+  port.onMessage.addListener(async (msg: { question: string }) => {
     console.debug('received msg', msg)
     try {
       await generateAnswers(port, msg.question)
@@ -49,7 +54,8 @@ Browser.runtime.onConnect.addListener((port) => {
   })
 })
 
-Browser.runtime.onMessage.addListener(async (message) => {
+
+Browser.runtime.onMessage.addListener(async (message: { type: string; data?: any }) => {
   if (message.type === 'FEEDBACK') {
     const token = await getChatGPTAccessToken()
     await sendMessageFeedback(token, message.data)
@@ -60,7 +66,8 @@ Browser.runtime.onMessage.addListener(async (message) => {
   }
 })
 
-Browser.runtime.onInstalled.addListener((details) => {
+
+Browser.runtime.onInstalled.addListener((details: { reason: string }) => {
   if (details.reason === 'install') {
     Browser.runtime.openOptionsPage()
   }

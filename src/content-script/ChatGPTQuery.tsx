@@ -142,10 +142,13 @@ function ChatGPTQuery(props: Props) {
   }
   if (error) {
     return (
-      <p>
-        Failed to load response from ChatGPT:
+      <div className="gpt-error-message" style={{ color: '#d32f2f', background: '#fff0f0', border: '1px solid #d32f2f', padding: '12px', borderRadius: '8px', marginTop: '8px' }}>
+        <span style={{ fontWeight: 'bold', marginRight: '8px' }}>⚠️ Error:</span>
         <span className="break-all block">{error}</span>
-      </p>
+        <div style={{ marginTop: '8px', fontSize: '0.95em' }}>
+          <span>If this issue persists, please check your API key, model settings, or network connection.</span>
+        </div>
+      </div>
     )
   }
 
