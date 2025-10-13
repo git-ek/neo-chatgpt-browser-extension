@@ -1,5 +1,5 @@
 import { GearIcon } from '@primer/octicons-react'
-import { Tabs } from '@geist-ui/core'
+import { Tabs, Spinner } from '@geist-ui/core'
 import { useEffect, useState } from 'preact/hooks'
 import { memo, useCallback } from 'react'
 import ReactMarkdown from 'react-markdown'
@@ -7,20 +7,22 @@ import rehypeHighlight from 'rehype-highlight'
 import useSWR from 'swr'
 import Browser from 'webextension-polyfill'
 import { captureEvent } from '../analytics'
-import { getProviderConfigs, ProviderConfigs, ProviderType } from '../config'
+import { getProviderConfigs, ProviderConfigs, ProviderType, ChatGPTMode } from '../config'
 import { Answer } from '../messaging'
 import ChatGPTFeedback from './ChatGPTFeedback'
-import { getErrorMessageKey, isBraveBrowser } from './utils.js'
+import { getErrorMessageKey } from './utils.js'
 
 interface Props {
   question: string
-  onStatusChange?: (status: QueryStatus) => void
 }
 
 export type QueryStatus = 'success' | 'error' | undefined
 
-function ChatGPTQuery({ question, onStatusChange }: Props) {
-  const { data: configs } = useSWR<ProviderConfigs>('provider-configs', getProviderConfigs)
+function ChatGPTQuery({ question }: Props) {
+  const { data: configs, error: configsError } = useSWR<ProviderConfigs>(
+    'provider-configs',
+    getProviderConfigs,
+  )
 
   const [activeProvider, setActiveProvider] = useState<ProviderType | null>(null)
   useEffect(() => {
@@ -35,10 +37,6 @@ function ChatGPTQuery({ question, onStatusChange }: Props) {
   const [status, setStatus] = useState<QueryStatus>()
 
   useEffect(() => {
-    onStatusChange?.(status)
-  }, [onStatusChange, status])
-
-  useEffect(() => {
     if (!activeProvider) {
       return
     }
@@ -48,10 +46,10 @@ function ChatGPTQuery({ question, onStatusChange }: Props) {
 
     const port = Browser.runtime.connect()
     const listener = (msg: Answer | { error: string } | { event: string }) => {
-      if (msg.text) {
+      if ('text' in msg) {
         setAnswer(msg)
         setStatus('success')
-      } else if (msg.error) {
+      } else if ('error' in msg) {
         setError(msg.error)
         setStatus('error')
       }
@@ -87,11 +85,25 @@ function ChatGPTQuery({ question, onStatusChange }: Props) {
     Browser.runtime.sendMessage({ type: 'OPEN_OPTIONS_PAGE' })
   }, [])
 
+  if (configsError) {
+    return (
+      <div className="gpt-error-message">{Browser.i18n.getMessage('ext_error_load_settings')}</div>
+    )
+  }
+
   const renderContent = () => {
-    if (
-      (activeProvider === ProviderType.GPT3 && !configs?.configs[ProviderType.GPT3]?.apiKey) ||
-      (activeProvider === ProviderType.Gemini && !configs?.configs[ProviderType.Gemini]?.apiKey)
-    ) {
+    if (!configs || !activeProvider) {
+      return <Spinner />
+    }
+
+    const isChatGPTApi =
+      activeProvider === ProviderType.ChatGPT && configs.configs.chatgpt.mode === ChatGPTMode.API
+    const isGeminiApi = activeProvider === ProviderType.Gemini
+    const apiKeyMissing =
+      (isChatGPTApi && !configs.configs.chatgpt.apiKey) ||
+      (isGeminiApi && !configs.configs.gemini.apiKey)
+
+    if (apiKeyMissing) {
       return (
         <p>
           {Browser.i18n.getMessage('ext_apikey_not_set', activeProvider.toUpperCase())}{' '}
@@ -107,39 +119,6 @@ function ChatGPTQuery({ question, onStatusChange }: Props) {
         <ReactMarkdown rehypePlugins={[[rehypeHighlight, { detect: true }]]}>
           {answer.text}
         </ReactMarkdown>
-      )
-    }
-
-    if (error === 'UNAUTHORIZED' || error === 'CLOUDFLARE') {
-      return (
-        <p>
-          {Browser.i18n.getMessage('ext_cloudflare_login')}{' '}
-          <a href="https://chat.openai.com" target="_blank" rel="noreferrer">
-            chat.openai.com
-          </a>
-          {retry > 0 &&
-            (() => {
-              if (isBraveBrowser()) {
-                return (
-                  <span className="block mt-2">
-                    {Browser.i18n.getMessage('ext_still_not_working')}{' '}
-                    <p className="text-xs text-gray-500 gpt-feedback">
-                      {Browser.i18n.getMessage('ext_troubleshooting')}{' '}
-                      <a href="https://github.com/git-ek/neo-chatgpt-browser-extension#troubleshooting">
-                        {Browser.i18n.getMessage('ext_common_issues')}
-                      </a>
-                    </p>
-                  </span>
-                )
-              } else {
-                return (
-                  <span className="italic block mt-2 text-xs">
-                    {Browser.i18n.getMessage('ext_openai_security_check')}
-                  </span>
-                )
-              }
-            })()}
-        </p>
       )
     }
 
@@ -167,8 +146,21 @@ function ChatGPTQuery({ question, onStatusChange }: Props) {
   return (
     <div className="markdown-body gpt-markdown" id="gpt-answer" dir="auto">
       <div className="gpt-header">
-        <span className="font-bold">{Browser.i18n.getMessage('ext_chatgpt_short')}</span>
-        <span className="cursor-pointer leading-[0]" onClick={openOptionsPage}>
+        <Tabs
+          value={activeProvider || ''}
+          onChange={(v) => setActiveProvider(v as ProviderType)}
+          className="flex-grow"
+        >
+          <Tabs.Item
+            label={Browser.i18n.getMessage('ext_chatgpt_short')}
+            value={ProviderType.ChatGPT}
+          />
+          <Tabs.Item
+            label={Browser.i18n.getMessage('ext_provider_gemini_api')}
+            value={ProviderType.Gemini}
+          />
+        </Tabs>
+        <span className="cursor-pointer p-2" onClick={openOptionsPage}>
           <GearIcon size={14} />
         </span>
         {answer && (
@@ -179,25 +171,7 @@ function ChatGPTQuery({ question, onStatusChange }: Props) {
           />
         )}
       </div>
-      <Tabs
-        value={activeProvider || ''}
-        onChange={(v) => setActiveProvider(v as ProviderType)}
-        className="mb-2"
-      >
-        <Tabs.Item
-          label={Browser.i18n.getMessage('ext_provider_chatgpt_webapp')}
-          value={ProviderType.ChatGPT}
-        />
-        <Tabs.Item
-          label={Browser.i18n.getMessage('ext_provider_openai_api')}
-          value={ProviderType.GPT3}
-        />
-        <Tabs.Item
-          label={Browser.i18n.getMessage('ext_provider_gemini_api')}
-          value={ProviderType.Gemini}
-        />
-      </Tabs>
-      {renderContent()}
+      <div className="p-2">{renderContent()}</div>
     </div>
   )
 }

@@ -1,5 +1,7 @@
-import { defaults, forEach } from 'lodash-es'
+import { defaults } from 'lodash-es'
 import Browser from 'webextension-polyfill'
+
+// ... (userConfig related code remains the same)
 
 export enum TriggerMode {
   Always = 'always',
@@ -51,37 +53,43 @@ export async function getUserConfig(): Promise<UserConfig> {
 }
 
 export async function updateUserConfig(updates: Partial<UserConfig>) {
-  console.debug('update configs', updates)
   return Browser.storage.local.set(updates)
 }
 
+// New Config Structure
 export enum ProviderType {
   ChatGPT = 'chatgpt',
-  GPT3 = 'gpt3',
   Gemini = 'gemini',
 }
 
-interface GPT3ProviderConfig {
-  model: string
-  apiKey: string
-}
-
-interface GeminiProviderConfig {
-  model: string
-  apiKey: string
+export enum ChatGPTMode {
+  Webapp = 'webapp',
+  API = 'api',
 }
 
 export interface ProviderConfigs {
   provider: ProviderType
   configs: {
-    [ProviderType.GPT3]?: GPT3ProviderConfig
-    [ProviderType.Gemini]?: GeminiProviderConfig
+    chatgpt: {
+      mode: ChatGPTMode
+      apiKey?: string
+      model?: string
+    }
+    gemini: {
+      apiKey?: string
+      model?: string
+    }
   }
 }
 
 const providerConfigsWithDefaultValue: ProviderConfigs = {
   provider: ProviderType.ChatGPT,
-  configs: {},
+  configs: {
+    chatgpt: {
+      mode: ChatGPTMode.Webapp,
+    },
+    gemini: {},
+  },
 }
 
 const STORAGE_KEY_PROVIDER_CONFIGS = 'provider-configs'
@@ -96,11 +104,12 @@ export async function getProviderConfigs(): Promise<ProviderConfigs> {
 
   if (storedConfigs) {
     // Decode API keys
-    forEach(storedConfigs.configs, (config) => {
-      if (config?.apiKey) {
-        config.apiKey = decode(config.apiKey)
-      }
-    })
+    if (storedConfigs.configs.chatgpt.apiKey) {
+      storedConfigs.configs.chatgpt.apiKey = decode(storedConfigs.configs.chatgpt.apiKey)
+    }
+    if (storedConfigs.configs.gemini.apiKey) {
+      storedConfigs.configs.gemini.apiKey = decode(storedConfigs.configs.gemini.apiKey)
+    }
   }
 
   return defaults(storedConfigs, providerConfigsWithDefaultValue)
@@ -110,11 +119,12 @@ export async function saveProviderConfigs(configs: ProviderConfigs) {
   const newConfigs = { ...configs }
 
   // Encode API keys
-  forEach(newConfigs.configs, (config) => {
-    if (config?.apiKey) {
-      config.apiKey = encode(config.apiKey)
-    }
-  })
+  if (newConfigs.configs.chatgpt.apiKey) {
+    newConfigs.configs.chatgpt.apiKey = encode(newConfigs.configs.chatgpt.apiKey)
+  }
+  if (newConfigs.configs.gemini.apiKey) {
+    newConfigs.configs.gemini.apiKey = encode(newConfigs.configs.gemini.apiKey)
+  }
 
   return Browser.storage.local.set({ [STORAGE_KEY_PROVIDER_CONFIGS]: newConfigs })
 }

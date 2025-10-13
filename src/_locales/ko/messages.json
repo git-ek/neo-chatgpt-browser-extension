@@ -47,18 +47,7 @@
   "ext_privacy_link_text": {
     "message": "개인정보 처리방침"
   },
-  "ext_provider_chatgpt_webapp": {
-    "message": "ChatGPT 웹앱"
-  },
-  "ext_provider_chatgpt_webapp_desc": {
-    "message": "ChatGPT 웹앱을 구동하는 API, 무료이지만 때때로 불안정합니다"
-  },
-  "ext_provider_openai_api": {
-    "message": "OpenAI API"
-  },
-  "ext_provider_openai_api_desc": {
-    "message": "공식 OpenAI API. 더 안정적이며 사용자 지정 모델을 지원합니다."
-  },
+
   "ext_model_placeholder": {
     "message": "모델"
   },
@@ -127,6 +116,9 @@
   },
   "ext_common_issues": {
     "message": "일반적인 문제"
+  },
+  "ext_error_load_settings": {
+    "message": "설정을 불러오는 데 실패했습니다."
   },
   "ext_apikey_not_set": {
     "message": "$provider$에 대한 API 키가 설정되지 않았습니다.",

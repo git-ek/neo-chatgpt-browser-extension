@@ -47,18 +47,7 @@
   "ext_privacy_link_text": {
     "message": "Politica de confidențialitate"
   },
-  "ext_provider_chatgpt_webapp": {
-    "message": "Aplicația web ChatGPT"
-  },
-  "ext_provider_chatgpt_webapp_desc": {
-    "message": "API-ul care alimentează aplicația web ChatGPT, gratuit, dar uneori instabil"
-  },
-  "ext_provider_openai_api": {
-    "message": "API OpenAI"
-  },
-  "ext_provider_openai_api_desc": {
-    "message": "API-ul oficial OpenAI. Mai stabil și acceptă modele personalizate."
-  },
+
   "ext_model_placeholder": {
     "message": "model"
   },
@@ -127,6 +116,9 @@
   },
   "ext_common_issues": {
     "message": "Probleme comune"
+  },
+  "ext_error_load_settings": {
+    "message": "Încărcarea setărilor a eșuat."
   },
   "ext_apikey_not_set": {
     "message": "Cheia API nu este setată pentru $provider$.",

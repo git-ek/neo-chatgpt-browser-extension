@@ -47,18 +47,10 @@
   "ext_privacy_link_text": {
     "message": "隐私政策"
   },
-  "ext_provider_chatgpt_webapp": {
-    "message": "ChatGPT Web应用"
-  },
-  "ext_provider_chatgpt_webapp_desc": {
-    "message": "驱动ChatGPT Web应用的API，免费但有时不稳定"
-  },
-  "ext_provider_openai_api": {
-    "message": "OpenAI API"
-  },
   "ext_provider_openai_api_desc": {
-    "message": "官方OpenAI API。更稳定并支持自定义模型。"
+    "message": "官方OpenAI API。更稳定，支持自定义模型。"
   },
+
   "ext_model_placeholder": {
     "message": "模型"
   },
@@ -127,6 +119,9 @@
   },
   "ext_common_issues": {
     "message": "常见问题"
+  },
+  "ext_error_load_settings": {
+    "message": "加载设置失败。"
   },
   "ext_apikey_not_set": {
     "message": "$provider$ 的API密钥未设置。",

@@ -1,19 +1,19 @@
-import { Button, Spinner, Tabs, useInput, useToasts } from '@geist-ui/core'
+import { Button, Radio, Spinner, Tabs, useInput, useToasts } from '@geist-ui/core'
 import { FC, useCallback, useState } from 'react'
 import useSWR from 'swr'
 import Browser from 'webextension-polyfill'
-import { getProviderConfigs, ProviderConfigs, ProviderType, saveProviderConfigs } from '../config'
+import {
+  getProviderConfigs,
+  ProviderConfigs,
+  ProviderType,
+  saveProviderConfigs,
+  ChatGPTMode,
+} from '../config'
 import GeminiConfig from './GeminiConfig'
 import OpenAIConfig from './OpenAIConfig'
 
-interface ConfigProps {
-  config: ProviderConfigs
-  models: string[]
-}
-
+// ... (loadModels function remains the same)
 async function loadModels(provider?: ProviderType): Promise<string[]> {
-  // Server-independent: Return a hardcoded list of models.
-  // This list can be updated manually in future versions.
   if (provider === ProviderType.Gemini) {
     return [
       'gemini-2.5-pro',
@@ -24,7 +24,6 @@ async function loadModels(provider?: ProviderType): Promise<string[]> {
       'gemini-pro',
     ]
   }
-  // Default to OpenAI models
   return [
     'gpt-5',
     'gpt-5-mini',
@@ -37,150 +36,146 @@ async function loadModels(provider?: ProviderType): Promise<string[]> {
   ]
 }
 
-const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
-  const [tab, setTab] = useState<ProviderType>(config.provider)
-  // OpenAI
-  const { bindings: apiKeyBindings } = useInput(config.configs[ProviderType.GPT3]?.apiKey ?? '')
-  const [model, setModel] = useState(config.configs[ProviderType.GPT3]?.model ?? models[0])
-  // Gemini
-  const { bindings: geminiKeyBindings } = useInput(
-    config.configs[ProviderType.Gemini]?.apiKey ?? '',
+const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[] }> = ({
+  initialConfigs,
+  models,
+}) => {
+  const [provider, setProvider] = useState<ProviderType>(initialConfigs.provider)
+
+  // ChatGPT state
+  const [chatGPTMode, setChatGPTMode] = useState<ChatGPTMode>(initialConfigs.configs.chatgpt.mode)
+  const { bindings: chatGPTApiKeyBindings } = useInput(initialConfigs.configs.chatgpt.apiKey ?? '')
+  const [chatGPTModel, setChatGPTModel] = useState(
+    initialConfigs.configs.chatgpt.model ?? models[0],
   )
+
+  // Gemini state
+  const { bindings: geminiApiKeyBindings } = useInput(initialConfigs.configs.gemini.apiKey ?? '')
   const [geminiModel, setGeminiModel] = useState(
-    config.configs[ProviderType.Gemini]?.model ?? 'gemini-2.5-pro',
+    initialConfigs.configs.gemini.model ?? 'gemini-1.5-pro-latest',
   )
+
+  const [dynamicModels, setDynamicModels] = useState<string[]>(models)
   const { setToast } = useToasts()
 
-  const save = useCallback(async () => {
+  const handleTabChange = async (val: string) => {
+    const newProvider = val as ProviderType
+    setProvider(newProvider)
     try {
-      if (tab === ProviderType.GPT3) {
-        if (!apiKeyBindings.value) {
-          setToast({ text: Browser.i18n.getMessage('ext_toast_enter_openai_key'), type: 'error' })
-          return
-        }
-        if (!model || !models.includes(model)) {
-          setToast({ text: Browser.i18n.getMessage('ext_toast_select_valid_model'), type: 'error' })
-          return
-        }
-        await saveProviderConfigs(tab, {
-          [ProviderType.GPT3]: {
-            model,
-            apiKey: apiKeyBindings.value,
-          },
-          [ProviderType.Gemini]: config.configs[ProviderType.Gemini],
-        })
-      } else if (tab === ProviderType.Gemini) {
-        if (!geminiKeyBindings.value) {
-          setToast({ text: Browser.i18n.getMessage('ext_toast_enter_gemini_key'), type: 'error' })
-          return
-        }
-        await saveProviderConfigs(tab, {
-          [ProviderType.GPT3]: config.configs[ProviderType.GPT3],
-          [ProviderType.Gemini]: {
-            model: geminiModel,
-            apiKey: geminiKeyBindings.value,
-          },
-        })
-      }
+      const loaded = await loadModels(newProvider)
+      setDynamicModels(loaded)
+    } catch (err) {
+      setToast({ text: `Failed to load models: ${err.message}`, type: 'error' })
+    }
+  }
+
+  const save = useCallback(async () => {
+    const newConfigs: ProviderConfigs = {
+      provider,
+      configs: {
+        chatgpt: {
+          mode: chatGPTMode,
+          apiKey: chatGPTApiKeyBindings.value,
+          model: chatGPTModel,
+        },
+        gemini: {
+          apiKey: geminiApiKeyBindings.value,
+          model: geminiModel,
+        },
+      },
+    }
+
+    if (
+      provider === ProviderType.ChatGPT &&
+      chatGPTMode === ChatGPTMode.API &&
+      !chatGPTApiKeyBindings.value
+    ) {
+      setToast({ text: Browser.i18n.getMessage('ext_toast_enter_openai_key'), type: 'error' })
+      return
+    }
+    if (provider === ProviderType.Gemini && !geminiApiKeyBindings.value) {
+      setToast({ text: Browser.i18n.getMessage('ext_toast_enter_gemini_key'), type: 'error' })
+      return
+    }
+
+    try {
+      await saveProviderConfigs(newConfigs)
       setToast({ text: Browser.i18n.getMessage('ext_toast_changes_saved'), type: 'success' })
     } catch (err) {
       setToast({
-        text:
-          Browser.i18n.getMessage('ext_toast_failed_to_save') +
-          ' ' +
-          (err instanceof Error ? err.message : String(err)),
+        text: `${Browser.i18n.getMessage('ext_toast_failed_to_save')} ${err.message}`,
         type: 'error',
       })
     }
   }, [
-    apiKeyBindings.value,
-    model,
-    models,
-    geminiKeyBindings.value,
+    provider,
+    chatGPTMode,
+    chatGPTApiKeyBindings,
+    chatGPTModel,
+    geminiApiKeyBindings,
     geminiModel,
     setToast,
-    tab,
-    config,
   ])
 
-  // 모델 목록 동적 로딩 (탭 변경 시)
-  const [dynamicModels, setDynamicModels] = useState<string[]>(models)
-  const handleTabChange = async (val: string) => {
-    const v = val as ProviderType
-    setTab(v)
-    try {
-      const loaded = await loadModels(v)
-      setDynamicModels(loaded)
-    } catch (err) {
-      setToast({
-        text:
-          Browser.i18n.getMessage('ext_toast_failed_to_load_models') +
-          ' ' +
-          (err instanceof Error ? err.message : String(err)),
-        type: 'error',
-      })
-      setDynamicModels([])
-    }
-  }
-
   return (
-    <div className="flex flex-col gap-3">
-      <Tabs value={tab} onChange={handleTabChange}>
-        <Tabs.Item
-          label={Browser.i18n.getMessage('ext_provider_chatgpt_webapp')}
-          value={ProviderType.ChatGPT}
-        >
-          {Browser.i18n.getMessage('ext_provider_chatgpt_webapp_desc')}
-        </Tabs.Item>
-        <Tabs.Item
-          label={Browser.i18n.getMessage('ext_provider_openai_api')}
-          value={ProviderType.GPT3}
-        >
-          <OpenAIConfig
-            apiKeyBindings={apiKeyBindings}
-            model={model}
-            setModel={setModel}
-            dynamicModels={dynamicModels}
-          />
-        </Tabs.Item>
-        <Tabs.Item
-          label={Browser.i18n.getMessage('ext_provider_gemini_api')}
-          value={ProviderType.Gemini}
-        >
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-between items-center">
+        <Tabs value={provider} onChange={handleTabChange}>
+          <Tabs.Item label="ChatGPT" value={ProviderType.ChatGPT} />
+          <Tabs.Item label="Gemini ⚙️" value={ProviderType.Gemini} />
+        </Tabs>
+        <Button auto type="success" onClick={save}>
+          {Browser.i18n.getMessage('ext_save_button')}
+        </Button>
+      </div>
+
+      {provider === ProviderType.ChatGPT && (
+        <div className="flex flex-col gap-3 p-4 border rounded-lg bg-gray-50">
+          <Radio.Group value={chatGPTMode} onChange={(v) => setChatGPTMode(v as ChatGPTMode)}>
+            <Radio value={ChatGPTMode.Webapp}>Webapp</Radio>
+            <Radio value={ChatGPTMode.API}>API</Radio>
+          </Radio.Group>
+          {chatGPTMode === ChatGPTMode.API && (
+            <OpenAIConfig
+              apiKeyBindings={chatGPTApiKeyBindings}
+              model={chatGPTModel}
+              setModel={setChatGPTModel}
+              dynamicModels={dynamicModels}
+            />
+          )}
+        </div>
+      )}
+
+      {provider === ProviderType.Gemini && (
+        <div className="p-4 border rounded-lg bg-gray-50">
           <GeminiConfig
-            apiKeyBindings={geminiKeyBindings}
+            apiKeyBindings={geminiApiKeyBindings}
             model={geminiModel}
             setModel={setGeminiModel}
             dynamicModels={dynamicModels}
           />
-        </Tabs.Item>
-      </Tabs>
-      <Button scale={2 / 3} ghost style={{ width: 20 }} type="success" onClick={save}>
-        {Browser.i18n.getMessage('ext_save_button')}
-      </Button>
+        </div>
+      )}
     </div>
   )
 }
 
 function ProviderSelect() {
-  const query = useSWR<{ config: ProviderConfigs; models: string[] }>(
-    'provider-configs',
-    async () => {
-      const [config, models] = await Promise.all([getProviderConfigs(), loadModels()])
-      return { config, models }
-    },
-  )
-  if (query.isLoading) {
-    return <Spinner />
-  }
-  if (query.error) {
+  const { data, error } = useSWR('provider-configs', async () => {
+    const [config, models] = await Promise.all([getProviderConfigs(), loadModels()])
+    return { config, models }
+  })
+
+  if (error) {
     return (
-      <div className="text-red-500">
-        {Browser.i18n.getMessage('ext_toast_failed_to_load_configs')} {String(query.error)}
-      </div>
+      <div className="text-red-500">{`${Browser.i18n.getMessage('ext_toast_failed_to_load_configs')} ${error.message}`}</div>
     )
   }
-  return <ConfigPanel config={query.data!.config} models={query.data!.models} />
+  if (!data) {
+    return <Spinner />
+  }
+
+  return <ConfigPanel initialConfigs={data.config} models={data.models} />
 }
 
 export default ProviderSelect

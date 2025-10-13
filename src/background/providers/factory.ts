@@ -1,4 +1,4 @@
-import { ProviderConfigs, ProviderType } from '../../config'
+import { ChatGPTMode, ProviderConfigs, ProviderType } from '../../config'
 import { Provider } from '../types'
 import { ChatGPTProvider, getChatGPTAccessToken } from './chatgpt'
 import { GeminiProvider } from './gemini'
@@ -10,18 +10,24 @@ export class ProviderFactory {
 
     switch (providerType) {
       case ProviderType.ChatGPT: {
-        const token = await getChatGPTAccessToken()
-        return new ChatGPTProvider(token)
-      }
-
-      case ProviderType.GPT3: {
-        const { apiKey, model } = configs.configs[ProviderType.GPT3]!
-        return new OpenAIProvider(apiKey, model)
+        const chatGPTConfig = configs.configs.chatgpt
+        if (chatGPTConfig.mode === ChatGPTMode.API) {
+          if (!chatGPTConfig.apiKey || !chatGPTConfig.model) {
+            throw new Error('API key or model not set for OpenAI API')
+          }
+          return new OpenAIProvider(chatGPTConfig.apiKey, chatGPTConfig.model)
+        } else {
+          const token = await getChatGPTAccessToken()
+          return new ChatGPTProvider(token)
+        }
       }
 
       case ProviderType.Gemini: {
-        const { apiKey: geminiApiKey, model: geminiModel } = configs.configs[ProviderType.Gemini]!
-        return new GeminiProvider(geminiApiKey, geminiModel)
+        const geminiConfig = configs.configs.gemini
+        if (!geminiConfig.apiKey || !geminiConfig.model) {
+          throw new Error('API key or model not set for Gemini API')
+        }
+        return new GeminiProvider(geminiConfig.apiKey, geminiConfig.model)
       }
 
       default:

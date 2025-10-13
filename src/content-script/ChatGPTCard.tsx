@@ -1,7 +1,7 @@
-import Browser from 'webextension-polyfill'
 import { TriggerMode } from '../config'
 import ChatGPTQuery from './ChatGPTQuery'
 import logo from '../logo.png'
+import Browser from 'webextension-polyfill'
 
 interface ChatGPTCardProps {
   question: string

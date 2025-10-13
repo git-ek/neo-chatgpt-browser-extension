@@ -47,18 +47,7 @@
   "ext_privacy_link_text": {
     "message": "Política de Privacidade"
   },
-  "ext_provider_chatgpt_webapp": {
-    "message": "Aplicativo da web ChatGPT"
-  },
-  "ext_provider_chatgpt_webapp_desc": {
-    "message": "A API que alimenta o aplicativo da web ChatGPT, gratuita, mas às vezes instável"
-  },
-  "ext_provider_openai_api": {
-    "message": "API da OpenAI"
-  },
-  "ext_provider_openai_api_desc": {
-    "message": "A API oficial da OpenAI. Mais estável e suporta modelos personalizados."
-  },
+
   "ext_model_placeholder": {
     "message": "modelo"
   },
@@ -127,6 +116,9 @@
   },
   "ext_common_issues": {
     "message": "Problemas comuns"
+  },
+  "ext_error_load_settings": {
+    "message": "Falha ao carregar as configurações."
   },
   "ext_apikey_not_set": {
     "message": "Chave de API não definida para $provider$.",

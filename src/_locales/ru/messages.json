@@ -47,18 +47,7 @@
   "ext_privacy_link_text": {
     "message": "Политика конфиденциальности"
   },
-  "ext_provider_chatgpt_webapp": {
-    "message": "Веб-приложение ChatGPT"
-  },
-  "ext_provider_chatgpt_webapp_desc": {
-    "message": "API, на котором работает веб-приложение ChatGPT, бесплатное, но иногда нестабильное"
-  },
-  "ext_provider_openai_api": {
-    "message": "API OpenAI"
-  },
-  "ext_provider_openai_api_desc": {
-    "message": "Официальный API OpenAI. Более стабильный и поддерживает пользовательские модели."
-  },
+
   "ext_model_placeholder": {
     "message": "модель"
   },
@@ -127,6 +116,9 @@
   },
   "ext_common_issues": {
     "message": "Распространенные проблемы"
+  },
+  "ext_error_load_settings": {
+    "message": "Не удалось загрузить настройки."
   },
   "ext_apikey_not_set": {
     "message": "API-ключ для $provider$ не установлен.",

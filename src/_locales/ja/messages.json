@@ -47,18 +47,7 @@
   "ext_privacy_link_text": {
     "message": "プライバシーポリシー"
   },
-  "ext_provider_chatgpt_webapp": {
-    "message": "ChatGPTウェブアプリ"
-  },
-  "ext_provider_chatgpt_webapp_desc": {
-    "message": "ChatGPTウェブアプリを動かすAPI、無料ですが不安定な場合があります"
-  },
-  "ext_provider_openai_api": {
-    "message": "OpenAI API"
-  },
-  "ext_provider_openai_api_desc": {
-    "message": "公式のOpenAI API。より安定しており、カスタムモデルをサポートしています。"
-  },
+
   "ext_model_placeholder": {
     "message": "モデル"
   },
@@ -127,6 +116,9 @@
   },
   "ext_common_issues": {
     "message": "一般的な問題"
+  },
+  "ext_error_load_settings": {
+    "message": "設定の読み込みに失敗しました。"
   },
   "ext_apikey_not_set": {
     "message": "$provider$ のAPIキーが設定されていません。",
