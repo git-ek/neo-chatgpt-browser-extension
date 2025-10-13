@@ -12,7 +12,7 @@ interface ErrorEvent {
   code?: string
 }
 import ChatGPTFeedback from './ChatGPTFeedback'
-import { isBraveBrowser } from './utils.js'
+import { isBraveBrowser, getErrorMessageKey } from './utils.js'
 
 export type QueryStatus = 'success' | 'error' | undefined
 
@@ -128,15 +128,8 @@ function ChatGPTQuery(props: Props) {
     )
   }
   if (error) {
-    // 에러 코드별 안내 강화
-    let helpMsg = Browser.i18n.getMessage('ext_error_generic')
-    if (error.includes('network') || error.includes('Failed to fetch')) {
-      helpMsg = Browser.i18n.getMessage('ext_error_network')
-    } else if (error.includes('model')) {
-      helpMsg = Browser.i18n.getMessage('ext_error_model')
-    } else if (error.includes('API key') || error.includes('unauthorized')) {
-      helpMsg = Browser.i18n.getMessage('ext_error_apikey')
-    }
+    const messageKey = getErrorMessageKey(error)
+    const helpMsg = Browser.i18n.getMessage(messageKey)
     return (
       <div
         className="gpt-error-message"
