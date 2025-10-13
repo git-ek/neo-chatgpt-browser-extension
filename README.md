@@ -1,66 +1,74 @@
-# ChatGPT for Google
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/wong2/chatgpt-google-extension/pre-release-build.yml)
-[![Twitter Follow](https://img.shields.io/twitter/follow/chatgpt4google?style=social)](https://twitter.com/chatgpt4google)
-![License](https://img.shields.io/github/license/wong2/chatgpt-google-extension)
+# Neo ChatGPT for Browser Extension
 
-### Notice (2023-02-20)
+Neo ChatGPT for Browser Extension is an open-source browser extension that displays ChatGPT responses alongside search results on various search engines (Google, Bing, Naver, etc.).
 
-As this extension has been acquired, this code repository will no longer be updated from now on.
+## Features
 
-# My new project: [ChatHub: All-in-one chatbot client](https://github.com/chathub-dev/chathub)
+- Supports Google, Bing, Naver, and other major search engines
+- Supports both OpenAI official API and ChatGPT webapp API
+- Dark/Light theme, language selection, trigger modes (always/question/manual)
+- Markdown rendering, code highlighting, copy, feedback features
+- Fast setup and user-friendly UI
 
----
+## Installation & Usage
 
-A browser extension to display ChatGPT response alongside Google (and other search engines) results
-
-[Install from Chrome Web Store](https://chatgpt4google.com/chrome?utm_source=github)
-
-[Install from Mozilla Add-on Store](https://chatgpt4google.com/firefox?utm_source=github)
-
-## Supported Search Engines
-
-Google, Baidu, Bing, DuckDuckGo, Brave, Yahoo, Naver, Yandex, Kagi, Searx
+1. Clone the repository:
+	```bash
+	git clone https://github.com/git-ek/neo-chatgpt-browser-extension.git
+	```
+2. Install dependencies:
+	```bash
+	npm install
+	```
+3. Build the extension:
+	```bash
+	npm run build
+	```
+4. Load the `build/chromium/` or `build/firefox/` directory in your browser's extension management page.
 
 ## Screenshot
 
 ![Screenshot](screenshots/extension.png?raw=true)
 
-## Features
+## FAQ & Troubleshooting
 
-- Supports all popular search engines
-- Supports the official OpenAI API
-- Supports ChatGPT Plus
-- Markdown rendering
-- Code highlights
-- Dark mode
-- Provide feedback to improve ChatGPT
-- Copy to clipboard
-- Custom trigger mode
-- Switch languages
+- **Brave**: Disable "Prevent sites from fingerprinting me based on my language preferences" in `brave://settings/shields`.
+- **Opera**: Enable "Allow access to search page results" in the extension management page.
 
-## Troubleshooting
+## Credits & License
 
-### How to make it work in Brave
+This project is based on [wong2/chatgpt-google-extension](https://github.com/wong2/chatgpt-google-extension) (Copyright © wong2).
+Modified and maintained by git-ek (2025).
+Distributed under the GNU GPL v3 license. See LICENSE for details.
 
-![Screenshot](screenshots/brave.png?raw=true)
+## External Resources & Libraries
 
-Disable "Prevent sites from fingerprinting me based on my language preferences" in `brave://settings/shields`
+All external libraries, images, and icons used in this project are subject to their respective licenses. Only GPL-compatible resources are used.
 
-### How to make it work in Opera
+## Privacy & Data Policy
 
-![Screenshot](screenshots/opera.png?raw=true)
+This extension may process user data (e.g., API keys, search queries) for functional purposes only. No personal data is stored or shared externally. For details, refer to the Privacy Policy (to be provided if required by browser store).
 
-Enable "Allow access to search page results" in the extension management page
+## Trademark Notice
 
-## Build from source
+"ChatGPT" and "OpenAI" are trademarks of OpenAI. This project is not affiliated with or endorsed by OpenAI.
+---
+## Credits & License
 
-1. Clone the repo
-2. Install dependencies with `npm`
-3. `npm run build`
-4. Load `build/chromium/` or `build/firefox/` directory to your browser
+This project is based on [wong2/chatgpt-google-extension](https://github.com/wong2/chatgpt-google-extension) (Copyright © wong2).
+Modified and maintained by git-ek (2025).
+Distributed under the GNU GPL v3 license. See LICENSE for details.
 
-## Star History
+## External Resources & Libraries
 
-[![Star History Chart](https://api.star-history.com/svg?repos=wong2/chatgpt-google-extension&type=Date)](https://star-history.com/#wong2/chatgpt-google-extension&Date)
+- All external libraries, images, and icons used in this project are subject to their respective licenses. Please refer to each library's documentation for details. Only GPL-compatible resources are used.
+
+## Privacy & Data Policy
+
+- This extension may process user data (e.g., API keys, search queries) for functional purposes only. No personal data is stored or shared externally. For details, refer to the Privacy Policy (to be provided if required by browser store).
+
+## Trademark Notice
+
+- "ChatGPT" and "OpenAI" are trademarks of OpenAI. This project is not affiliated with or endorsed by OpenAI.
 
