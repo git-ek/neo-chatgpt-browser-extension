@@ -12,7 +12,7 @@ interface ErrorEvent {
   code?: string
 }
 import ChatGPTFeedback from './ChatGPTFeedback'
-import { isBraveBrowser, shouldShowRatingTip } from './utils.js'
+import { isBraveBrowser } from './utils.js'
 
 export type QueryStatus = 'success' | 'error' | undefined
 
@@ -25,8 +25,6 @@ function ChatGPTQuery(props: Props) {
   const [answer, setAnswer] = useState<Answer | null>(null)
   const [error, setError] = useState('')
   const [retry, setRetry] = useState(0)
-  const [done, setDone] = useState(false)
-  const [showTip, setShowTip] = useState(false)
   const [status, setStatus] = useState<QueryStatus>()
 
   useEffect(() => {
@@ -42,8 +40,6 @@ function ChatGPTQuery(props: Props) {
       } else if ('error' in msg) {
         setError(msg.error)
         setStatus('error')
-      } else if (msg.event === 'DONE') {
-        setDone(true)
       }
     }
     port.onMessage.addListener(listener)
@@ -67,10 +63,6 @@ function ChatGPTQuery(props: Props) {
       window.removeEventListener('focus', onFocus)
     }
   }, [error])
-
-  useEffect(() => {
-    shouldShowRatingTip().then((show) => setShowTip(show))
-  }, [])
 
   useEffect(() => {
     if (status === 'success') {
@@ -99,18 +91,6 @@ function ChatGPTQuery(props: Props) {
         <ReactMarkdown rehypePlugins={[[rehypeHighlight, { detect: true }]]}>
           {answer.text}
         </ReactMarkdown>
-        {done && showTip && (
-          <p className="italic mt-2">
-            Enjoy this extension? Give us a 5-star rating at{' '}
-            <a
-              href="https://chatgpt4google.com/chrome?utm_source=rating_tip"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Chrome Web Store
-            </a>
-          </p>
-        )}
       </div>
     )
   }

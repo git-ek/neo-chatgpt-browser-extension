@@ -1,7 +1,6 @@
 import { Button, Input, Select, Spinner, Tabs, useInput, useToasts } from '@geist-ui/core'
 import { FC, useCallback, useState } from 'react'
 import useSWR from 'swr'
-import { fetchExtensionConfigs } from '../api'
 import { getProviderConfigs, ProviderConfigs, ProviderType, saveProviderConfigs } from '../config'
 
 interface ConfigProps {
@@ -10,24 +9,28 @@ interface ConfigProps {
 }
 
 async function loadModels(provider?: ProviderType): Promise<string[]> {
-  try {
-    const configs = await fetchExtensionConfigs()
-    if (provider === ProviderType.Gemini) {
-      return (
-        configs.gemini_model_names || [
-          'gemini-2.5-pro',
-          'gemini-2.5-flash',
-          'gemini-1.5-pro',
-          'gemini-1.5-flash',
-          'gemini-pro',
-        ]
-      )
-    }
-    return configs.openai_model_names
-  } catch {
-    // 네트워크 또는 서버 오류 발생 시 기본 모델 반환
-    return [provider === ProviderType.Gemini ? 'gemini-2.5-pro' : 'gpt-3.5-turbo']
+  // Server-independent: Return a hardcoded list of models.
+  // This list can be updated manually in future versions.
+  if (provider === ProviderType.Gemini) {
+    return [
+      'gemini-2.5-pro',
+      'gemini-2.5-flash',
+      'gemini-1.5-pro-latest',
+      'gemini-1.5-flash-latest',
+      'gemini-pro',
+    ]
   }
+  // Default to OpenAI models
+  return [
+    'gpt-5',
+    'gpt-5-mini',
+    'gpt-4o',
+    'gpt-4o-mini',
+    'gpt-4',
+    'gpt-4-32k',
+    'gpt-3.5-turbo',
+    'gpt-3.5-turbo-16k',
+  ]
 }
 
 const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {

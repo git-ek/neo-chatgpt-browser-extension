@@ -11,6 +11,10 @@ Neo ChatGPT for Browser Extension is an open-source browser extension that displ
 - Markdown rendering, code highlighting, copy, feedback features
 - Fast setup and user-friendly UI
 
+## Architecture
+
+- **Server-Independent:** This extension is self-contained and does not rely on any external backend servers for its core functionality, with the exception of the official AI provider APIs (OpenAI, Gemini, etc.).
+
 
 ## Build & Install
 
