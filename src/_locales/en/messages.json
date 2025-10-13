@@ -127,5 +127,17 @@
   },
   "ext_common_issues": {
     "message": "Common Issues"
+  },
+  "ext_apikey_not_set": {
+    "message": "API key not set for $provider$.",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "OpenAI API"
+      }
+    }
+  },
+  "ext_apikey_link_to_options": {
+    "message": "Please set it in the options page."
   }
 }

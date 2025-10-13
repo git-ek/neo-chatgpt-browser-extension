@@ -127,5 +127,16 @@
   },
   "ext_common_issues": {
     "message": "Распространенные проблемы"
+  },
+  "ext_apikey_not_set": {
+    "message": "API-ключ для $provider$ не установлен.",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "ext_apikey_link_to_options": {
+    "message": "Пожалуйста, установите его на странице настроек."
   }
 }

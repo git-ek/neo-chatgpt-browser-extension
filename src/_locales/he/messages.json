@@ -127,5 +127,16 @@
   },
   "ext_common_issues": {
     "message": "בעיות נפוצות"
+  },
+  "ext_apikey_not_set": {
+    "message": "מפתח API לא הוגדר עבור $provider$.",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "ext_apikey_link_to_options": {
+    "message": "אנא הגדר אותו בדף האפשרויות."
   }
 }

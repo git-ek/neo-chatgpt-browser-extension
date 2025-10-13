@@ -5,10 +5,10 @@ import { GeminiProvider } from './gemini'
 import { OpenAIProvider } from './openai'
 
 export class ProviderFactory {
-  static async create(configs: ProviderConfigs): Promise<Provider> {
-    const { provider } = configs
+  static async create(configs: ProviderConfigs, overrideType?: ProviderType): Promise<Provider> {
+    const providerType = overrideType ?? configs.provider
 
-    switch (provider) {
+    switch (providerType) {
       case ProviderType.ChatGPT: {
         const token = await getChatGPTAccessToken()
         return new ChatGPTProvider(token)
@@ -25,7 +25,7 @@ export class ProviderFactory {
       }
 
       default:
-        throw new Error(`Unknown provider: ${provider}`)
+        throw new Error(`Unknown provider: ${providerType}`)
     }
   }
 }

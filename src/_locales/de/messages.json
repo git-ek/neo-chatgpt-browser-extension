@@ -127,5 +127,16 @@
   },
   "ext_common_issues": {
     "message": "Häufige Probleme"
+  },
+  "ext_apikey_not_set": {
+    "message": "API-Schlüssel für $provider$ nicht festgelegt.",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "ext_apikey_link_to_options": {
+    "message": "Bitte legen Sie ihn auf der Optionsseite fest."
   }
 }

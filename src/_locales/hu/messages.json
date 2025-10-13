@@ -127,5 +127,16 @@
   },
   "ext_common_issues": {
     "message": "Gyakori problémák"
+  },
+  "ext_apikey_not_set": {
+    "message": "Az API-kulcs nincs beállítva a(z) $provider$ számára.",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "ext_apikey_link_to_options": {
+    "message": "Kérjük, állítsa be a beállítások oldalon."
   }
 }

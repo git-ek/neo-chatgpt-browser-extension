@@ -1,12 +1,16 @@
 import Browser from 'webextension-polyfill'
-import { getProviderConfigs } from '../config'
+import { getProviderConfigs, ProviderType } from '../config'
 import { sendMessageFeedback, getChatGPTAccessToken } from './providers/chatgpt'
 import { ProviderFactory } from './providers/factory'
 
-async function generateAnswers(port: Browser.Runtime.Port, question: string) {
+async function generateAnswers(
+  port: Browser.Runtime.Port,
+  question: string,
+  providerType?: ProviderType,
+) {
   const providerConfigs = await getProviderConfigs()
 
-  const provider = await ProviderFactory.create(providerConfigs)
+  const provider = await ProviderFactory.create(providerConfigs, providerType)
 
   const controller = new AbortController()
   port.onDisconnect.addListener(() => {
@@ -28,12 +32,12 @@ async function generateAnswers(port: Browser.Runtime.Port, question: string) {
 }
 
 Browser.runtime.onConnect.addListener((port: Browser.Runtime.Port) => {
-  port.onMessage.addListener(async (msg: { question: string }) => {
+  port.onMessage.addListener(async (msg: { question: string; provider?: ProviderType }) => {
     if (process.env.NODE_ENV !== 'production') {
       console.debug('received msg', msg)
     }
     try {
-      await generateAnswers(port, msg.question)
+      await generateAnswers(port, msg.question, msg.provider)
     } catch (err) {
       if (process.env.NODE_ENV !== 'production') {
         console.error(err)

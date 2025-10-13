@@ -127,5 +127,16 @@
   },
   "ext_common_issues": {
     "message": "一般的な問題"
+  },
+  "ext_apikey_not_set": {
+    "message": "$provider$ のAPIキーが設定されていません。",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "ext_apikey_link_to_options": {
+    "message": "オプションページで設定してください。"
   }
 }

@@ -127,5 +127,16 @@
   },
   "ext_common_issues": {
     "message": "Поширені проблеми"
+  },
+  "ext_apikey_not_set": {
+    "message": "Ключ API для $provider$ не встановлено.",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "ext_apikey_link_to_options": {
+    "message": "Будь ласка, встановіть його на сторінці налаштувань."
   }
 }

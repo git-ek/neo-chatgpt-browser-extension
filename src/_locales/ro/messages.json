@@ -127,5 +127,16 @@
   },
   "ext_common_issues": {
     "message": "Probleme comune"
+  },
+  "ext_apikey_not_set": {
+    "message": "Cheia API nu este setată pentru $provider$.",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "ext_apikey_link_to_options": {
+    "message": "Vă rugăm să o setați în pagina de opțiuni."
   }
 }

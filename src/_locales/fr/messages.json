@@ -127,5 +127,16 @@
   },
   "ext_common_issues": {
     "message": "Problèmes courants"
+  },
+  "ext_apikey_not_set": {
+    "message": "Clé API non définie pour $provider$.",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "ext_apikey_link_to_options": {
+    "message": "Veuillez la définir dans la page des options."
   }
 }
