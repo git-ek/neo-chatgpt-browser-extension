@@ -9,7 +9,9 @@ import tailwindcss from 'tailwindcss'
 
 dotenv.config()
 
+const packageJson = fs.readJsonSync('./package.json')
 const outdir = 'build'
+const version = packageJson.version
 
 async function deleteOldDir() {
   await fs.remove(outdir)
@@ -75,6 +77,12 @@ async function copyFiles(entryPoints, targetDir) {
   )
 }
 
+async function injectManifestVersion(manifestPath, targetDir) {
+  const manifest = await fs.readJson(manifestPath)
+  manifest.version = version
+  await fs.outputJson(`${targetDir}/manifest.json`, manifest, { spaces: 2 })
+}
+
 async function build() {
   await deleteOldDir()
   await processStyles()
@@ -95,20 +103,16 @@ async function build() {
   ]
 
   // chromium
-  await copyFiles(
-    [...commonFiles, { src: 'src/manifest.json', dst: 'manifest.json' }],
-    `./${outdir}/chromium`,
-  )
-
-  await zipFolder(`./${outdir}/chromium`)
+  const chromiumDir = `./${outdir}/chromium`
+  await copyFiles(commonFiles, chromiumDir)
+  await injectManifestVersion('src/manifest.json', chromiumDir)
+  await zipFolder(chromiumDir)
 
   // firefox
-  await copyFiles(
-    [...commonFiles, { src: 'src/manifest.v2.json', dst: 'manifest.json' }],
-    `./${outdir}/firefox`,
-  )
-
-  await zipFolder(`./${outdir}/firefox`)
+  const firefoxDir = `./${outdir}/firefox`
+  await copyFiles(commonFiles, firefoxDir)
+  await injectManifestVersion('src/manifest.v2.json', firefoxDir)
+  await zipFolder(firefoxDir)
 
   console.log('Build success.')
 }
