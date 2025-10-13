@@ -1,29 +1,40 @@
 import { useState } from 'preact/hooks';
+import useSWRImmutable from 'swr/immutable';
+import { fetchPromotion } from '../api';
+import { TriggerMode } from '../config';
 import ChatGPTQuery, { QueryStatus } from './ChatGPTQuery';
+import Promotion from './Promotion';
 import logo from '../logo.png';
-
 
 interface ChatGPTCardProps {
   question: string;
-  onStatusChange: (status: QueryStatus) => void;
+  triggerMode: TriggerMode;
 }
 
-function ChatGPTCard({ question, onStatusChange }: ChatGPTCardProps) {
+function ChatGPTCard({ question, triggerMode }: ChatGPTCardProps) {
+  const [queryStatus, setQueryStatus] = useState<QueryStatus>();
+  const { data: promotion } = useSWRImmutable(
+    queryStatus === 'success' ? 'promotion' : null,
+    fetchPromotion,
+    { shouldRetryOnError: false },
+  );
+
   return (
-    <>
-      <div
-        className="gpt-card"
-        aria-label="ChatGPT Answer Card"
-      >
+    <div className="chat-gpt-card">
+      <div className="gpt-card" aria-label="ChatGPT Answer Card">
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
           <img src={logo} alt="ChatGPT" style={{ width: 32, height: 32, borderRadius: 8, marginRight: 12 }} />
           <span style={{ fontWeight: 600, fontSize: '1.1em' }}>ChatGPT Answer</span>
           <span style={{ flex: 1 }} />
         </div>
-        <ChatGPTQuery question={question} onStatusChange={onStatusChange} />
+        <ChatGPTQuery
+          question={question}
+          triggerMode={triggerMode}
+          onStatusChange={setQueryStatus}
+        />
       </div>
-      {/* 스타일은 styles.scss에서 관리 */}
-    </>
+      {promotion && <Promotion data={promotion} />}
+    </div>
   );
 }
 

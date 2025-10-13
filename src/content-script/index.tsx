@@ -2,7 +2,7 @@ import { render } from 'preact'
 import '../base.css'
 import { getUserConfig, Language, Theme } from '../config'
 import { detectSystemColorScheme } from '../utils'
-import ChatGPTContainer from './ChatGPTContainer'
+import ChatGPTCard from './ChatGPTCard'
 import { config, SearchEngine } from './search-engine-configs'
 import './styles.scss'
 import { getPossibleElementByQuerySelector } from './utils'
@@ -36,7 +36,7 @@ async function mount(question: string, siteConfig: SearchEngine) {
   }
 
   render(
-    <ChatGPTContainer question={question} triggerMode={userConfig.triggerMode || 'always'} />,
+    <ChatGPTCard question={question} triggerMode={userConfig.triggerMode || 'always'} />,
     container,
   )
 }

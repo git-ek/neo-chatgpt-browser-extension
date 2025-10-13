@@ -1,4 +1,4 @@
-import { defaults } from 'lodash-es'
+import { defaults, forEach, mapValues } from 'lodash-es'
 import Browser from 'webextension-polyfill'
 
 export enum TriggerMode {
@@ -11,7 +11,7 @@ export const TRIGGER_MODE_TEXT = {
   [TriggerMode.Always]: { title: 'Always', desc: 'ChatGPT is queried on every search' },
   [TriggerMode.QuestionMark]: {
     title: 'Question Mark',
-    desc: 'When your query ends with a question mark (?)',
+    desc: 'When your query ends with a question mark (?) ',
   },
   [TriggerMode.Manually]: {
     title: 'Manually',
@@ -55,13 +55,11 @@ export async function updateUserConfig(updates: Partial<UserConfig>) {
   return Browser.storage.local.set(updates)
 }
 
-
 export enum ProviderType {
   ChatGPT = 'chatgpt',
   GPT3 = 'gpt3',
   Gemini = 'gemini',
 }
-
 
 interface GPT3ProviderConfig {
   model: string
@@ -73,38 +71,51 @@ interface GeminiProviderConfig {
   apiKey: string
 }
 
-
 export interface ProviderConfigs {
   provider: ProviderType
   configs: {
-    [ProviderType.GPT3]: GPT3ProviderConfig | undefined
-    [ProviderType.Gemini]: GeminiProviderConfig | undefined
+    [ProviderType.GPT3]?: GPT3ProviderConfig
+    [ProviderType.Gemini]?: GeminiProviderConfig
   }
 }
 
+const providerConfigsWithDefaultValue: ProviderConfigs = {
+  provider: ProviderType.ChatGPT,
+  configs: {},
+}
+
+const STORAGE_KEY_PROVIDER_CONFIGS = 'provider-configs'
+
+// Simple obfuscation for API keys
+const encode = (str: string) => btoa(str)
+const decode = (str: string) => atob(str)
 
 export async function getProviderConfigs(): Promise<ProviderConfigs> {
-  const { provider = ProviderType.ChatGPT } = await Browser.storage.local.get('provider')
-  const gpt3Key = `provider:${ProviderType.GPT3}`
-  const geminiKey = `provider:${ProviderType.Gemini}`
-  const result = await Browser.storage.local.get([gpt3Key, geminiKey])
-  return {
-    provider,
-    configs: {
-      [ProviderType.GPT3]: result[gpt3Key],
-      [ProviderType.Gemini]: result[geminiKey],
-    },
+  const result = await Browser.storage.local.get(STORAGE_KEY_PROVIDER_CONFIGS)
+  const storedConfigs = result[STORAGE_KEY_PROVIDER_CONFIGS]
+
+  if (storedConfigs) {
+    // Decode API keys
+    forEach(storedConfigs.configs, (config) => {
+      if (config?.apiKey) {
+        config.apiKey = decode(config.apiKey)
+      }
+    })
   }
+
+  return defaults(storedConfigs, providerConfigsWithDefaultValue)
 }
 
+export async function saveProviderConfigs(configs: ProviderConfigs) {
+  const newConfigs = { ...configs }
 
-export async function saveProviderConfigs(
-  provider: ProviderType,
-  configs: ProviderConfigs['configs'],
-) {
-  return Browser.storage.local.set({
-    provider,
-    [`provider:${ProviderType.GPT3}`]: configs[ProviderType.GPT3],
-    [`provider:${ProviderType.Gemini}`]: configs[ProviderType.Gemini],
+  // Encode API keys
+  forEach(newConfigs.configs, (config) => {
+    if (config?.apiKey) {
+      config.apiKey = encode(config.apiKey)
+    }
   })
+
+  return Browser.storage.local.set({ [STORAGE_KEY_PROVIDER_CONFIGS]: newConfigs })
 }
+

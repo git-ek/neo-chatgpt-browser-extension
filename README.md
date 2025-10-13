@@ -83,13 +83,13 @@ Please refer to each library's documentation for details. Only GPL-compatible re
 
 ## API Key Storage Policy
 
-⚠️ **Warning:** Your API keys are stored in your browser's local extension storage in plain text. For your security:
+⚠️ **Warning:** Your API keys are stored in your browser's local extension storage after being obfuscated (Base64 encoded). While this is not full encryption, it prevents the key from being stored in plain text. For your security:
 - Do not share your browser profile or extension data with others.
 - Remove your API keys if you no longer use the extension.
 - Prefer using dedicated, limited-scope API keys if possible.
 - We recommend periodically rotating your API keys.
 
-Future versions may support encrypted storage, but currently, browser extension APIs do not guarantee full protection for sensitive keys.
+Future versions may support stronger encryption, but currently, browser extension APIs do not guarantee full protection for sensitive keys.
 
 
 
