@@ -27,4 +27,4 @@
 
 ---
 
-상세 테스트 로그 및 추가 호환성 이슈는 GitHub 이슈에서 관리합니다.
+상세 테스트 로그 및 추가 호환성 이슈는 <a href="https://github.com/git-ek/neo-chatgpt-browser-extension/issues">GitHub 이슈</a>에서 관리합니다.

@@ -33,4 +33,4 @@ In the current version, instead of full encryption, a minimal measure of **Base6
 
 ---
 
-For questions and suggestions, please leave an issue on GitHub.
+For questions and suggestions, please <a href="https://github.com/git-ek/neo-chatgpt-browser-extension/issues">leave an issue on GitHub</a>.

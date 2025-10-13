@@ -112,22 +112,3 @@ All major changes and release notes are documented in [CHANGELOG.md](./CHANGELOG
 ## Trademark Notice
 
 "ChatGPT" and "OpenAI" are trademarks of OpenAI. This project is not affiliated with or endorsed by OpenAI.
----
-## Credits & License
-
-This project is based on [wong2/chatgpt-google-extension](https://github.com/wong2/chatgpt-google-extension) (Copyright © wong2).
-Modified and maintained by git-ek (2025).
-Distributed under the GNU GPL v3 license. See LICENSE for details.
-
-## External Resources & Libraries
-
-- All external libraries, images, and icons used in this project are subject to their respective licenses. Please refer to each library's documentation for details. Only GPL-compatible resources are used.
-
-## Privacy & Data Policy
-
-- This extension may process user data (e.g., API keys, search queries) for functional purposes only. No personal data is stored or shared externally. For details, refer to the Privacy Policy (to be provided if required by browser store).
-
-## Trademark Notice
-
-- "ChatGPT" and "OpenAI" are trademarks of OpenAI. This project is not affiliated with or endorsed by OpenAI.
-
