@@ -1,8 +1,8 @@
 import ExpiryMap from 'expiry-map'
 import { v4 as uuidv4 } from 'uuid'
-import { fetchSSE } from '../fetch-sse'
-import { GenerateAnswerParams, Provider } from '../types'
-import { handleProviderError } from '../utils'
+import { FetchSSEOptions } from '../fetch-sse'
+import { GenerateAnswerParams } from '../types'
+import { BaseSseProvider, ParsedEvent } from './base'
 
 async function request(token: string, method: string, path: string, data?: unknown) {
   return fetch(`https://chat.openai.com/backend-api${path}`, {
@@ -47,9 +47,11 @@ export async function getChatGPTAccessToken(): Promise<string> {
   return data.accessToken
 }
 
-export class ChatGPTProvider implements Provider {
+export class ChatGPTProvider extends BaseSseProvider {
+  private conversationId?: string
+
   constructor(private token: string) {
-    this.token = token
+    super('') // model is fetched dynamically
   }
 
   private async fetchModels(): Promise<
@@ -69,21 +71,13 @@ export class ChatGPTProvider implements Provider {
     }
   }
 
-  async generateAnswer(params: GenerateAnswerParams) {
-    let conversationId: string | undefined
-
-    const cleanup = () => {
-      if (conversationId) {
-        setConversationProperty(this.token, conversationId, { is_visible: false })
-      }
-    }
-
+  protected async getFetchOptions(prompt: string): Promise<FetchSSEOptions> {
     const modelName = await this.getModelName()
     console.debug('Using model:', modelName)
 
-    await fetchSSE('https://chat.openai.com/backend-api/conversation', {
+    return {
+      url: 'https://chat.openai.com/backend-api/conversation',
       method: 'POST',
-      signal: params.signal,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this.token}`,
@@ -96,42 +90,40 @@ export class ChatGPTProvider implements Provider {
             role: 'user',
             content: {
               content_type: 'text',
-              parts: [params.prompt],
+              parts: [prompt],
             },
           },
         ],
         model: modelName,
         parent_message_id: uuidv4(),
       }),
-      onMessage(message: string) {
-        console.debug('sse message', message)
-        if (message === '[DONE]') {
-          params.onEvent({ type: 'done' })
-          cleanup()
-          return
-        }
-        let data
-        try {
-          data = JSON.parse(message)
-        } catch (err) {
-          console.error(err)
-          handleProviderError(params.onEvent, err)
-          return
-        }
-        const text = data.message?.content?.parts?.[0]
-        if (text) {
-          conversationId = data.conversation_id
-          params.onEvent({
-            type: 'answer',
-            data: {
-              text,
-              messageId: data.message.id,
-              conversationId: data.conversation_id,
-            },
-          })
-        }
-      },
-    })
-    return { cleanup }
+    }
+  }
+
+  protected parseEvent(message: string): ParsedEvent | null {
+    const data = JSON.parse(message)
+    const text = data.message?.content?.parts?.[0]
+    if (text) {
+      this.conversationId = data.conversation_id
+      return {
+        text,
+        messageId: data.message.id,
+        conversationId: data.conversation_id,
+      }
+    }
+    return null
+  }
+
+  async generateAnswer(params: GenerateAnswerParams): Promise<{ cleanup?: () => void }> {
+    const result = await super.generateAnswer(params)
+
+    const cleanup = () => {
+      if (this.conversationId) {
+        setConversationProperty(this.token, this.conversationId, { is_visible: false })
+      }
+    }
+
+    result.cleanup = cleanup
+    return result
   }
 }

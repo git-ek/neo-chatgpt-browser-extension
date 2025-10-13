@@ -1,40 +1,47 @@
-// Gemini API provider for neo-chatgpt-browser-extension
-import { GenerateAnswerParams, Provider } from '../types'
-import { safeFetchJson, handleProviderError } from '../utils'
+import { FetchSSEOptions } from '../fetch-sse'
+import { BaseJsonStreamProvider } from './base-json'
+import { ParsedEvent } from './base'
 
-export class GeminiProvider implements Provider {
-  constructor(private apiKey: string, private model: string) {}
+export class GeminiProvider extends BaseJsonStreamProvider {
+  constructor(private apiKey: string, model: string) {
+    super(model)
+  }
 
-  async generateAnswer(params: GenerateAnswerParams) {
-    try {
-      const data = await safeFetchJson(
-        `https://generativelanguage.googleapis.com/v1beta/models/${this.model}:generateContent`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.apiKey}`,
-          },
-          body: JSON.stringify({
-            contents: [{ role: 'user', parts: [{ text: params.prompt }] }],
-          }),
-          signal: params.signal,
-        }
-      )
-      const result = data.candidates?.[0]?.content?.parts?.[0]?.text || ''
-      params.onEvent({
-        type: 'answer',
-        data: {
-          text: result,
-          messageId: data.candidates?.[0]?.id || '',
-          conversationId: data.candidates?.[0]?.id || '',
-        },
-      })
-      params.onEvent({ type: 'done' })
-    } catch (err) {
-      handleProviderError(params.onEvent, err)
-      params.onEvent({ type: 'done' })
+  protected async getFetchOptions(prompt: string): Promise<FetchSSEOptions> {
+    return {
+      url: `https://generativelanguage.googleapis.com/v1beta/models/${this.model}:streamGenerateContent`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': this.apiKey,
+      },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      }),
     }
-    return {}
+  }
+
+  protected parseEvent(message: string): ParsedEvent | null {
+    let data
+    try {
+      data = JSON.parse(message)
+    } catch (err) {
+      console.error('Failed to parse Gemini stream message', err)
+      return null
+    }
+
+    const candidate = data.candidates?.[0]
+    if (!candidate) {
+      return null
+    }
+
+    const text = candidate.content?.parts?.[0]?.text
+    if (!text) {
+      return null
+    }
+
+    return {
+      text,
+    }
   }
 }
