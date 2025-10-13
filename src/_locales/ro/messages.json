@@ -1,8 +1,131 @@
 {
   "appName": {
-    "message": "ChatGPT for Google"
+    "message": "Neo ChatGPT for Browser Extension"
   },
   "appDesc": {
     "message": "Afișați răspunsul ChatGPT alături de rezultatele motorului de căutare"
+  },
+  "ext_chatgpt_answer": {
+    "message": "Răspuns ChatGPT"
+  },
+  "ext_chatgpt_short": {
+    "message": "ChatGPT"
+  },
+  "ext_cloudflare_login": {
+    "message": "Vă rugăm să vă autentificați și să treceți de verificarea Cloudflare la"
+  },
+  "ext_still_not_working": {
+    "message": "Încă nu funcționează? Urmați"
+  },
+  "ext_openai_security_check": {
+    "message": "OpenAI necesită trecerea unui control de securitate din când în când. Dacă acest lucru continuă, schimbați furnizorul de AI la API-ul OpenAI în opțiunile extensiei."
+  },
+  "ext_error_prefix": {
+    "message": "⚠️ Eroare:"
+  },
+  "ext_error_generic": {
+    "message": "Dacă această problemă persistă, vă rugăm să verificați cheia API, setările modelului sau conexiunea la rețea."
+  },
+  "ext_error_network": {
+    "message": "Eroare de rețea: Vă rugăm să verificați conexiunea la internet sau să încercați din nou mai târziu."
+  },
+  "ext_error_model": {
+    "message": "Eroare de model: Vă rugăm să verificați selecția modelului în opțiunile extensiei."
+  },
+  "ext_error_apikey": {
+    "message": "Eroare de cheie API: Vă rugăm să verificați validitatea și permisiunile cheii API."
+  },
+  "ext_waiting_for_response": {
+    "message": "Se așteaptă răspunsul ChatGPT..."
+  },
+  "ext_settings_title": {
+    "message": "Setări extensie"
+  },
+  "ext_privacy_prefix": {
+    "message": "Pentru detalii despre confidențialitate și securitate, consultați"
+  },
+  "ext_privacy_link_text": {
+    "message": "Politica de confidențialitate"
+  },
+  "ext_provider_chatgpt_webapp": {
+    "message": "Aplicația web ChatGPT"
+  },
+  "ext_provider_chatgpt_webapp_desc": {
+    "message": "API-ul care alimentează aplicația web ChatGPT, gratuit, dar uneori instabil"
+  },
+  "ext_provider_openai_api": {
+    "message": "API OpenAI"
+  },
+  "ext_provider_openai_api_desc": {
+    "message": "API-ul oficial OpenAI. Mai stabil și acceptă modele personalizate."
+  },
+  "ext_model_placeholder": {
+    "message": "model"
+  },
+  "ext_api_key_label": {
+    "message": "Cheie API"
+  },
+  "ext_api_key_warning1": {
+    "message": "⚠️ Cheia dvs. API este stocată în spațiul de stocare al extensiei browserului dvs. după ce a fost ascunsă (codificată Base64)."
+  },
+  "ext_api_key_warning2": {
+    "message": "Pentru securitatea dvs.: nu partajați profilul browserului, eliminați cheile neutilizate și preferați cheile cu domeniu limitat."
+  },
+  "ext_see_prefix": {
+    "message": "Consultați"
+  },
+  "ext_for_details_suffix": {
+    "message": "pentru detalii."
+  },
+  "ext_openai_api_key_guide": {
+    "message": "Puteți găsi sau crea cheia API"
+  },
+  "ext_link_here": {
+    "message": "aici"
+  },
+  "ext_provider_gemini_api": {
+    "message": "API Gemini"
+  },
+  "ext_provider_gemini_api_desc": {
+    "message": "API-ul oficial Google Gemini. Rapid, puternic și multimodal."
+  },
+  "ext_gemini_api_key_guide": {
+    "message": "Puteți obține cheia API Gemini"
+  },
+  "ext_save_button": {
+    "message": "Salvați"
+  },
+  "ext_toast_enter_openai_key": {
+    "message": "Vă rugăm să introduceți cheia API OpenAI"
+  },
+  "ext_toast_select_valid_model": {
+    "message": "Vă rugăm să selectați un model valid"
+  },
+  "ext_toast_enter_gemini_key": {
+    "message": "Vă rugăm să introduceți cheia API Gemini"
+  },
+  "ext_toast_changes_saved": {
+    "message": "Modificări salvate"
+  },
+  "ext_toast_failed_to_save": {
+    "message": "Salvare eșuată:"
+  },
+  "ext_toast_failed_to_load_models": {
+    "message": "Încărcarea listei de modele a eșuat:"
+  },
+  "ext_toast_failed_to_load_configs": {
+    "message": "Încărcarea configurațiilor furnizorului a eșuat:"
+  },
+  "ext_popup_title": {
+    "message": "Extensie Neo ChatGPT"
+  },
+  "ext_popup_open_settings": {
+    "message": "Deschideți setările"
+  },
+  "ext_troubleshooting": {
+    "message": "Depanare"
+  },
+  "ext_common_issues": {
+    "message": "Probleme comune"
   }
 }

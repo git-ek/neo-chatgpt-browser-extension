@@ -1,8 +1,131 @@
 {
   "appName": {
-    "message": "ChatGPT for Google"
+    "message": "Neo ChatGPT for Browser Extension"
   },
   "appDesc": {
     "message": "הצג את תגובת ChatGPT לצד תוצאות מנוע החיפוש"
+  },
+  "ext_chatgpt_answer": {
+    "message": "תשובת ChatGPT"
+  },
+  "ext_chatgpt_short": {
+    "message": "ChatGPT"
+  },
+  "ext_cloudflare_login": {
+    "message": "אנא היכנס ועבור את בדיקת Cloudflare ב-"
+  },
+  "ext_still_not_working": {
+    "message": "עדיין לא עובד? עקוב"
+  },
+  "ext_openai_security_check": {
+    "message": "OpenAI דורשת לעבור בדיקת אבטחה מדי פעם. אם זה ממשיך לקרות, שנה את ספק הבינה המלאכותית ל-OpenAI API באפשרויות התוסף."
+  },
+  "ext_error_prefix": {
+    "message": "⚠️ שגיאה:"
+  },
+  "ext_error_generic": {
+    "message": "אם בעיה זו נמשכת, אנא בדוק את מפתח ה-API שלך, הגדרות המודל או חיבור הרשת."
+  },
+  "ext_error_network": {
+    "message": "שגיאת רשת: אנא בדוק את חיבור האינטרנט שלך או נסה שוב מאוחר יותר."
+  },
+  "ext_error_model": {
+    "message": "שגיאת מודל: אנא בדוק את בחירת המודל שלך באפשרויות התוסף."
+  },
+  "ext_error_apikey": {
+    "message": "שגיאת מפתח API: אנא בדוק את תוקף והרשאות מפתח ה-API שלך."
+  },
+  "ext_waiting_for_response": {
+    "message": "ממתין לתגובת ChatGPT..."
+  },
+  "ext_settings_title": {
+    "message": "הגדרות תוסף"
+  },
+  "ext_privacy_prefix": {
+    "message": "לפרטים על פרטיות ואבטחה, ראה"
+  },
+  "ext_privacy_link_text": {
+    "message": "מדיניות פרטיות"
+  },
+  "ext_provider_chatgpt_webapp": {
+    "message": "אפליקציית רשת ChatGPT"
+  },
+  "ext_provider_chatgpt_webapp_desc": {
+    "message": "ה-API שמפעיל את אפליקציית הרשת של ChatGPT, בחינם, אך לפעמים לא יציב"
+  },
+  "ext_provider_openai_api": {
+    "message": "API של OpenAI"
+  },
+  "ext_provider_openai_api_desc": {
+    "message": "ה-API הרשמי של OpenAI. יציב יותר ותומך במודלים מותאמים אישית."
+  },
+  "ext_model_placeholder": {
+    "message": "מודל"
+  },
+  "ext_api_key_label": {
+    "message": "מפתח API"
+  },
+  "ext_api_key_warning1": {
+    "message": "⚠️ מפתח ה-API שלך מאוחסן באחסון התוספים של הדפדפן שלך לאחר שעבר ערפול (מקודד Base64)."
+  },
+  "ext_api_key_warning2": {
+    "message": "למען אבטחתך: אל תשתף את פרופיל הדפדפן שלך, הסר מפתחות שאינם בשימוש והעדף מפתחות בעלי היקף מוגבל."
+  },
+  "ext_see_prefix": {
+    "message": "ראה"
+  },
+  "ext_for_details_suffix": {
+    "message": "לפרטים."
+  },
+  "ext_openai_api_key_guide": {
+    "message": "אתה יכול למצוא או ליצור את מפתח ה-API שלך"
+  },
+  "ext_link_here": {
+    "message": "כאן"
+  },
+  "ext_provider_gemini_api": {
+    "message": "API של Gemini"
+  },
+  "ext_provider_gemini_api_desc": {
+    "message": "ה-API הרשמי של Google Gemini. מהיר, חזק ורב-מודאלי."
+  },
+  "ext_gemini_api_key_guide": {
+    "message": "אתה יכול לקבל את מפתח ה-API של Gemini שלך"
+  },
+  "ext_save_button": {
+    "message": "שמור"
+  },
+  "ext_toast_enter_openai_key": {
+    "message": "אנא הזן את מפתח ה-API של OpenAI שלך"
+  },
+  "ext_toast_select_valid_model": {
+    "message": "אנא בחר מודל חוקי"
+  },
+  "ext_toast_enter_gemini_key": {
+    "message": "אנא הזן את מפתח ה-API של Gemini שלך"
+  },
+  "ext_toast_changes_saved": {
+    "message": "השינויים נשמרו"
+  },
+  "ext_toast_failed_to_save": {
+    "message": "השמירה נכשלה:"
+  },
+  "ext_toast_failed_to_load_models": {
+    "message": "טעינת רשימת הדגמים נכשלה:"
+  },
+  "ext_toast_failed_to_load_configs": {
+    "message": "טעינת תצורות הספק נכשלה:"
+  },
+  "ext_popup_title": {
+    "message": "תוסף Neo ChatGPT"
+  },
+  "ext_popup_open_settings": {
+    "message": "פתח הגדרות"
+  },
+  "ext_troubleshooting": {
+    "message": "פתרון בעיות"
+  },
+  "ext_common_issues": {
+    "message": "בעיות נפוצות"
   }
 }

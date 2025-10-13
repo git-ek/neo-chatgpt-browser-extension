@@ -1,8 +1,131 @@
 {
   "appName": {
-    "message": "ChatGPT for Google"
+    "message": "Neo ChatGPT for Browser Extension"
   },
   "appDesc": {
     "message": "Display ChatGPT response alongside search engine results"
+  },
+  "ext_chatgpt_answer": {
+    "message": "ChatGPT Answer"
+  },
+  "ext_chatgpt_short": {
+    "message": "ChatGPT"
+  },
+  "ext_cloudflare_login": {
+    "message": "Please login and pass Cloudflare check at"
+  },
+  "ext_still_not_working": {
+    "message": "Still not working? Follow"
+  },
+  "ext_openai_security_check": {
+    "message": "OpenAI requires passing a security check every once in a while. If this keeps happening, change AI provider to OpenAI API in the extension options."
+  },
+  "ext_error_prefix": {
+    "message": "⚠️ Error:"
+  },
+  "ext_error_generic": {
+    "message": "If this issue persists, please check your API key, model settings, or network connection."
+  },
+  "ext_error_network": {
+    "message": "Network error: Please check your internet connection or try again later."
+  },
+  "ext_error_model": {
+    "message": "Model error: Please check your model selection in the extension options."
+  },
+  "ext_error_apikey": {
+    "message": "API key error: Please check your API key validity and permissions."
+  },
+  "ext_waiting_for_response": {
+    "message": "Waiting for ChatGPT response..."
+  },
+  "ext_settings_title": {
+    "message": "Extension Settings"
+  },
+  "ext_privacy_prefix": {
+    "message": "For privacy & security details, see"
+  },
+  "ext_privacy_link_text": {
+    "message": "Privacy Policy"
+  },
+  "ext_provider_chatgpt_webapp": {
+    "message": "ChatGPT webapp"
+  },
+  "ext_provider_chatgpt_webapp_desc": {
+    "message": "The API that powers ChatGPT webapp, free, but sometimes unstable"
+  },
+  "ext_provider_openai_api": {
+    "message": "OpenAI API"
+  },
+  "ext_provider_openai_api_desc": {
+    "message": "The official OpenAI API. More stable and supports custom models."
+  },
+  "ext_model_placeholder": {
+    "message": "model"
+  },
+  "ext_api_key_label": {
+    "message": "API key"
+  },
+  "ext_api_key_warning1": {
+    "message": "⚠️ Your API key is stored in your browser's extension storage after being obfuscated (Base64 encoded)."
+  },
+  "ext_api_key_warning2": {
+    "message": "For your security: do not share your browser profile, remove unused keys, and prefer limited-scope keys."
+  },
+  "ext_see_prefix": {
+    "message": "See"
+  },
+  "ext_for_details_suffix": {
+    "message": "for details."
+  },
+  "ext_openai_api_key_guide": {
+    "message": "You can find or create your API key"
+  },
+  "ext_link_here": {
+    "message": "here"
+  },
+  "ext_provider_gemini_api": {
+    "message": "Gemini API"
+  },
+  "ext_provider_gemini_api_desc": {
+    "message": "The official Google Gemini API. Fast, powerful, and multimodal."
+  },
+  "ext_gemini_api_key_guide": {
+    "message": "You can get your Gemini API key"
+  },
+  "ext_save_button": {
+    "message": "Save"
+  },
+  "ext_toast_enter_openai_key": {
+    "message": "Please enter your OpenAI API key"
+  },
+  "ext_toast_select_valid_model": {
+    "message": "Please select a valid model"
+  },
+  "ext_toast_enter_gemini_key": {
+    "message": "Please enter your Gemini API key"
+  },
+  "ext_toast_changes_saved": {
+    "message": "Changes saved"
+  },
+  "ext_toast_failed_to_save": {
+    "message": "Failed to save:"
+  },
+  "ext_toast_failed_to_load_models": {
+    "message": "Failed to load model list:"
+  },
+  "ext_toast_failed_to_load_configs": {
+    "message": "Failed to load provider configs:"
+  },
+  "ext_popup_title": {
+    "message": "Neo ChatGPT Extension"
+  },
+  "ext_popup_open_settings": {
+    "message": "Open Settings"
+  },
+  "ext_troubleshooting": {
+    "message": "Troubleshooting"
+  },
+  "ext_common_issues": {
+    "message": "Common Issues"
   }
 }

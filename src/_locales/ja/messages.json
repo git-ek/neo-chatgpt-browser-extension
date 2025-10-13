@@ -1,8 +1,131 @@
 {
   "appName": {
-    "message": "ChatGPT for Google"
+    "message": "Neo ChatGPT for Browser Extension"
   },
   "appDesc": {
     "message": "ChatGPTからの回答を検索エンジンの結果と共に表示します"
+  },
+  "ext_chatgpt_answer": {
+    "message": "ChatGPTの回答"
+  },
+  "ext_chatgpt_short": {
+    "message": "ChatGPT"
+  },
+  "ext_cloudflare_login": {
+    "message": "ログインしてCloudflareのチェックを通過してください"
+  },
+  "ext_still_not_working": {
+    "message": "まだ動作しませんか？ 따라가다"
+  },
+  "ext_openai_security_check": {
+    "message": "OpenAIは時々セキュリティチェックを通過する必要があります。これが続く場合は、拡張機能のオプションでAIプロバイダーをOpenAI APIに変更してください。"
+  },
+  "ext_error_prefix": {
+    "message": "⚠️ エラー:"
+  },
+  "ext_error_generic": {
+    "message": "この問題が解決しない場合は、APIキー、モデル設定、またはネットワーク接続を確認してください。"
+  },
+  "ext_error_network": {
+    "message": "ネットワークエラー：インターネット接続を確認するか、後でもう一度お試しください。"
+  },
+  "ext_error_model": {
+    "message": "モデルエラー：拡張機能のオプションでモデルの選択を確認してください。"
+  },
+  "ext_error_apikey": {
+    "message": "APIキーエラー：APIキーの有効性と権限を確認してください。"
+  },
+  "ext_waiting_for_response": {
+    "message": "ChatGPTの応答を待っています..."
+  },
+  "ext_settings_title": {
+    "message": "拡張機能の設定"
+  },
+  "ext_privacy_prefix": {
+    "message": "プライバシーとセキュリティの詳細については、"
+  },
+  "ext_privacy_link_text": {
+    "message": "プライバシーポリシー"
+  },
+  "ext_provider_chatgpt_webapp": {
+    "message": "ChatGPTウェブアプリ"
+  },
+  "ext_provider_chatgpt_webapp_desc": {
+    "message": "ChatGPTウェブアプリを動かすAPI、無料ですが不安定な場合があります"
+  },
+  "ext_provider_openai_api": {
+    "message": "OpenAI API"
+  },
+  "ext_provider_openai_api_desc": {
+    "message": "公式のOpenAI API。より安定しており、カスタムモデルをサポートしています。"
+  },
+  "ext_model_placeholder": {
+    "message": "モデル"
+  },
+  "ext_api_key_label": {
+    "message": "APIキー"
+  },
+  "ext_api_key_warning1": {
+    "message": "⚠️ APIキーは、難독化（Base64エンコード）された後、ブラウザの拡張機能ストレージに保存されます。"
+  },
+  "ext_api_key_warning2": {
+    "message": "セキュリティのため、ブラウザプロファイルを共有したり、未使用のキーを削除したり、スコープの狭いキーを優先したりしないでください。"
+  },
+  "ext_see_prefix": {
+    "message": "参照"
+  },
+  "ext_for_details_suffix": {
+    "message": "詳細については。"
+  },
+  "ext_openai_api_key_guide": {
+    "message": "APIキーはここで見つけるか作成できます"
+  },
+  "ext_link_here": {
+    "message": "こちら"
+  },
+  "ext_provider_gemini_api": {
+    "message": "Gemini API"
+  },
+  "ext_provider_gemini_api_desc": {
+    "message": "公式のGoogle Gemini API。高速、強力、マルチモーダル。"
+  },
+  "ext_gemini_api_key_guide": {
+    "message": "Gemini APIキーはここで取得できます"
+  },
+  "ext_save_button": {
+    "message": "保存"
+  },
+  "ext_toast_enter_openai_key": {
+    "message": "OpenAI APIキーを入力してください"
+  },
+  "ext_toast_select_valid_model": {
+    "message": "有効なモデルを選択してください"
+  },
+  "ext_toast_enter_gemini_key": {
+    "message": "Gemini APIキーを入力してください"
+  },
+  "ext_toast_changes_saved": {
+    "message": "変更が保存されました"
+  },
+  "ext_toast_failed_to_save": {
+    "message": "保存に失敗しました："
+  },
+  "ext_toast_failed_to_load_models": {
+    "message": "モデルリストの読み込みに失敗しました："
+  },
+  "ext_toast_failed_to_load_configs": {
+    "message": "プロバイダー設定の読み込みに失敗しました："
+  },
+  "ext_popup_title": {
+    "message": "Neo ChatGPT拡張機能"
+  },
+  "ext_popup_open_settings": {
+    "message": "設定を開く"
+  },
+  "ext_troubleshooting": {
+    "message": "トラブルシューティング"
+  },
+  "ext_common_issues": {
+    "message": "一般的な問題"
   }
 }

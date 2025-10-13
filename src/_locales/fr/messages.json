@@ -1,8 +1,131 @@
 {
   "appName": {
-    "message": "ChatGPT for Google"
+    "message": "Neo ChatGPT for Browser Extension"
   },
   "appDesc": {
     "message": "Afficher la réponse de ChatGPT à côté des résultats des moteurs de recherche"
+  },
+  "ext_chatgpt_answer": {
+    "message": "Réponse de ChatGPT"
+  },
+  "ext_chatgpt_short": {
+    "message": "ChatGPT"
+  },
+  "ext_cloudflare_login": {
+    "message": "Veuillez vous connecter et passer la vérification Cloudflare à"
+  },
+  "ext_still_not_working": {
+    "message": "Ça ne marche toujours pas ? Suivez"
+  },
+  "ext_openai_security_check": {
+    "message": "OpenAI nécessite de passer un contrôle de sécurité de temps en temps. Si cela persiste, changez le fournisseur d'IA pour l'API OpenAI dans les options de l'extension."
+  },
+  "ext_error_prefix": {
+    "message": "⚠️ Erreur :"
+  },
+  "ext_error_generic": {
+    "message": "Si ce problème persiste, veuillez vérifier votre clé API, les paramètres du modèle ou votre connexion réseau."
+  },
+  "ext_error_network": {
+    "message": "Erreur réseau : Veuillez vérifier votre connexion Internet ou réessayer plus tard."
+  },
+  "ext_error_model": {
+    "message": "Erreur de modèle : Veuillez vérifier votre sélection de modèle dans les options de l'extension."
+  },
+  "ext_error_apikey": {
+    "message": "Erreur de clé API : Veuillez vérifier la validité et les autorisations de votre clé API."
+  },
+  "ext_waiting_for_response": {
+    "message": "En attente de la réponse de ChatGPT..."
+  },
+  "ext_settings_title": {
+    "message": "Paramètres de l'extension"
+  },
+  "ext_privacy_prefix": {
+    "message": "Pour plus de détails sur la confidentialité et la sécurité, consultez"
+  },
+  "ext_privacy_link_text": {
+    "message": "Politique de confidentialité"
+  },
+  "ext_provider_chatgpt_webapp": {
+    "message": "Application Web ChatGPT"
+  },
+  "ext_provider_chatgpt_webapp_desc": {
+    "message": "L'API qui alimente l'application Web ChatGPT, gratuite, mais parfois instable"
+  },
+  "ext_provider_openai_api": {
+    "message": "API OpenAI"
+  },
+  "ext_provider_openai_api_desc": {
+    "message": "L'API officielle d'OpenAI. Plus stable et prend en charge les modèles personnalisés."
+  },
+  "ext_model_placeholder": {
+    "message": "modèle"
+  },
+  "ext_api_key_label": {
+    "message": "Clé API"
+  },
+  "ext_api_key_warning1": {
+    "message": "⚠️ Votre clé API est stockée dans le stockage d'extension de votre navigateur après avoir été obscurcie (encodée en Base64)."
+  },
+  "ext_api_key_warning2": {
+    "message": "Pour votre sécurité : ne partagez pas votre profil de navigateur, supprimez les clés inutilisées et préférez les clés à portée limitée."
+  },
+  "ext_see_prefix": {
+    "message": "Consultez"
+  },
+  "ext_for_details_suffix": {
+    "message": "pour plus de détails."
+  },
+  "ext_openai_api_key_guide": {
+    "message": "Vous pouvez trouver ou créer votre clé API"
+  },
+  "ext_link_here": {
+    "message": "ici"
+  },
+  "ext_provider_gemini_api": {
+    "message": "API Gemini"
+  },
+  "ext_provider_gemini_api_desc": {
+    "message": "L'API officielle de Google Gemini. Rapide, puissante et multimodale."
+  },
+  "ext_gemini_api_key_guide": {
+    "message": "Vous pouvez obtenir votre clé API Gemini"
+  },
+  "ext_save_button": {
+    "message": "Enregistrer"
+  },
+  "ext_toast_enter_openai_key": {
+    "message": "Veuillez saisir votre clé API OpenAI"
+  },
+  "ext_toast_select_valid_model": {
+    "message": "Veuillez sélectionner un modèle valide"
+  },
+  "ext_toast_enter_gemini_key": {
+    "message": "Veuillez saisir votre clé API Gemini"
+  },
+  "ext_toast_changes_saved": {
+    "message": "Modifications enregistrées"
+  },
+  "ext_toast_failed_to_save": {
+    "message": "Échec de l'enregistrement :"
+  },
+  "ext_toast_failed_to_load_models": {
+    "message": "Échec du chargement de la liste de modèles :"
+  },
+  "ext_toast_failed_to_load_configs": {
+    "message": "Échec du chargement des configurations du fournisseur :"
+  },
+  "ext_popup_title": {
+    "message": "Extension Neo ChatGPT"
+  },
+  "ext_popup_open_settings": {
+    "message": "Ouvrir les paramètres"
+  },
+  "ext_troubleshooting": {
+    "message": "Dépannage"
+  },
+  "ext_common_issues": {
+    "message": "Problèmes courants"
   }
 }

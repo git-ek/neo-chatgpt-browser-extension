@@ -1,8 +1,131 @@
 {
   "appName": {
-    "message": "ChatGPT for Google"
+    "message": "Neo ChatGPT for Browser Extension"
   },
   "appDesc": {
     "message": "A ChatGPT válasz megjelenítése a keresőmotor eredményei mellett"
+  },
+  "ext_chatgpt_answer": {
+    "message": "ChatGPT Válasz"
+  },
+  "ext_chatgpt_short": {
+    "message": "ChatGPT"
+  },
+  "ext_cloudflare_login": {
+    "message": "Kérjük, jelentkezzen be és adja át a Cloudflare ellenőrzést itt:"
+  },
+  "ext_still_not_working": {
+    "message": "Még mindig nem működik? Kövesse"
+  },
+  "ext_openai_security_check": {
+    "message": "Az OpenAI időről időre biztonsági ellenőrzést igényel. Ha ez továbbra is fennáll, váltson az AI-szolgáltatót OpenAI API-ra a bővítmény beállításaiban."
+  },
+  "ext_error_prefix": {
+    "message": "⚠️ Hiba:"
+  },
+  "ext_error_generic": {
+    "message": "Ha a probléma továbbra is fennáll, ellenőrizze az API-kulcsot, a modellbeállításokat vagy a hálózati kapcsolatot."
+  },
+  "ext_error_network": {
+    "message": "Hálózati hiba: Ellenőrizze az internetkapcsolatot, vagy próbálja újra később."
+  },
+  "ext_error_model": {
+    "message": "Modellhiba: Ellenőrizze a modellválasztást a bővítmény beállításaiban."
+  },
+  "ext_error_apikey": {
+    "message": "API-kulcs hiba: Ellenőrizze az API-kulcs érvényességét és engedélyeit."
+  },
+  "ext_waiting_for_response": {
+    "message": "Várakozás a ChatGPT válaszára..."
+  },
+  "ext_settings_title": {
+    "message": "Bővítménybeállítások"
+  },
+  "ext_privacy_prefix": {
+    "message": "Az adatvédelmi és biztonsági részletekért lásd"
+  },
+  "ext_privacy_link_text": {
+    "message": "Adatvédelmi irányelvek"
+  },
+  "ext_provider_chatgpt_webapp": {
+    "message": "ChatGPT webalkalmazás"
+  },
+  "ext_provider_chatgpt_webapp_desc": {
+    "message": "A ChatGPT webalkalmazást működtető API, ingyenes, de néha instabil"
+  },
+  "ext_provider_openai_api": {
+    "message": "OpenAI API"
+  },
+  "ext_provider_openai_api_desc": {
+    "message": "A hivatalos OpenAI API. Stabilabb és támogatja az egyéni modelleket."
+  },
+  "ext_model_placeholder": {
+    "message": "modell"
+  },
+  "ext_api_key_label": {
+    "message": "API-kulcs"
+  },
+  "ext_api_key_warning1": {
+    "message": "⚠️ Az API-kulcsot a böngésző bővítménytárolójában tároljuk, miután elrejtettük (Base64 kódolással)."
+  },
+  "ext_api_key_warning2": {
+    "message": "Biztonsága érdekében: ne ossza meg böngészőprofilját, távolítsa el a nem használt kulcsokat, és részesítse előnyben a korlátozott hatókörű kulcsokat."
+  },
+  "ext_see_prefix": {
+    "message": "Lásd"
+  },
+  "ext_for_details_suffix": {
+    "message": "a részletekért."
+  },
+  "ext_openai_api_key_guide": {
+    "message": "Itt találhatja vagy hozhatja létre API-kulcsát"
+  },
+  "ext_link_here": {
+    "message": "itt"
+  },
+  "ext_provider_gemini_api": {
+    "message": "Gemini API"
+  },
+  "ext_provider_gemini_api_desc": {
+    "message": "A hivatalos Google Gemini API. Gyors, erőteljes és multimodális."
+  },
+  "ext_gemini_api_key_guide": {
+    "message": "Itt szerezheti be Gemini API-kulcsát"
+  },
+  "ext_save_button": {
+    "message": "Mentés"
+  },
+  "ext_toast_enter_openai_key": {
+    "message": "Kérjük, adja meg OpenAI API-kulcsát"
+  },
+  "ext_toast_select_valid_model": {
+    "message": "Kérjük, válasszon érvényes modellt"
+  },
+  "ext_toast_enter_gemini_key": {
+    "message": "Kérjük, adja meg Gemini API-kulcsát"
+  },
+  "ext_toast_changes_saved": {
+    "message": "Változtatások mentve"
+  },
+  "ext_toast_failed_to_save": {
+    "message": "Mentés sikertelen:"
+  },
+  "ext_toast_failed_to_load_models": {
+    "message": "A modell-lista betöltése sikertelen:"
+  },
+  "ext_toast_failed_to_load_configs": {
+    "message": "A szolgáltatói konfigurációk betöltése sikertelen:"
+  },
+  "ext_popup_title": {
+    "message": "Neo ChatGPT bővítmény"
+  },
+  "ext_popup_open_settings": {
+    "message": "Beállítások megnyitása"
+  },
+  "ext_troubleshooting": {
+    "message": "Hibaelhárítás"
+  },
+  "ext_common_issues": {
+    "message": "Gyakori problémák"
   }
 }

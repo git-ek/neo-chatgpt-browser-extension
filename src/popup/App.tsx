@@ -23,7 +23,7 @@ function App() {
     >
       <img src={logo} style={{ width: 32, height: 32, borderRadius: 8, marginBottom: 12 }} />
       <div style={{ fontWeight: 700, fontSize: '1.1em', marginBottom: 8 }}>
-        Neo ChatGPT Extension
+        {Browser.i18n.getMessage('ext_popup_title')}
       </div>
       <button
         style={{
@@ -39,16 +39,16 @@ function App() {
         }}
         onClick={openOptionsPage}
       >
-        Open Settings
+        {Browser.i18n.getMessage('ext_popup_open_settings')}
       </button>
       <div style={{ marginTop: 24, fontSize: '0.95em', color: '#888' }}>
-        For privacy & security details, see{' '}
+        {Browser.i18n.getMessage('ext_privacy_prefix')}{' '}
         <a
           href="https://github.com/git-ek/neo-chatgpt-browser-extension/blob/main/PRIVACY.md"
           target="_blank"
           rel="noreferrer"
         >
-          Privacy Policy
+          {Browser.i18n.getMessage('ext_privacy_link_text')}
         </a>
         .
       </div>

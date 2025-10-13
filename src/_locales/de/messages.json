@@ -1,8 +1,131 @@
 {
   "appName": {
-    "message": "ChatGPT for Google"
+    "message": "Neo ChatGPT for Browser Extension"
   },
   "appDesc": {
     "message": "ChatGPT Antworten neben den Suchmaschinenergebnissen anzeigen"
+  },
+  "ext_chatgpt_answer": {
+    "message": "ChatGPT Antwort"
+  },
+  "ext_chatgpt_short": {
+    "message": "ChatGPT"
+  },
+  "ext_cloudflare_login": {
+    "message": "Bitte melde dich an und bestehe die Cloudflare-Prüfung bei"
+  },
+  "ext_still_not_working": {
+    "message": "Funktioniert immer noch nicht? Folge"
+  },
+  "ext_openai_security_check": {
+    "message": "OpenAI erfordert von Zeit zu Zeit eine Sicherheitsüberprüfung. Wenn dies weiterhin auftritt, ändern Sie den KI-Anbieter in den Erweiterungsoptionen auf OpenAI-API."
+  },
+  "ext_error_prefix": {
+    "message": "⚠️ Fehler:"
+  },
+  "ext_error_generic": {
+    "message": "Wenn dieses Problem weiterhin besteht, überprüfen Sie bitte Ihren API-Schlüssel, die Modelleinstellungen oder die Netzwerkverbindung."
+  },
+  "ext_error_network": {
+    "message": "Netzwerkfehler: Bitte überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut."
+  },
+  "ext_error_model": {
+    "message": "Modellfehler: Bitte überprüfen Sie Ihre Modellauswahl in den Erweiterungsoptionen."
+  },
+  "ext_error_apikey": {
+    "message": "API-Schlüsselfehler: Bitte überprüfen Sie die Gültigkeit und Berechtigungen Ihres API-Schlüssels."
+  },
+  "ext_waiting_for_response": {
+    "message": "Warte auf ChatGPT-Antwort..."
+  },
+  "ext_settings_title": {
+    "message": "Erweiterungseinstellungen"
+  },
+  "ext_privacy_prefix": {
+    "message": "Für Details zu Datenschutz und Sicherheit siehe"
+  },
+  "ext_privacy_link_text": {
+    "message": "Datenschutz-Bestimmungen"
+  },
+  "ext_provider_chatgpt_webapp": {
+    "message": "ChatGPT Webapp"
+  },
+  "ext_provider_chatgpt_webapp_desc": {
+    "message": "Die API, die die ChatGPT-Webapp antreibt, kostenlos, aber manchmal instabil"
+  },
+  "ext_provider_openai_api": {
+    "message": "OpenAI-API"
+  },
+  "ext_provider_openai_api_desc": {
+    "message": "Die offizielle OpenAI-API. Stabiler und unterstützt benutzerdefinierte Modelle."
+  },
+  "ext_model_placeholder": {
+    "message": "Modell"
+  },
+  "ext_api_key_label": {
+    "message": "API-Schlüssel"
+  },
+  "ext_api_key_warning1": {
+    "message": "⚠️ Ihr API-Schlüssel wird im Erweiterungsspeicher Ihres Browsers gespeichert, nachdem er verschleiert wurde (Base64-kodiert)."
+  },
+  "ext_api_key_warning2": {
+    "message": "Zu Ihrer Sicherheit: Geben Sie Ihr Browserprofil nicht weiter, entfernen Sie nicht verwendete Schlüssel und bevorzugen Sie Schlüssel mit begrenztem Umfang."
+  },
+  "ext_see_prefix": {
+    "message": "Siehe"
+  },
+  "ext_for_details_suffix": {
+    "message": "für Details."
+  },
+  "ext_openai_api_key_guide": {
+    "message": "Sie können Ihren API-Schlüssel finden oder erstellen"
+  },
+  "ext_link_here": {
+    "message": "hier"
+  },
+  "ext_provider_gemini_api": {
+    "message": "Gemini-API"
+  },
+  "ext_provider_gemini_api_desc": {
+    "message": "Die offizielle Google Gemini-API. Schnell, leistungsstark und multimodal."
+  },
+  "ext_gemini_api_key_guide": {
+    "message": "Sie können Ihren Gemini-API-Schlüssel erhalten"
+  },
+  "ext_save_button": {
+    "message": "Speichern"
+  },
+  "ext_toast_enter_openai_key": {
+    "message": "Bitte geben Sie Ihren OpenAI-API-Schlüssel ein"
+  },
+  "ext_toast_select_valid_model": {
+    "message": "Bitte wählen Sie ein gültiges Modell aus"
+  },
+  "ext_toast_enter_gemini_key": {
+    "message": "Bitte geben Sie Ihren Gemini-API-Schlüssel ein"
+  },
+  "ext_toast_changes_saved": {
+    "message": "Änderungen gespeichert"
+  },
+  "ext_toast_failed_to_save": {
+    "message": "Speichern fehlgeschlagen:"
+  },
+  "ext_toast_failed_to_load_models": {
+    "message": "Modellliste konnte nicht geladen werden:"
+  },
+  "ext_toast_failed_to_load_configs": {
+    "message": "Anbieterkonfigurationen konnten nicht geladen werden:"
+  },
+  "ext_popup_title": {
+    "message": "Neo ChatGPT Erweiterung"
+  },
+  "ext_popup_open_settings": {
+    "message": "Einstellungen öffnen"
+  },
+  "ext_troubleshooting": {
+    "message": "Fehlerbehebung"
+  },
+  "ext_common_issues": {
+    "message": "Häufige Probleme"
   }
 }

@@ -1,8 +1,131 @@
 {
   "appName": {
-    "message": "ChatGPT for Google"
+    "message": "Neo ChatGPT for Browser Extension"
   },
   "appDesc": {
     "message": "在搜索引擎结果中同时显示ChatGPT的回答"
+  },
+  "ext_chatgpt_answer": {
+    "message": "ChatGPT 回答"
+  },
+  "ext_chatgpt_short": {
+    "message": "ChatGPT"
+  },
+  "ext_cloudflare_login": {
+    "message": "请登录并通过Cloudflare检查"
+  },
+  "ext_still_not_working": {
+    "message": "仍然无法工作？关注"
+  },
+  "ext_openai_security_check": {
+    "message": "OpenAI每隔一段时间就需要通过一次安全检查。如果这种情况持续发生，请在扩展选项中将AI提供商更改为OpenAI API。"
+  },
+  "ext_error_prefix": {
+    "message": "⚠️ 错误："
+  },
+  "ext_error_generic": {
+    "message": "如果此问题仍然存在，请检查您的API密钥、模型设置或网络连接。"
+  },
+  "ext_error_network": {
+    "message": "网络错误：请检查您的互联网连接或稍后再试。"
+  },
+  "ext_error_model": {
+    "message": "模型错误：请在扩展选项中检查您的模型选择。"
+  },
+  "ext_error_apikey": {
+    "message": "API密钥错误：请检查您的API密钥的有效性和权限。"
+  },
+  "ext_waiting_for_response": {
+    "message": "正在等待ChatGPT响应..."
+  },
+  "ext_settings_title": {
+    "message": "扩展设置"
+  },
+  "ext_privacy_prefix": {
+    "message": "有关隐私和安全详情，请参阅"
+  },
+  "ext_privacy_link_text": {
+    "message": "隐私政策"
+  },
+  "ext_provider_chatgpt_webapp": {
+    "message": "ChatGPT Web应用"
+  },
+  "ext_provider_chatgpt_webapp_desc": {
+    "message": "驱动ChatGPT Web应用的API，免费但有时不稳定"
+  },
+  "ext_provider_openai_api": {
+    "message": "OpenAI API"
+  },
+  "ext_provider_openai_api_desc": {
+    "message": "官方OpenAI API。更稳定并支持自定义模型。"
+  },
+  "ext_model_placeholder": {
+    "message": "模型"
+  },
+  "ext_api_key_label": {
+    "message": "API密钥"
+  },
+  "ext_api_key_warning1": {
+    "message": "⚠️ 您的API密钥在经过模糊处理（Base64编码）后存储在浏览器的扩展存储中。"
+  },
+  "ext_api_key_warning2": {
+    "message": "为了您的安全：请勿共享您的浏览器配置文件，删除未使用的密钥，并优先使用范围有限的密钥。"
+  },
+  "ext_see_prefix": {
+    "message": "请参阅"
+  },
+  "ext_for_details_suffix": {
+    "message": "了解详情。"
+  },
+  "ext_openai_api_key_guide": {
+    "message": "您可以在此处找到或创建您的API密钥"
+  },
+  "ext_link_here": {
+    "message": "此处"
+  },
+  "ext_provider_gemini_api": {
+    "message": "Gemini API"
+  },
+  "ext_provider_gemini_api_desc": {
+    "message": "官方Google Gemini API。快速、强大、多模态。"
+  },
+  "ext_gemini_api_key_guide": {
+    "message": "您可以在此处获取您的Gemini API密钥"
+  },
+  "ext_save_button": {
+    "message": "保存"
+  },
+  "ext_toast_enter_openai_key": {
+    "message": "请输入您的OpenAI API密钥"
+  },
+  "ext_toast_select_valid_model": {
+    "message": "请选择一个有效的模型"
+  },
+  "ext_toast_enter_gemini_key": {
+    "message": "请输入您的Gemini API密钥"
+  },
+  "ext_toast_changes_saved": {
+    "message": "更改已保存"
+  },
+  "ext_toast_failed_to_save": {
+    "message": "保存失败："
+  },
+  "ext_toast_failed_to_load_models": {
+    "message": "加载模型列表失败："
+  },
+  "ext_toast_failed_to_load_configs": {
+    "message": "加载提供程序配置失败："
+  },
+  "ext_popup_title": {
+    "message": "Neo ChatGPT扩展"
+  },
+  "ext_popup_open_settings": {
+    "message": "打开设置"
+  },
+  "ext_troubleshooting": {
+    "message": "故障排除"
+  },
+  "ext_common_issues": {
+    "message": "常见问题"
   }
 }

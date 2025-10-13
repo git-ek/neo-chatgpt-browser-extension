@@ -1,8 +1,131 @@
 {
   "appName": {
-    "message": "ChatGPT for Google"
+    "message": "Neo ChatGPT for Browser Extension"
   },
   "appDesc": {
     "message": "Показати відповідь ChatGPT з результатами пошуку"
+  },
+  "ext_chatgpt_answer": {
+    "message": "Відповідь ChatGPT"
+  },
+  "ext_chatgpt_short": {
+    "message": "ChatGPT"
+  },
+  "ext_cloudflare_login": {
+    "message": "Будь ласка, увійдіть і пройдіть перевірку Cloudflare за адресою"
+  },
+  "ext_still_not_working": {
+    "message": "Все ще не працює? Дотримуйтесь"
+  },
+  "ext_openai_security_check": {
+    "message": "OpenAI час від часу вимагає проходження перевірки безпеки. Якщо це буде повторюватися, змініть постачальника ШІ на OpenAI API в налаштуваннях розширення."
+  },
+  "ext_error_prefix": {
+    "message": "⚠️ Помилка:"
+  },
+  "ext_error_generic": {
+    "message": "Якщо проблема не зникає, перевірте свій ключ API, налаштування моделі або мережеве підключення."
+  },
+  "ext_error_network": {
+    "message": "Помилка мережі: перевірте підключення до Інтернету або повторіть спробу пізніше."
+  },
+  "ext_error_model": {
+    "message": "Помилка моделі: перевірте вибір моделі в налаштуваннях розширення."
+  },
+  "ext_error_apikey": {
+    "message": "Помилка ключа API: перевірте дійсність і дозволи свого ключа API."
+  },
+  "ext_waiting_for_response": {
+    "message": "Очікування відповіді ChatGPT..."
+  },
+  "ext_settings_title": {
+    "message": "Налаштування розширення"
+  },
+  "ext_privacy_prefix": {
+    "message": "Для отримання детальної інформації про конфіденційність і безпеку див."
+  },
+  "ext_privacy_link_text": {
+    "message": "Політика конфіденційності"
+  },
+  "ext_provider_chatgpt_webapp": {
+    "message": "Веб-додаток ChatGPT"
+  },
+  "ext_provider_chatgpt_webapp_desc": {
+    "message": "API, на якому працює веб-додаток ChatGPT, безкоштовний, але іноді нестабільний"
+  },
+  "ext_provider_openai_api": {
+    "message": "API OpenAI"
+  },
+  "ext_provider_openai_api_desc": {
+    "message": "Офіційний API OpenAI. Більш стабільний і підтримує власні моделі."
+  },
+  "ext_model_placeholder": {
+    "message": "модель"
+  },
+  "ext_api_key_label": {
+    "message": "Ключ API"
+  },
+  "ext_api_key_warning1": {
+    "message": "⚠️ Ваш ключ API зберігається в сховищі розширень вашого браузера після обфускації (кодування Base64)."
+  },
+  "ext_api_key_warning2": {
+    "message": "Для вашої безпеки: не діліться своїм профілем браузера, видаляйте невикористовувані ключі та віддавайте перевагу ключам з обмеженою областю дії."
+  },
+  "ext_see_prefix": {
+    "message": "Див."
+  },
+  "ext_for_details_suffix": {
+    "message": "для деталей."
+  },
+  "ext_openai_api_key_guide": {
+    "message": "Ви можете знайти або створити свій ключ API"
+  },
+  "ext_link_here": {
+    "message": "тут"
+  },
+  "ext_provider_gemini_api": {
+    "message": "API Gemini"
+  },
+  "ext_provider_gemini_api_desc": {
+    "message": "Офіційний API Google Gemini. Швидкий, потужний і мультимодальний."
+  },
+  "ext_gemini_api_key_guide": {
+    "message": "Ви можете отримати свій ключ API Gemini"
+  },
+  "ext_save_button": {
+    "message": "Зберегти"
+  },
+  "ext_toast_enter_openai_key": {
+    "message": "Будь ласка, введіть свій ключ API OpenAI"
+  },
+  "ext_toast_select_valid_model": {
+    "message": "Будь ласка, виберіть дійсну модель"
+  },
+  "ext_toast_enter_gemini_key": {
+    "message": "Будь ласка, введіть свій ключ API Gemini"
+  },
+  "ext_toast_changes_saved": {
+    "message": "Зміни збережено"
+  },
+  "ext_toast_failed_to_save": {
+    "message": "Не вдалося зберегти:"
+  },
+  "ext_toast_failed_to_load_models": {
+    "message": "Не вдалося завантажити список моделей:"
+  },
+  "ext_toast_failed_to_load_configs": {
+    "message": "Не вдалося завантажити конфігурації постачальника:"
+  },
+  "ext_popup_title": {
+    "message": "Розширення Neo ChatGPT"
+  },
+  "ext_popup_open_settings": {
+    "message": "Відкрити налаштування"
+  },
+  "ext_troubleshooting": {
+    "message": "Усунення несправностей"
+  },
+  "ext_common_issues": {
+    "message": "Поширені проблеми"
   }
 }

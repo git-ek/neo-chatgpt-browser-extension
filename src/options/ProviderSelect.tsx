@@ -1,6 +1,7 @@
 import { Button, Input, Select, Spinner, Tabs, useInput, useToasts } from '@geist-ui/core'
 import { FC, useCallback, useState } from 'react'
 import useSWR from 'swr'
+import Browser from 'webextension-polyfill'
 import { getProviderConfigs, ProviderConfigs, ProviderType, saveProviderConfigs } from '../config'
 
 interface ConfigProps {
@@ -51,11 +52,11 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
     try {
       if (tab === ProviderType.GPT3) {
         if (!apiKeyBindings.value) {
-          setToast({ text: 'Please enter your OpenAI API key', type: 'error' })
+          setToast({ text: Browser.i18n.getMessage('ext_toast_enter_openai_key'), type: 'error' })
           return
         }
         if (!model || !models.includes(model)) {
-          setToast({ text: 'Please select a valid model', type: 'error' })
+          setToast({ text: Browser.i18n.getMessage('ext_toast_select_valid_model'), type: 'error' })
           return
         }
         await saveProviderConfigs(tab, {
@@ -67,7 +68,7 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
         })
       } else if (tab === ProviderType.Gemini) {
         if (!geminiKeyBindings.value) {
-          setToast({ text: 'Please enter your Gemini API key', type: 'error' })
+          setToast({ text: Browser.i18n.getMessage('ext_toast_enter_gemini_key'), type: 'error' })
           return
         }
         await saveProviderConfigs(tab, {
@@ -78,10 +79,13 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
           },
         })
       }
-      setToast({ text: 'Changes saved', type: 'success' })
+      setToast({ text: Browser.i18n.getMessage('ext_toast_changes_saved'), type: 'success' })
     } catch (err) {
       setToast({
-        text: 'Failed to save: ' + (err instanceof Error ? err.message : String(err)),
+        text:
+          Browser.i18n.getMessage('ext_toast_failed_to_save') +
+          ' ' +
+          (err instanceof Error ? err.message : String(err)),
         type: 'error',
       })
     }
@@ -106,7 +110,10 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
       setDynamicModels(loaded)
     } catch (err) {
       setToast({
-        text: 'Failed to load model list: ' + (err instanceof Error ? err.message : String(err)),
+        text:
+          Browser.i18n.getMessage('ext_toast_failed_to_load_models') +
+          ' ' +
+          (err instanceof Error ? err.message : String(err)),
         type: 'error',
       })
       setDynamicModels([])
@@ -116,18 +123,24 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
   return (
     <div className="flex flex-col gap-3">
       <Tabs value={tab} onChange={handleTabChange}>
-        <Tabs.Item label="ChatGPT webapp" value={ProviderType.ChatGPT}>
-          The API that powers ChatGPT webapp, free, but sometimes unstable
+        <Tabs.Item
+          label={Browser.i18n.getMessage('ext_provider_chatgpt_webapp')}
+          value={ProviderType.ChatGPT}
+        >
+          {Browser.i18n.getMessage('ext_provider_chatgpt_webapp_desc')}
         </Tabs.Item>
-        <Tabs.Item label="OpenAI API" value={ProviderType.GPT3}>
+        <Tabs.Item
+          label={Browser.i18n.getMessage('ext_provider_openai_api')}
+          value={ProviderType.GPT3}
+        >
           <div className="flex flex-col gap-2">
-            <span>The official OpenAI API. More stable and supports custom models.</span>{' '}
+            <span>{Browser.i18n.getMessage('ext_provider_openai_api_desc')}</span>{' '}
             <div className="flex flex-row gap-2">
               <Select
                 scale={2 / 3}
                 value={model}
                 onChange={(v) => setModel(v as string)}
-                placeholder="model"
+                placeholder={Browser.i18n.getMessage('ext_model_placeholder')}
               >
                 {dynamicModels.map((m) => (
                   <Select.Option key={m} value={m}>
@@ -135,46 +148,52 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
                   </Select.Option>
                 ))}
               </Select>
-              <Input htmlType="password" label="API key" scale={2 / 3} {...apiKeyBindings} />
+              <Input
+                htmlType="password"
+                label={Browser.i18n.getMessage('ext_api_key_label')}
+                scale={2 / 3}
+                {...apiKeyBindings}
+              />
             </div>
             <div className="text-xs text-red-500 mt-1">
-              ⚠️ Your API key is stored in your browser&apos;s extension storage after being
-              obfuscated (Base64 encoded).
+              {Browser.i18n.getMessage('ext_api_key_warning1')}
               <br />
-              For your security: do not share your browser profile, remove unused keys, and prefer
-              limited-scope keys.
+              {Browser.i18n.getMessage('ext_api_key_warning2')}
               <br />
-              See{' '}
+              {Browser.i18n.getMessage('ext_see_prefix')}{' '}
               <a
                 href="https://github.com/git-ek/neo-chatgpt-browser-extension/blob/main/PRIVACY.md"
                 target="_blank"
                 rel="noreferrer"
               >
-                Privacy Policy
+                {Browser.i18n.getMessage('ext_privacy_link_text')}
               </a>{' '}
-              for details.
+              {Browser.i18n.getMessage('ext_for_details_suffix')}
             </div>
             <span className="italic text-xs">
-              You can find or create your API key
+              {Browser.i18n.getMessage('ext_openai_api_key_guide')}
               <a
                 href="https://platform.openai.com/account/api-keys"
                 target="_blank"
                 rel="noreferrer"
               >
-                here
+                {Browser.i18n.getMessage('ext_link_here')}
               </a>
             </span>
           </div>
         </Tabs.Item>
-        <Tabs.Item label="Gemini API" value={ProviderType.Gemini}>
+        <Tabs.Item
+          label={Browser.i18n.getMessage('ext_provider_gemini_api')}
+          value={ProviderType.Gemini}
+        >
           <div className="flex flex-col gap-2">
-            <span>The official Google Gemini API. Fast, powerful, and multimodal.</span>{' '}
+            <span>{Browser.i18n.getMessage('ext_provider_gemini_api_desc')}</span>{' '}
             <div className="flex flex-row gap-2">
               <Select
                 scale={2 / 3}
                 value={geminiModel}
                 onChange={(v) => setGeminiModel(v as string)}
-                placeholder="model"
+                placeholder={Browser.i18n.getMessage('ext_model_placeholder')}
               >
                 {dynamicModels.map((m) => (
                   <Select.Option key={m} value={m}>
@@ -182,36 +201,39 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
                   </Select.Option>
                 ))}
               </Select>
-              <Input htmlType="password" label="API key" scale={2 / 3} {...geminiKeyBindings} />
+              <Input
+                htmlType="password"
+                label={Browser.i18n.getMessage('ext_api_key_label')}
+                scale={2 / 3}
+                {...geminiKeyBindings}
+              />
             </div>
             <div className="text-xs text-red-500 mt-1">
-              ⚠️ Your API key is stored in your browser&apos;s extension storage after being
-              obfuscated (Base64 encoded).
+              {Browser.i18n.getMessage('ext_api_key_warning1')}
               <br />
-              For your security: do not share your browser profile, remove unused keys, and prefer
-              limited-scope keys.
+              {Browser.i18n.getMessage('ext_api_key_warning2')}
               <br />
-              See{' '}
+              {Browser.i18n.getMessage('ext_see_prefix')}{' '}
               <a
                 href="https://github.com/git-ek/neo-chatgpt-browser-extension/blob/main/PRIVACY.md"
                 target="_blank"
                 rel="noreferrer"
               >
-                Privacy Policy
+                {Browser.i18n.getMessage('ext_privacy_link_text')}
               </a>{' '}
-              for details.
+              {Browser.i18n.getMessage('ext_for_details_suffix')}
             </div>
             <span className="italic text-xs">
-              You can get your Gemini API key
+              {Browser.i18n.getMessage('ext_gemini_api_key_guide')}
               <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer">
-                here
+                {Browser.i18n.getMessage('ext_link_here')}
               </a>
             </span>
           </div>
         </Tabs.Item>
       </Tabs>
       <Button scale={2 / 3} ghost style={{ width: 20 }} type="success" onClick={save}>
-        Save
+        {Browser.i18n.getMessage('ext_save_button')}
       </Button>
     </div>
   )
@@ -230,7 +252,9 @@ function ProviderSelect() {
   }
   if (query.error) {
     return (
-      <div className="text-red-500">Failed to load provider configs: {String(query.error)}</div>
+      <div className="text-red-500">
+        {Browser.i18n.getMessage('ext_toast_failed_to_load_configs')} {String(query.error)}
+      </div>
     )
   }
   return <ConfigPanel config={query.data!.config} models={query.data!.models} />

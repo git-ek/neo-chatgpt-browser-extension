@@ -1,8 +1,131 @@
 {
   "appName": {
-    "message": "ChatGPT for Google"
+    "message": "Neo ChatGPT for Browser Extension"
   },
   "appDesc": {
     "message": "Mostrar la respuesta de ChatGPT junto con los resultados de la búsqueda en el motor de búsqueda"
+  },
+  "ext_chatgpt_answer": {
+    "message": "Respuesta de ChatGPT"
+  },
+  "ext_chatgpt_short": {
+    "message": "ChatGPT"
+  },
+  "ext_cloudflare_login": {
+    "message": "Inicia sesión y pasa la verificación de Cloudflare en"
+  },
+  "ext_still_not_working": {
+    "message": "¿Aún no funciona? Sigue"
+  },
+  "ext_openai_security_check": {
+    "message": "OpenAI requiere pasar una verificación de seguridad de vez en cuando. Si esto sigue sucediendo, cambia el proveedor de IA a la API de OpenAI en las opciones de la extensión."
+  },
+  "ext_error_prefix": {
+    "message": "⚠️ Error:"
+  },
+  "ext_error_generic": {
+    "message": "Si este problema persiste, comprueba tu clave de API, la configuración del modelo o la conexión de red."
+  },
+  "ext_error_network": {
+    "message": "Error de red: comprueba tu conexión a Internet o inténtalo de nuevo más tarde."
+  },
+  "ext_error_model": {
+    "message": "Error de modelo: comprueba la selección de tu modelo en las opciones de la extensión."
+  },
+  "ext_error_apikey": {
+    "message": "Error de clave de API: comprueba la validez y los permisos de tu clave de API."
+  },
+  "ext_waiting_for_response": {
+    "message": "Esperando la respuesta de ChatGPT..."
+  },
+  "ext_settings_title": {
+    "message": "Configuración de la extensión"
+  },
+  "ext_privacy_prefix": {
+    "message": "Para obtener más información sobre privacidad y seguridad, consulta la"
+  },
+  "ext_privacy_link_text": {
+    "message": "Política de privacidad"
+  },
+  "ext_provider_chatgpt_webapp": {
+    "message": "Aplicación web de ChatGPT"
+  },
+  "ext_provider_chatgpt_webapp_desc": {
+    "message": "La API que impulsa la aplicación web de ChatGPT, gratuita, pero a veces inestable"
+  },
+  "ext_provider_openai_api": {
+    "message": "API de OpenAI"
+  },
+  "ext_provider_openai_api_desc": {
+    "message": "La API oficial de OpenAI. Más estable y compatible con modelos personalizados."
+  },
+  "ext_model_placeholder": {
+    "message": "modelo"
+  },
+  "ext_api_key_label": {
+    "message": "Clave de API"
+  },
+  "ext_api_key_warning1": {
+    "message": "⚠️ Tu clave de API se almacena en el almacenamiento de extensiones de tu navegador después de ser ofuscada (codificada en Base64)."
+  },
+  "ext_api_key_warning2": {
+    "message": "Por tu seguridad: no compartas el perfil de tu navegador, elimina las claves no utilizadas y prefiere las claves de ámbito limitado."
+  },
+  "ext_see_prefix": {
+    "message": "Consulta la"
+  },
+  "ext_for_details_suffix": {
+    "message": "para más detalles."
+  },
+  "ext_openai_api_key_guide": {
+    "message": "Puedes encontrar o crear tu clave de API"
+  },
+  "ext_link_here": {
+    "message": "aquí"
+  },
+  "ext_provider_gemini_api": {
+    "message": "API de Gemini"
+  },
+  "ext_provider_gemini_api_desc": {
+    "message": "La API oficial de Google Gemini. Rápida, potente y multimodal."
+  },
+  "ext_gemini_api_key_guide": {
+    "message": "Puedes obtener tu clave de API de Gemini"
+  },
+  "ext_save_button": {
+    "message": "Guardar"
+  },
+  "ext_toast_enter_openai_key": {
+    "message": "Introduce tu clave de API de OpenAI"
+  },
+  "ext_toast_select_valid_model": {
+    "message": "Selecciona un modelo válido"
+  },
+  "ext_toast_enter_gemini_key": {
+    "message": "Introduce tu clave de API de Gemini"
+  },
+  "ext_toast_changes_saved": {
+    "message": "Cambios guardados"
+  },
+  "ext_toast_failed_to_save": {
+    "message": "Error al guardar:"
+  },
+  "ext_toast_failed_to_load_models": {
+    "message": "Error al cargar la lista de modelos:"
+  },
+  "ext_toast_failed_to_load_configs": {
+    "message": "Error al cargar la configuración del proveedor:"
+  },
+  "ext_popup_title": {
+    "message": "Extensión Neo ChatGPT"
+  },
+  "ext_popup_open_settings": {
+    "message": "Abrir configuración"
+  },
+  "ext_troubleshooting": {
+    "message": "Solución de problemas"
+  },
+  "ext_common_issues": {
+    "message": "Problemas comunes"
   }
 }

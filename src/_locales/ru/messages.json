@@ -1,8 +1,131 @@
 {
   "appName": {
-    "message": "ChatGPT for Google"
+    "message": "Neo ChatGPT for Browser Extension"
   },
   "appDesc": {
     "message": "Отображение ответа ChatGPT вместе с результатами поиска"
+  },
+  "ext_chatgpt_answer": {
+    "message": "Ответ ChatGPT"
+  },
+  "ext_chatgpt_short": {
+    "message": "ChatGPT"
+  },
+  "ext_cloudflare_login": {
+    "message": "Пожалуйста, войдите и пройдите проверку Cloudflare на"
+  },
+  "ext_still_not_working": {
+    "message": "Все еще не работает? Следуйте"
+  },
+  "ext_openai_security_check": {
+    "message": "OpenAI требует время от времени проходить проверку безопасности. Если это будет повторяться, измените поставщика ИИ на OpenAI API в настройках расширения."
+  },
+  "ext_error_prefix": {
+    "message": "⚠️ Ошибка:"
+  },
+  "ext_error_generic": {
+    "message": "Если проблема не устранена, проверьте свой API-ключ, настройки модели или сетевое подключение."
+  },
+  "ext_error_network": {
+    "message": "Сетевая ошибка: проверьте подключение к Интернету или повторите попытку позже."
+  },
+  "ext_error_model": {
+    "message": "Ошибка модели: проверьте выбор модели в настройках расширения."
+  },
+  "ext_error_apikey": {
+    "message": "Ошибка API-ключа: проверьте действительность и разрешения своего API-ключа."
+  },
+  "ext_waiting_for_response": {
+    "message": "Ожидание ответа ChatGPT..."
+  },
+  "ext_settings_title": {
+    "message": "Настройки расширения"
+  },
+  "ext_privacy_prefix": {
+    "message": "Для получения подробной информации о конфиденциальности и безопасности см."
+  },
+  "ext_privacy_link_text": {
+    "message": "Политика конфиденциальности"
+  },
+  "ext_provider_chatgpt_webapp": {
+    "message": "Веб-приложение ChatGPT"
+  },
+  "ext_provider_chatgpt_webapp_desc": {
+    "message": "API, на котором работает веб-приложение ChatGPT, бесплатное, но иногда нестабильное"
+  },
+  "ext_provider_openai_api": {
+    "message": "API OpenAI"
+  },
+  "ext_provider_openai_api_desc": {
+    "message": "Официальный API OpenAI. Более стабильный и поддерживает пользовательские модели."
+  },
+  "ext_model_placeholder": {
+    "message": "модель"
+  },
+  "ext_api_key_label": {
+    "message": "API-ключ"
+  },
+  "ext_api_key_warning1": {
+    "message": "⚠️ Ваш API-ключ хранится в хранилище расширений вашего браузера после обфускации (кодирование Base64)."
+  },
+  "ext_api_key_warning2": {
+    "message": "В целях безопасности: не делитесь своим профилем браузера, удаляйте неиспользуемые ключи и предпочитайте ключи с ограниченной областью действия."
+  },
+  "ext_see_prefix": {
+    "message": "См."
+  },
+  "ext_for_details_suffix": {
+    "message": "для получения подробной информации."
+  },
+  "ext_openai_api_key_guide": {
+    "message": "Вы можете найти или создать свой API-ключ"
+  },
+  "ext_link_here": {
+    "message": "здесь"
+  },
+  "ext_provider_gemini_api": {
+    "message": "API Gemini"
+  },
+  "ext_provider_gemini_api_desc": {
+    "message": "Официальный API Google Gemini. Быстрый, мощный и мультимодальный."
+  },
+  "ext_gemini_api_key_guide": {
+    "message": "Вы можете получить свой API-ключ Gemini"
+  },
+  "ext_save_button": {
+    "message": "Сохранить"
+  },
+  "ext_toast_enter_openai_key": {
+    "message": "Введите свой API-ключ OpenAI"
+  },
+  "ext_toast_select_valid_model": {
+    "message": "Выберите действительную модель"
+  },
+  "ext_toast_enter_gemini_key": {
+    "message": "Введите свой API-ключ Gemini"
+  },
+  "ext_toast_changes_saved": {
+    "message": "Изменения сохранены"
+  },
+  "ext_toast_failed_to_save": {
+    "message": "Не удалось сохранить:"
+  },
+  "ext_toast_failed_to_load_models": {
+    "message": "Не удалось загрузить список моделей:"
+  },
+  "ext_toast_failed_to_load_configs": {
+    "message": "Не удалось загрузить конфигурации поставщика:"
+  },
+  "ext_popup_title": {
+    "message": "Расширение Neo ChatGPT"
+  },
+  "ext_popup_open_settings": {
+    "message": "Открыть настройки"
+  },
+  "ext_troubleshooting": {
+    "message": "Устранение неполадок"
+  },
+  "ext_common_issues": {
+    "message": "Распространенные проблемы"
   }
 }

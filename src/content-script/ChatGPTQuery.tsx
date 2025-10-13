@@ -78,7 +78,7 @@ function ChatGPTQuery(props: Props) {
     return (
       <div className="markdown-body gpt-markdown" id="gpt-answer" dir="auto">
         <div className="gpt-header">
-          <span className="font-bold">ChatGPT</span>
+          <span className="font-bold">{Browser.i18n.getMessage('ext_chatgpt_short')}</span>
           <span className="cursor-pointer leading-[0]" onClick={openOptionsPage}>
             <GearIcon size={14} />
           </span>
@@ -98,7 +98,7 @@ function ChatGPTQuery(props: Props) {
   if (error === 'UNAUTHORIZED' || error === 'CLOUDFLARE') {
     return (
       <p>
-        Please login and pass Cloudflare check at{' '}
+        {Browser.i18n.getMessage('ext_cloudflare_login')}{' '}
         <a href="https://chat.openai.com" target="_blank" rel="noreferrer">
           chat.openai.com
         </a>
@@ -107,7 +107,7 @@ function ChatGPTQuery(props: Props) {
             if (isBraveBrowser()) {
               return (
                 <span className="block mt-2">
-                  Still not working? Follow{' '}
+                  {Browser.i18n.getMessage('ext_still_not_working')}{' '}
                   <p className="text-xs text-gray-500 gpt-feedback">
                     {Browser.i18n.getMessage('ext_troubleshooting')}{' '}
                     <a href="https://github.com/git-ek/neo-chatgpt-browser-extension#troubleshooting">
@@ -119,8 +119,7 @@ function ChatGPTQuery(props: Props) {
             } else {
               return (
                 <span className="italic block mt-2 text-xs">
-                  OpenAI requires passing a security check every once in a while. If this keeps
-                  happening, change AI provider to OpenAI API in the extension options.
+                  {Browser.i18n.getMessage('ext_openai_security_check')}
                 </span>
               )
             }
@@ -130,14 +129,13 @@ function ChatGPTQuery(props: Props) {
   }
   if (error) {
     // 에러 코드별 안내 강화
-    let helpMsg =
-      'If this issue persists, please check your API key, model settings, or network connection.'
+    let helpMsg = Browser.i18n.getMessage('ext_error_generic')
     if (error.includes('network') || error.includes('Failed to fetch')) {
-      helpMsg = 'Network error: Please check your internet connection or try again later.'
+      helpMsg = Browser.i18n.getMessage('ext_error_network')
     } else if (error.includes('model')) {
-      helpMsg = 'Model error: Please check your model selection in the extension options.'
+      helpMsg = Browser.i18n.getMessage('ext_error_model')
     } else if (error.includes('API key') || error.includes('unauthorized')) {
-      helpMsg = 'API key error: Please check your API key validity and permissions.'
+      helpMsg = Browser.i18n.getMessage('ext_error_apikey')
     }
     return (
       <div
@@ -151,7 +149,9 @@ function ChatGPTQuery(props: Props) {
           marginTop: '8px',
         }}
       >
-        <span style={{ fontWeight: 'bold', marginRight: '8px' }}>⚠️ Error:</span>
+        <span style={{ fontWeight: 'bold', marginRight: '8px' }}>
+          {Browser.i18n.getMessage('ext_error_prefix')}
+        </span>
         <span className="break-all block">{error}</span>
         <div style={{ marginTop: '8px', fontSize: '0.95em' }}>
           <span>{helpMsg}</span>
@@ -160,7 +160,11 @@ function ChatGPTQuery(props: Props) {
     )
   }
 
-  return <p className="text-[#b6b8ba] animate-pulse">Waiting for ChatGPT response...</p>
+  return (
+    <p className="text-[#b6b8ba] animate-pulse">
+      {Browser.i18n.getMessage('ext_waiting_for_response')}
+    </p>
+  )
 }
 
 export default memo(ChatGPTQuery)
