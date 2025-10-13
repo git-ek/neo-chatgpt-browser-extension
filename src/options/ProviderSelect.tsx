@@ -13,22 +13,20 @@ async function loadModels(provider?: ProviderType): Promise<string[]> {
   try {
     const configs = await fetchExtensionConfigs()
     if (provider === ProviderType.Gemini) {
-      return configs.gemini_model_names || [
-        'gemini-2.5-pro',
-        'gemini-2.5-flash',
-        'gemini-1.5-pro',
-        'gemini-1.5-flash',
-        'gemini-pro',
-      ]
+      return (
+        configs.gemini_model_names || [
+          'gemini-2.5-pro',
+          'gemini-2.5-flash',
+          'gemini-1.5-pro',
+          'gemini-1.5-flash',
+          'gemini-pro',
+        ]
+      )
     }
     return configs.openai_model_names
-  } catch (err) {
+  } catch {
     // 네트워크 또는 서버 오류 발생 시 기본 모델 반환
-    return [
-      provider === ProviderType.Gemini
-        ? 'gemini-2.5-pro'
-        : 'gpt-3.5-turbo',
-    ]
+    return [provider === ProviderType.Gemini ? 'gemini-2.5-pro' : 'gpt-3.5-turbo']
   }
 }
 
@@ -38,8 +36,12 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
   const { bindings: apiKeyBindings } = useInput(config.configs[ProviderType.GPT3]?.apiKey ?? '')
   const [model, setModel] = useState(config.configs[ProviderType.GPT3]?.model ?? models[0])
   // Gemini
-  const { bindings: geminiKeyBindings } = useInput(config.configs[ProviderType.Gemini]?.apiKey ?? '')
-  const [geminiModel, setGeminiModel] = useState(config.configs[ProviderType.Gemini]?.model ?? 'gemini-2.5-pro')
+  const { bindings: geminiKeyBindings } = useInput(
+    config.configs[ProviderType.Gemini]?.apiKey ?? '',
+  )
+  const [geminiModel, setGeminiModel] = useState(
+    config.configs[ProviderType.Gemini]?.model ?? 'gemini-2.5-pro',
+  )
   const { setToast } = useToasts()
 
   const save = useCallback(async () => {
@@ -75,9 +77,21 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
       }
       setToast({ text: 'Changes saved', type: 'success' })
     } catch (err) {
-      setToast({ text: 'Failed to save: ' + (err instanceof Error ? err.message : String(err)), type: 'error' })
+      setToast({
+        text: 'Failed to save: ' + (err instanceof Error ? err.message : String(err)),
+        type: 'error',
+      })
     }
-  }, [apiKeyBindings.value, model, models, geminiKeyBindings.value, geminiModel, setToast, tab, config])
+  }, [
+    apiKeyBindings.value,
+    model,
+    models,
+    geminiKeyBindings.value,
+    geminiModel,
+    setToast,
+    tab,
+    config,
+  ])
 
   // 모델 목록 동적 로딩 (탭 변경 시)
   const [dynamicModels, setDynamicModels] = useState<string[]>(models)
@@ -88,7 +102,10 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
       const loaded = await loadModels(v)
       setDynamicModels(loaded)
     } catch (err) {
-      setToast({ text: 'Failed to load model list: ' + (err instanceof Error ? err.message : String(err)), type: 'error' })
+      setToast({
+        text: 'Failed to load model list: ' + (err instanceof Error ? err.message : String(err)),
+        type: 'error',
+      })
       setDynamicModels([])
     }
   }
@@ -101,10 +118,7 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
         </Tabs.Item>
         <Tabs.Item label="OpenAI API" value={ProviderType.GPT3}>
           <div className="flex flex-col gap-2">
-            <span>
-              OpenAI official API, more stable,{' '}
-              <span className="font-semibold">charge by usage</span>
-            </span>
+            <span>The official OpenAI API. More stable and supports custom models.</span>{' '}
             <div className="flex flex-row gap-2">
               <Select
                 scale={2 / 3}
@@ -121,12 +135,24 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
               <Input htmlType="password" label="API key" scale={2 / 3} {...apiKeyBindings} />
             </div>
             <div className="text-xs text-red-500 mt-1">
-              ⚠️ Your API key is stored in your browser's extension storage in <b>plain text</b>.<br />
-              For your security: do not share your browser profile, remove unused keys, and prefer limited-scope keys.<br />
-              See <a href="https://github.com/git-ek/neo-chatgpt-browser-extension/blob/main/PRIVACY.md" target="_blank" rel="noreferrer">Privacy Policy</a> for details.
+              ⚠️ Your API key is stored in your browser&apos;s extension storage after being
+              obfuscated (Base64 encoded).
+              <br />
+              For your security: do not share your browser profile, remove unused keys, and prefer
+              limited-scope keys.
+              <br />
+              See{' '}
+              <a
+                href="https://github.com/git-ek/neo-chatgpt-browser-extension/blob/main/PRIVACY.md"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Privacy Policy
+              </a>{' '}
+              for details.
             </div>
             <span className="italic text-xs">
-              You can find or create your API key{' '}
+              You can find or create your API key
               <a
                 href="https://platform.openai.com/account/api-keys"
                 target="_blank"
@@ -139,10 +165,7 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
         </Tabs.Item>
         <Tabs.Item label="Gemini API" value={ProviderType.Gemini}>
           <div className="flex flex-col gap-2">
-            <span>
-              Google Gemini API, fast and multimodal,{' '}
-              <span className="font-semibold">charge by usage</span>
-            </span>
+            <span>The official Google Gemini API. Fast, powerful, and multimodal.</span>{' '}
             <div className="flex flex-row gap-2">
               <Select
                 scale={2 / 3}
@@ -159,17 +182,25 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
               <Input htmlType="password" label="API key" scale={2 / 3} {...geminiKeyBindings} />
             </div>
             <div className="text-xs text-red-500 mt-1">
-              ⚠️ Your API key is stored in your browser's extension storage in <b>plain text</b>.<br />
-              For your security: do not share your browser profile, remove unused keys, and prefer limited-scope keys.<br />
-              See <a href="https://github.com/git-ek/neo-chatgpt-browser-extension/blob/main/PRIVACY.md" target="_blank" rel="noreferrer">Privacy Policy</a> for details.
-            </div>
-            <span className="italic text-xs">
-              You can get your Gemini API key{' '}
+              ⚠️ Your API key is stored in your browser&apos;s extension storage after being
+              obfuscated (Base64 encoded).
+              <br />
+              For your security: do not share your browser profile, remove unused keys, and prefer
+              limited-scope keys.
+              <br />
+              See{' '}
               <a
-                href="https://aistudio.google.com/app/apikey"
+                href="https://github.com/git-ek/neo-chatgpt-browser-extension/blob/main/PRIVACY.md"
                 target="_blank"
                 rel="noreferrer"
               >
+                Privacy Policy
+              </a>{' '}
+              for details.
+            </div>
+            <span className="italic text-xs">
+              You can get your Gemini API key
+              <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer">
                 here
               </a>
             </span>
@@ -184,15 +215,20 @@ const ConfigPanel: FC<ConfigProps> = ({ config, models }) => {
 }
 
 function ProviderSelect() {
-  const query = useSWR<{ config: ProviderConfigs; models: string[] }>('provider-configs', async () => {
-    const [config, models] = await Promise.all([getProviderConfigs(), loadModels()])
-    return { config, models }
-  })
+  const query = useSWR<{ config: ProviderConfigs; models: string[] }>(
+    'provider-configs',
+    async () => {
+      const [config, models] = await Promise.all([getProviderConfigs(), loadModels()])
+      return { config, models }
+    },
+  )
   if (query.isLoading) {
     return <Spinner />
   }
   if (query.error) {
-    return <div className="text-red-500">Failed to load provider configs: {String(query.error)}</div>
+    return (
+      <div className="text-red-500">Failed to load provider configs: {String(query.error)}</div>
+    )
   }
   return <ConfigPanel config={query.data!.config} models={query.data!.models} />
 }

@@ -1,6 +1,6 @@
 {
   "name": "neo-chatgpt-browser-extension",
-  "type-": "module",
+  "type": "module",
   "author": "git-ek",
   "scripts": {
     "build": "node build.mjs",

@@ -128,9 +128,12 @@ function ChatGPTQuery(props: Props) {
               return (
                 <span className="block mt-2">
                   Still not working? Follow{' '}
-                  <a href="https://github.com/wong2/chat-gpt-google-extension#troubleshooting">
-                    Brave Troubleshooting
-                  </a>
+                  <p className="text-xs text-gray-500 gpt-feedback">
+                    {Browser.i18n.getMessage('ext_troubleshooting')}{' '}
+                    <a href="https://github.com/git-ek/neo-chatgpt-browser-extension#troubleshooting">
+                      {Browser.i18n.getMessage('ext_common_issues')}
+                    </a>
+                  </p>
                 </span>
               )
             } else {
@@ -147,7 +150,8 @@ function ChatGPTQuery(props: Props) {
   }
   if (error) {
     // 에러 코드별 안내 강화
-    let helpMsg = 'If this issue persists, please check your API key, model settings, or network connection.'
+    let helpMsg =
+      'If this issue persists, please check your API key, model settings, or network connection.'
     if (error.includes('network') || error.includes('Failed to fetch')) {
       helpMsg = 'Network error: Please check your internet connection or try again later.'
     } else if (error.includes('model')) {
@@ -156,7 +160,17 @@ function ChatGPTQuery(props: Props) {
       helpMsg = 'API key error: Please check your API key validity and permissions.'
     }
     return (
-      <div className="gpt-error-message" style={{ color: '#d32f2f', background: '#fff0f0', border: '1px solid #d32f2f', padding: '12px', borderRadius: '8px', marginTop: '8px' }}>
+      <div
+        className="gpt-error-message"
+        style={{
+          color: '#d32f2f',
+          background: '#fff0f0',
+          border: '1px solid #d32f2f',
+          padding: '12px',
+          borderRadius: '8px',
+          marginTop: '8px',
+        }}
+      >
         <span style={{ fontWeight: 'bold', marginRight: '8px' }}>⚠️ Error:</span>
         <span className="break-all block">{error}</span>
         <div style={{ marginTop: '8px', fontSize: '0.95em' }}>
