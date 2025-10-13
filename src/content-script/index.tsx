@@ -4,7 +4,6 @@ import { getUserConfig, Language, Theme } from '../config'
 import { detectSystemColorScheme } from '../utils'
 import ChatGPTCard from './ChatGPTCard'
 import { config, SearchEngine } from './search-engine-configs'
-import './styles.scss'
 import { getPossibleElementByQuerySelector } from './utils'
 
 async function mount(question: string, siteConfig: SearchEngine) {

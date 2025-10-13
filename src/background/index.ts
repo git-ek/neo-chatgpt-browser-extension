@@ -41,7 +41,6 @@ async function generateAnswers(port: Browser.Runtime.Port, question: string) {
   })
 }
 
-
 Browser.runtime.onConnect.addListener((port: Browser.Runtime.Port) => {
   port.onMessage.addListener(async (msg: { question: string }) => {
     if (process.env.NODE_ENV !== 'production') {
@@ -49,17 +48,16 @@ Browser.runtime.onConnect.addListener((port: Browser.Runtime.Port) => {
     }
     try {
       await generateAnswers(port, msg.question)
-    } catch (err: any) {
+    } catch (err) {
       if (process.env.NODE_ENV !== 'production') {
         console.error(err)
       }
-      port.postMessage({ error: err.message })
+      port.postMessage({ error: err instanceof Error ? err.message : String(err) })
     }
   })
 })
 
-
-Browser.runtime.onMessage.addListener(async (message: { type: string; data?: any }) => {
+Browser.runtime.onMessage.addListener(async (message: { type: string; data?: unknown }) => {
   if (message.type === 'FEEDBACK') {
     const token = await getChatGPTAccessToken()
     await sendMessageFeedback(token, message.data)
@@ -69,7 +67,6 @@ Browser.runtime.onMessage.addListener(async (message: { type: string; data?: any
     return getChatGPTAccessToken()
   }
 })
-
 
 Browser.runtime.onInstalled.addListener((details: { reason: string }) => {
   if (details.reason === 'install') {

@@ -20,8 +20,8 @@ export function endsWithQuestionMark(question: string) {
   )
 }
 
-export function isBraveBrowser() {
-  return (navigator as any).brave?.isBrave()
+export async function isBraveBrowser() {
+  return navigator.brave?.isBrave()
 }
 
 export async function shouldShowRatingTip() {

@@ -11,6 +11,11 @@
     "plugin:react-hooks/recommended",
     "prettier"
   ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest",

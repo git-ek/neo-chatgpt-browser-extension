@@ -1,4 +1,4 @@
-import { defaults, forEach, mapValues } from 'lodash-es'
+import { defaults, forEach } from 'lodash-es'
 import Browser from 'webextension-polyfill'
 
 export enum TriggerMode {
@@ -118,4 +118,3 @@ export async function saveProviderConfigs(configs: ProviderConfigs) {
 
   return Browser.storage.local.set({ [STORAGE_KEY_PROVIDER_CONFIGS]: newConfigs })
 }
-

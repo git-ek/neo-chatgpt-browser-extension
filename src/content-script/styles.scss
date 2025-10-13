@@ -1,5 +1,6 @@
-@import 'light.scss';
-@import 'dark.scss';
+@use 'light';
+@use 'dark';
+
 
 .chat-gpt-container {
   margin-bottom: 30px;

@@ -2,9 +2,9 @@ import archiver from 'archiver'
 import autoprefixer from 'autoprefixer'
 import * as dotenv from 'dotenv'
 import esbuild from 'esbuild'
-import postcssPlugin from 'esbuild-style-plugin'
 import fs from 'fs-extra'
-import process from 'node:process'
+import * as sass from 'sass'
+import postcss from 'postcss'
 import tailwindcss from 'tailwindcss'
 
 dotenv.config()
@@ -13,6 +13,21 @@ const outdir = 'build'
 
 async function deleteOldDir() {
   await fs.remove(outdir)
+}
+
+async function processStyles() {
+  const processor = postcss([tailwindcss, autoprefixer])
+
+  // Compile content-script styles
+  const sassResult = await sass.compileAsync('src/content-script/styles.scss')
+  const cssResult = await processor.process(sassResult.css, { from: undefined })
+  await fs.outputFile('build/content-script/index.css', cssResult.css)
+
+  // Process base.css for options and popup
+  const baseCss = await fs.readFile('src/base.css', 'utf8')
+  const baseCssResult = await processor.process(baseCss, { from: undefined })
+  await fs.outputFile('build/options/index.css', baseCssResult.css)
+  await fs.outputFile('build/popup/index.css', baseCssResult.css)
 }
 
 async function runEsbuild() {
@@ -30,7 +45,6 @@ async function runEsbuild() {
     legalComments: 'none',
     define: {
       'process.env.NODE_ENV': '"production"',
-      'process.env.AXIOM_TOKEN': JSON.stringify(process.env.AXIOM_TOKEN || 'UNDEFINED'),
     },
     jsxFactory: 'h',
     jsxFragment: 'Fragment',
@@ -38,13 +52,7 @@ async function runEsbuild() {
     loader: {
       '.png': 'dataurl',
     },
-    plugins: [
-      postcssPlugin({
-        postcss: {
-          plugins: [tailwindcss, autoprefixer],
-        },
-      }),
-    ],
+    plugins: [],
   })
 }
 
@@ -69,6 +77,7 @@ async function copyFiles(entryPoints, targetDir) {
 
 async function build() {
   await deleteOldDir()
+  await processStyles()
   await runEsbuild()
 
   const commonFiles = [
