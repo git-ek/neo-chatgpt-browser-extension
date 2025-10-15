@@ -4,8 +4,7 @@
 
 .chat-gpt-container {
   margin-bottom: 30px;
-  flex-basis: 0;
-  flex-grow: 1;
+  flex-shrink: 0;
   z-index: 1;
 
   .chat-gpt-card {
