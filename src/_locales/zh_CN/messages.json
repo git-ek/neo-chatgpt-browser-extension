@@ -47,6 +47,18 @@
   "ext_privacy_link_text": {
     "message": "隐私政策"
   },
+  "ext_provider_chatgpt_label": {
+    "message": "ChatGPT"
+  },
+  "ext_provider_gemini_label": {
+    "message": "Gemini"
+  },
+  "ext_chatgpt_mode_webapp": {
+    "message": "Webapp"
+  },
+  "ext_chatgpt_mode_api": {
+    "message": "API"
+  },
   "ext_provider_openai_api_desc": {
     "message": "官方OpenAI API。更稳定，支持自定义模型。"
   },

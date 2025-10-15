@@ -3,7 +3,7 @@
     "message": "Neo ChatGPT for Browser Extension"
   },
   "appDesc": {
-    "message": "ChatGPT의 응답과 검색 엔진 결과를 함께 표시합니다"
+    "message": "검색 엔진 결과와 함께 ChatGPT 응답 표시"
   },
   "ext_chatgpt_answer": {
     "message": "ChatGPT 답변"
@@ -12,13 +12,13 @@
     "message": "ChatGPT"
   },
   "ext_cloudflare_login": {
-    "message": "로그인하고 Cloudflare 확인을 통과하세요"
+    "message": "Cloudflare에 로그인하여 확인 절차를 통과해주세요"
   },
   "ext_still_not_working": {
-    "message": "그래도 작동하지 않나요? 따라가다"
+    "message": "그래도 작동하지 않나요? 다음을 따라주세요"
   },
   "ext_openai_security_check": {
-    "message": "OpenAI는 때때로 보안 검사를 통과해야 합니다. 이 문제가 계속 발생하면 확장 프로그램 옵션에서 AI 공급자를 OpenAI API로 변경하세요."
+    "message": "OpenAI는 때때로 보안 검사를 통과해야 합니다. 이 문제가 계속되면 확장 프로그램 옵션에서 AI 공급자를 OpenAI API로 변경하세요."
   },
   "ext_error_prefix": {
     "message": "⚠️ 오류:"
@@ -42,12 +42,23 @@
     "message": "확장 프로그램 설정"
   },
   "ext_privacy_prefix": {
-    "message": "개인 정보 보호 및 보안에 대한 자세한 내용은 다음을 참조하세요."
+    "message": "개인 정보 보호 및 보안에 대한 자세한 내용은"
   },
   "ext_privacy_link_text": {
-    "message": "개인정보 처리방침"
+    "message": "개인정보처리방침"
   },
-
+  "ext_provider_chatgpt_label": {
+    "message": "ChatGPT"
+  },
+  "ext_provider_gemini_label": {
+    "message": "Gemini"
+  },
+  "ext_chatgpt_mode_webapp": {
+    "message": "Webapp"
+  },
+  "ext_chatgpt_mode_api": {
+    "message": "API"
+  },
   "ext_model_placeholder": {
     "message": "모델"
   },
@@ -55,19 +66,19 @@
     "message": "API 키"
   },
   "ext_api_key_warning1": {
-    "message": "⚠️ API 키는 난독화(Base64 인코딩)된 후 브라우저의 확장 프로그램 저장소에 저장됩니다."
+    "message": "⚠️ API 키는 Base64로 난독화된 후 브라우저의 확장 프로그램 저장소에 저장됩니다."
   },
   "ext_api_key_warning2": {
-    "message": "보안을 위해 브라우저 프로필을 공유하지 말고 사용하지 않는 키는 제거하고 제한된 범위의 키를 사용하는 것을 선호합니다."
+    "message": "보안을 위해 브라우저 프로필을 공유하지 말고, 사용하지 않는 키는 삭제하고, 제한된 범위의 키를 사용하는 것을 선호합니다."
   },
   "ext_see_prefix": {
     "message": "참조"
   },
   "ext_for_details_suffix": {
-    "message": "자세한 내용은."
+    "message": "를 참조하세요."
   },
   "ext_openai_api_key_guide": {
-    "message": "API 키는 다음에서 찾거나 만들 수 있습니다."
+    "message": "API 키는 다음에서 찾거나 생성할 수 있습니다."
   },
   "ext_link_here": {
     "message": "여기"
@@ -94,16 +105,16 @@
     "message": "Gemini API 키를 입력하세요."
   },
   "ext_toast_changes_saved": {
-    "message": "변경사항이 저장되었습니다"
+    "message": "변경사항이 저장되었습니다."
   },
   "ext_toast_failed_to_save": {
-    "message": "저장에 실패했습니다:"
+    "message": "저장 실패:"
   },
   "ext_toast_failed_to_load_models": {
     "message": "모델 목록을 불러오는 데 실패했습니다:"
   },
   "ext_toast_failed_to_load_configs": {
-    "message": "공급자 구성을 불러오는 데 실패했습니다:"
+    "message": "제공자 구성을 불러오는 데 실패했습니다:"
   },
   "ext_popup_title": {
     "message": "Neo ChatGPT 확장 프로그램"

@@ -47,7 +47,18 @@
   "ext_privacy_link_text": {
     "message": "Politica de confidențialitate"
   },
-
+  "ext_provider_chatgpt_label": {
+    "message": "ChatGPT"
+  },
+  "ext_provider_gemini_label": {
+    "message": "Gemini"
+  },
+  "ext_chatgpt_mode_webapp": {
+    "message": "Webapp"
+  },
+  "ext_chatgpt_mode_api": {
+    "message": "API"
+  },
   "ext_model_placeholder": {
     "message": "model"
   },

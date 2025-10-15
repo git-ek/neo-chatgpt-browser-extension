@@ -47,7 +47,18 @@
   "ext_privacy_link_text": {
     "message": "Privacy Policy"
   },
-
+  "ext_provider_chatgpt_label": {
+    "message": "ChatGPT"
+  },
+  "ext_provider_gemini_label": {
+    "message": "Gemini"
+  },
+  "ext_chatgpt_mode_webapp": {
+    "message": "Webapp"
+  },
+  "ext_chatgpt_mode_api": {
+    "message": "API"
+  },
   "ext_provider_openai_api_desc": {
     "message": "The official OpenAI API. More stable and supports custom models."
   },

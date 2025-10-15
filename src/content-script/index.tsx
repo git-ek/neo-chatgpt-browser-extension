@@ -6,21 +6,37 @@ import ChatGPTCard from './ChatGPTCard'
 import { config, SearchEngine } from './search-engine-configs'
 import { getPossibleElementByQuerySelector } from './utils'
 
+function applyTheme(theme: Theme, container: HTMLElement) {
+  if (theme === Theme.Dark) {
+    container.classList.remove('gpt-light')
+    container.classList.add('gpt-dark')
+  } else {
+    container.classList.remove('gpt-dark')
+    container.classList.add('gpt-light')
+  }
+}
+
 async function mount(question: string, siteConfig: SearchEngine) {
   const container = document.createElement('div')
   container.className = 'chat-gpt-container'
 
   const userConfig = await getUserConfig()
-  let theme: Theme
+
+  // Set initial theme
+  let currentTheme: Theme
   if (userConfig.theme === Theme.Auto) {
-    theme = detectSystemColorScheme()
+    currentTheme = detectSystemColorScheme()
   } else {
-    theme = userConfig.theme
+    currentTheme = userConfig.theme
   }
-  if (theme === Theme.Dark) {
-    container.classList.add('gpt-dark')
-  } else {
-    container.classList.add('gpt-light')
+  applyTheme(currentTheme, container)
+
+  // Listen for theme changes
+  if (userConfig.theme === Theme.Auto) {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    mediaQuery.addEventListener('change', (e) => {
+      applyTheme(e.matches ? Theme.Dark : Theme.Light, container)
+    })
   }
 
   const siderbarContainer = getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery)
