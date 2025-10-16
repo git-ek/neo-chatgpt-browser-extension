@@ -12,19 +12,27 @@ interface Props {
   question: string
   activeProvider?: ProviderType
   onAnswer: (answer: Answer | null) => void
+  onError: (error: string) => void
+  error: string
   onOpenSettings: () => void
 }
 
 export type QueryStatus = 'success' | 'error' | undefined
 
-const ChatGPTQuery: FC<Props> = ({ question, activeProvider, onAnswer, onOpenSettings }) => {
+const ChatGPTQuery: FC<Props> = ({
+  question,
+  activeProvider,
+  onAnswer,
+  onError,
+  error,
+  onOpenSettings,
+}) => {
   const { data: configs, error: configsError } = useSWR<ProviderConfigs>(
     'provider-configs',
     getProviderConfigs,
   )
 
   const [answer, setAnswer] = useState<Answer | null>(null)
-  const [error, setError] = useState('')
   const [retry, setRetry] = useState(0)
   const [status, setStatus] = useState<QueryStatus>()
 
@@ -32,10 +40,6 @@ const ChatGPTQuery: FC<Props> = ({ question, activeProvider, onAnswer, onOpenSet
     if (!activeProvider) {
       return
     }
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setAnswer(null)
-    setError('')
-    setStatus(undefined)
 
     const port = Browser.runtime.connect()
     const listener = (msg: Answer | { error: string } | { event: string }) => {
@@ -44,23 +48,26 @@ const ChatGPTQuery: FC<Props> = ({ question, activeProvider, onAnswer, onOpenSet
         onAnswer(msg)
         setStatus('success')
       } else if ('error' in msg) {
-        setError(msg.error)
+        // Clear previous answer when a new error comes
         onAnswer(null)
+        onError(msg.error)
         setStatus('error')
       }
     }
     port.onMessage.addListener(listener)
+
     port.postMessage({ question, provider: activeProvider })
+
     return () => {
       port.onMessage.removeListener(listener)
       port.disconnect()
     }
-  }, [question, retry, activeProvider, onAnswer])
+  }, [question, retry, activeProvider, onAnswer, onError])
 
   useEffect(() => {
     const onFocus = () => {
       if (error && (error === 'UNAUTHORIZED' || error === 'CLOUDFLARE')) {
-        setError('')
+        onError('')
         setRetry((r) => r + 1)
       }
     }
@@ -68,7 +75,7 @@ const ChatGPTQuery: FC<Props> = ({ question, activeProvider, onAnswer, onOpenSet
     return () => {
       window.removeEventListener('focus', onFocus)
     }
-  }, [error])
+  }, [error, onError])
 
   useEffect(() => {
     if (status === 'success') {

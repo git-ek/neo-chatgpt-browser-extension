@@ -2,12 +2,24 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import Browser from 'webextension-polyfill'
 import { ProviderFactory } from '../../src/background/providers/factory'
 import { Provider } from '../../src/background/types'
+import { getProviderConfigs } from '../../src/config'
 import { sendMessageFeedback, getChatGPTAccessToken } from '../../src/background/providers/chatgpt'
 
 // Mock dependencies
 vi.mock('../../src/config')
 vi.mock('../../src/background/providers/factory')
 vi.mock('../../src/background/providers/chatgpt')
+vi.stubGlobal('chrome', {
+  offscreen: {
+    createDocument: vi.fn(),
+  },
+}) // Mock chrome.offscreen
+vi.stubGlobal('self', {
+  // Mock self.clients for hasOffscreenDocument
+  clients: {
+    matchAll: vi.fn().mockResolvedValue([]),
+  },
+})
 
 const mockedProviderFactory = vi.mocked(ProviderFactory)
 const mockedSendMessageFeedback = vi.mocked(sendMessageFeedback)
@@ -16,6 +28,7 @@ const mockedGetChatGPTAccessToken = vi.mocked(getChatGPTAccessToken)
 const mockProvider = {
   generateAnswer: vi.fn().mockResolvedValue({ cleanup: vi.fn() }),
 }
+const mockedGetProviderConfigs = vi.mocked(getProviderConfigs)
 
 describe('background/index', () => {
   beforeEach(async () => {
@@ -48,6 +61,7 @@ describe('background/index', () => {
       vi.resetModules()
       await import('../../src/background/index')
       mockedProviderFactory.create.mockResolvedValue(mockProvider as Provider)
+      mockedGetProviderConfigs.mockResolvedValue({} as any) // Provide a default mock
     })
 
     it('should handle connection and generate answer', async () => {
@@ -69,13 +83,13 @@ describe('background/index', () => {
 
     it('should handle errors during answer generation', async () => {
       const onMessageListener = mockPort.onMessage.addListener.mock.calls[0][0]
-      const errorMessage = 'Test error'
-      mockProvider.generateAnswer.mockRejectedValue(new Error(errorMessage))
+      const error = new Error('Test error')
+      mockProvider.generateAnswer.mockRejectedValue(error)
 
       const message = { question: 'test question' }
       await onMessageListener(message)
 
-      expect(mockPort.postMessage).toHaveBeenCalledWith({ error: errorMessage })
+      expect(mockPort.postMessage).toHaveBeenCalledWith({ error: error.message })
     })
   })
 

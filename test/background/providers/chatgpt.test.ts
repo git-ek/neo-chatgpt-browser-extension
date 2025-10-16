@@ -1,8 +1,16 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
+import Browser from 'webextension-polyfill'
 import { fetchSSE } from '../../../src/background/fetch-sse'
 
 // Mock dependencies that are not dynamically imported
 vi.mock('../../../src/background/fetch-sse')
+vi.mock('webextension-polyfill')
+vi.stubGlobal('chrome', {
+  // Add runtime.id to satisfy webextension-polyfill check
+  runtime: {
+    id: 'test-extension-id',
+  },
+})
 
 describe('ChatGPT Provider related tests', () => {
   afterEach(() => {
@@ -23,53 +31,57 @@ describe('ChatGPT Provider related tests', () => {
 
     const { getChatGPTAccessToken } = await import('../../../src/background/providers/chatgpt')
 
-    const fetchMock = vi.fn()
-    vi.stubGlobal('fetch', fetchMock)
+    const sendMessageMock = vi.spyOn(Browser.runtime, 'sendMessage')
 
     // --- Step 1: Successful fetch and cache ---
-    fetchMock.mockResolvedValueOnce({
-      status: 200,
-      json: async () => ({ accessToken: 'test-token' }),
-    } as Response)
+    sendMessageMock.mockResolvedValueOnce({
+      success: true,
+      data: { accessToken: 'test-token' },
+    })
 
     const token1 = await getChatGPTAccessToken()
     expect(token1).toBe('test-token')
-    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(sendMessageMock).toHaveBeenCalledTimes(1)
     expect(mockCache.get('accessToken')).toBe('test-token')
 
     // --- Step 2: Second call should use the cache ---
     const token2 = await getChatGPTAccessToken()
     expect(token2).toBe('test-token')
-    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(sendMessageMock).toHaveBeenCalledTimes(1)
 
     // --- Step 3: Manually clear cache and test UNAUTHORIZED failure ---
     mockCache.clear()
-    fetchMock.mockResolvedValueOnce({
-      status: 200,
-      json: async () => ({}),
-    } as Response)
+    sendMessageMock.mockResolvedValueOnce({
+      success: true,
+      data: {},
+    })
 
     await expect(getChatGPTAccessToken()).rejects.toThrow('UNAUTHORIZED')
-    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(sendMessageMock).toHaveBeenCalledTimes(2)
 
     // --- Step 4: Test CLOUDFLARE failure ---
     mockCache.clear()
-    fetchMock.mockResolvedValueOnce({ status: 403 } as Response)
+    sendMessageMock.mockResolvedValueOnce({
+      success: false,
+      error: 'CLOUDFLARE',
+    })
     await expect(getChatGPTAccessToken()).rejects.toThrow('CLOUDFLARE')
-    expect(fetchMock).toHaveBeenCalledTimes(3)
+    expect(sendMessageMock).toHaveBeenCalledTimes(3)
   })
 
   it('sendMessageFeedback should make a correct request', async () => {
     const { sendMessageFeedback } = await import('../../../src/background/providers/chatgpt')
-    const fetchMock = vi.fn().mockResolvedValue({} as Response)
-    vi.stubGlobal('fetch', fetchMock)
+    const sendMessageMock = vi
+      .spyOn(Browser.runtime, 'sendMessage')
+      .mockResolvedValue({ success: true })
 
     const feedbackData = { message_id: '1', rating: 'thumbsUp' }
     await sendMessageFeedback('test-token', feedbackData)
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://chat.openai.com/backend-api/conversation/message_feedback',
-      {
+    expect(sendMessageMock).toHaveBeenCalledWith({
+      type: 'PROXY_FETCH',
+      url: 'https://chat.openai.com/backend-api/conversation/message_feedback',
+      options: {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,19 +89,21 @@ describe('ChatGPT Provider related tests', () => {
         },
         body: JSON.stringify(feedbackData),
       },
-    )
+    })
   })
 
   it('setConversationProperty should make a correct request', async () => {
     const { setConversationProperty } = await import('../../../src/background/providers/chatgpt')
-    const fetchMock = vi.fn().mockResolvedValue({} as Response)
-    vi.stubGlobal('fetch', fetchMock)
+    const sendMessageMock = vi
+      .spyOn(Browser.runtime, 'sendMessage')
+      .mockResolvedValue({ success: true })
 
     await setConversationProperty('test-token', 'conv-1', { is_visible: false })
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://chat.openai.com/backend-api/conversation/conv-1',
-      {
+    expect(sendMessageMock).toHaveBeenCalledWith({
+      type: 'PROXY_FETCH',
+      url: 'https://chat.openai.com/backend-api/conversation/conv-1',
+      options: {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +111,7 @@ describe('ChatGPT Provider related tests', () => {
         },
         body: JSON.stringify({ is_visible: false }),
       },
-    )
+    })
   })
 
   describe('ChatGPTProvider', () => {
@@ -112,13 +126,10 @@ describe('ChatGPT Provider related tests', () => {
     })
 
     it('should use fallback model if model fetch fails', async () => {
-      const fetchMock = vi.fn().mockImplementation(async (url) => {
-        if (url.includes('/models')) {
-          throw new Error('Network error')
-        }
-        return { status: 200, json: async () => ({}) } as Response
+      vi.spyOn(Browser.runtime, 'sendMessage').mockImplementation(async (msg) => {
+        if (msg.url?.includes('/models')) throw new Error('Network error')
+        return { success: true, data: {} }
       })
-      vi.stubGlobal('fetch', fetchMock)
 
       const provider = new ChatGPTProvider('test-token')
       vi.mocked(fetchSSE).mockImplementation(async (url, options) => {
@@ -150,13 +161,13 @@ describe('ChatGPT Provider related tests', () => {
     })
 
     it('should call cleanup function to hide conversation', async () => {
-      const fetchMock = vi.fn().mockImplementation(async (url) => {
-        if (url.includes('/models')) {
-          return { status: 200, json: async () => ({ models: [{ slug: 'gpt-4' }] }) } as Response
-        }
-        return { status: 200, json: async () => ({}) } as Response
-      })
-      vi.stubGlobal('fetch', fetchMock)
+      const sendMessageMock = vi
+        .spyOn(Browser.runtime, 'sendMessage')
+        .mockImplementation(async (msg) => {
+          if (msg.url?.includes('/models'))
+            return { success: true, data: { models: [{ slug: 'gpt-4' }] } }
+          return { success: true, data: {} }
+        })
 
       const provider = new ChatGPTProvider('test-token')
       vi.mocked(fetchSSE).mockResolvedValue(undefined)
@@ -171,10 +182,14 @@ describe('ChatGPT Provider related tests', () => {
       const { cleanup } = await provider.generateAnswer({ prompt: 'test', onEvent: () => {} })
       await cleanup()
 
-      expect(fetchMock).toHaveBeenCalledWith(
-        'https://chat.openai.com/backend-api/conversation/conv-to-hide',
-        expect.objectContaining({ method: 'PATCH', body: JSON.stringify({ is_visible: false }) }),
-      )
+      expect(sendMessageMock).toHaveBeenCalledWith({
+        type: 'PROXY_FETCH',
+        url: 'https://chat.openai.com/backend-api/conversation/conv-to-hide',
+        options: expect.objectContaining({
+          method: 'PATCH',
+          body: JSON.stringify({ is_visible: false }),
+        }),
+      })
     })
   })
 })

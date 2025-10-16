@@ -150,6 +150,12 @@
   }
 ,
   "ext_default_provider_label": {
-    "message": "ספק ברירת מחדל"
+    "message": "הגדרות ברירת מחדל"
+  },
+  "ext_language_label": {
+    "message": "שפה"
+  },
+  "ext_default_model_label": {
+    "message": "מודל ברירת מחדל"
   }
 }

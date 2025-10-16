@@ -1,5 +1,5 @@
 import Browser from 'webextension-polyfill'
-import { getProviderConfigs, ProviderType } from '../config'
+import { getProviderConfigs, getUserConfig, Language, ProviderType } from '../config'
 import { sendMessageFeedback, getChatGPTAccessToken } from './providers/chatgpt'
 import { ProviderFactory } from './providers/factory'
 
@@ -35,6 +35,7 @@ async function generateAnswers(
   providerType?: ProviderType,
 ) {
   const providerConfigs = await getProviderConfigs()
+  const userConfig = await getUserConfig()
 
   const providerToUse = providerType || providerConfigs.provider
 
@@ -49,7 +50,12 @@ async function generateAnswers(
     await setupOffscreenDocument()
   }
 
-  const provider = await ProviderFactory.create(providerConfigs, providerType)
+  let prompt = question
+  if (userConfig.language !== Language.Auto) {
+    prompt = `${question} (Respond in ${userConfig.language})`
+  }
+
+  const provider = await ProviderFactory.create(providerConfigs, providerToUse)
 
   const controller = new AbortController()
   port.onDisconnect.addListener(() => {
@@ -58,7 +64,7 @@ async function generateAnswers(
   })
 
   const { cleanup } = await provider.generateAnswer({
-    prompt: question,
+    prompt,
     signal: controller.signal,
     onEvent(event) {
       // Check if the port is still connected before sending a message

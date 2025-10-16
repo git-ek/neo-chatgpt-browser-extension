@@ -35,11 +35,18 @@ function ChatGPTCard({ question }: ChatGPTCardProps) {
 
   // Derive the active provider from the loaded settings, falling back to a default.
   const savedProvider = providerConfigs?.provider || ProviderType.ChatGPT
-  const [activeTab, setActiveTab] = useState<ActiveTab>(savedProvider)
-  const [activeProvider, setActiveProvider] = useState<ProviderType>(savedProvider)
+  const [activeTab, setActiveTab] = useState<ActiveTab>(savedProvider) // This controls the visible tab
+
+  // State for each provider's content
+  const [chatGPTAnswer, setChatGPTAnswer] = useState<Answer | null>(null)
+  const [geminiAnswer, setGeminiAnswer] = useState<Answer | null>(null)
+  const [chatGPTError, setChatGPTError] = useState('')
+  const [geminiError, setGeminiError] = useState('')
+
   const [width, setWidth] = useState(userConfig?.cardWidth ?? 400)
-  const [answer, setAnswer] = useState<Answer | null>(null)
   const cardRef = useRef<HTMLDivElement>(null)
+
+  const answer = activeTab === ProviderType.ChatGPT ? chatGPTAnswer : geminiAnswer
 
   useEffect(() => {
     if (!cardRef.current) return
@@ -70,9 +77,6 @@ function ChatGPTCard({ question }: ChatGPTCardProps) {
 
   const handleTabClick = (tab: ActiveTab) => {
     setActiveTab(tab)
-    if (tab !== 'settings') {
-      setActiveProvider(tab)
-    }
   }
 
   const tabClass = (isActive: boolean) =>
@@ -124,18 +128,39 @@ function ChatGPTCard({ question }: ChatGPTCardProps) {
         </div>
       </div>
       {error && <div className="p-2 text-red-500">{error.message}</div>}
-      {activeTab !== 'settings' && (
+
+      {/* Render each provider's query component but hide it if not active */}
+      <div style={{ display: activeTab === ProviderType.ChatGPT ? 'block' : 'none' }}>
         <ChatGPTQuery
+          key={`${ProviderType.ChatGPT}-${question}`}
           question={question}
-          activeProvider={activeProvider}
-          onAnswer={setAnswer}
+          activeProvider={ProviderType.ChatGPT}
+          onAnswer={setChatGPTAnswer}
+          onError={setChatGPTError}
+          error={chatGPTError}
           onOpenSettings={() => handleTabClick('settings')}
         />
-      )}
-      {activeTab === 'settings' &&
-        (providerConfigs && models ? (
+      </div>
+      <div style={{ display: activeTab === ProviderType.Gemini ? 'block' : 'none' }}>
+        <ChatGPTQuery
+          key={`${ProviderType.Gemini}-${question}`}
+          question={question}
+          activeProvider={ProviderType.Gemini}
+          onAnswer={setGeminiAnswer}
+          onError={setGeminiError}
+          error={geminiError}
+          onOpenSettings={() => handleTabClick('settings')}
+        />
+      </div>
+
+      {activeTab === 'settings' && // The settings tab does not need to be preserved
+        (providerConfigs && models && userConfig ? (
           <div className="p-2">
-            <ConfigPanel initialConfigs={providerConfigs} models={models} />
+            <ConfigPanel
+              initialConfigs={providerConfigs}
+              initialUserConfig={userConfig}
+              models={models}
+            />
           </div>
         ) : (
           <div className="p-2" role="status">

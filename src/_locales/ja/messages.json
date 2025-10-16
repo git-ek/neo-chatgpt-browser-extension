@@ -149,6 +149,12 @@
   }
 ,
   "ext_default_provider_label": {
-    "message": "デフォルトのプロバイダー"
+    "message": "基本設定"
+  },
+  "ext_language_label": {
+    "message": "言語"
+  },
+  "ext_default_model_label": {
+    "message": "デフォルトモデル"
   }
 }

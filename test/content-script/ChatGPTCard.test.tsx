@@ -62,7 +62,10 @@ describe('ChatGPTCard', () => {
         return { data: mockUserConfig, error: undefined } as SWRResponse<UserConfig>
       }
       if (Array.isArray(key) && key[0] === 'models') {
-        return { data: ['gpt-4', 'gpt-3.5-turbo'], error: undefined } as SWRResponse<string[]>
+        // This hook depends on providerConfigs. If the key is generated (i.e., not null),
+        // it means providerConfigs is available, so we should return model data.
+        const models = key[1] === ProviderType.ChatGPT ? ['gpt-4', 'gpt-3.5-turbo'] : ['gemini-pro']
+        return { data: models, error: undefined } as SWRResponse<string[]>
       }
       return { data: undefined, error: undefined } as SWRResponse
     })
@@ -84,7 +87,9 @@ describe('ChatGPTCard', () => {
     expect(gearIcon).toBeInTheDocument()
 
     // Check that ChatGPTQuery is rendered by default
-    expect(screen.getByTestId('ChatGPTQuery')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByTestId('ChatGPTQuery')).toBeInTheDocument()
+    })
 
     // Click settings icon and check that ConfigPanel is rendered
     fireEvent.click(gearIcon.parentElement!)

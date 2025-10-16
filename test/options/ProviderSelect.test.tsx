@@ -48,7 +48,7 @@ describe('options/ProviderSelect', () => {
   it('should display a loading message initially', () => {
     mockedUseSWR.mockReturnValue({ data: undefined, error: undefined })
     render(<ProviderSelect />)
-    expect(screen.getByRole('status')).toHaveTextContent('Loading...')
+    expect(screen.getByRole('status')).toHaveTextContent('ext_waiting_for_response')
   })
 
   it('should display an error message if fetching fails', () => {

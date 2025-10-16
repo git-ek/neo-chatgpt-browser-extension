@@ -30,6 +30,10 @@ const mockPort = {
   disconnect: vi.fn(),
 }
 vi.spyOn(Browser.runtime, 'connect').mockReturnValue(mockPort as unknown as Browser.Runtime.Port)
+vi.spyOn(Browser.i18n, 'getMessage').mockImplementation((key, substitutions) => {
+  if (substitutions) return `${key} ${substitutions}`
+  return key
+})
 
 describe('ChatGPTQuery', () => {
   const mockConfigs: ProviderConfigs = {
@@ -58,7 +62,7 @@ describe('ChatGPTQuery', () => {
         onOpenSettings={vi.fn()}
       />,
     )
-    expect(screen.getByText('ext_waiting_for_response')).toBeInTheDocument()
+    expect(screen.getByText('ext_waiting_for_response Chatgpt')).toBeInTheDocument()
   })
 
   it('should render error message if config loading fails', () => {
@@ -83,7 +87,7 @@ describe('ChatGPTQuery', () => {
         onOpenSettings={vi.fn()}
       />,
     )
-    expect(await screen.findByText('ext_waiting_for_response')).toBeInTheDocument()
+    expect(await screen.findByText('ext_waiting_for_response Chatgpt')).toBeInTheDocument()
   })
 
   it('should render the answer when received', async () => {

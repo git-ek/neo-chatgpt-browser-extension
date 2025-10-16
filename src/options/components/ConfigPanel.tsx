@@ -1,18 +1,83 @@
 import { FC, useCallback, useState } from 'react'
 import Browser from 'webextension-polyfill'
-import { ProviderConfigs, ProviderType, saveProviderConfigs, ChatGPTMode } from '../../config'
+import {
+  ProviderConfigs,
+  ProviderType,
+  saveProviderConfigs,
+  ChatGPTMode,
+  UserConfig,
+  updateUserConfig,
+  Language,
+} from '../../config'
 import GeminiConfig from '../GeminiConfig'
 import OpenAIConfig from '../OpenAIConfig'
 import { Toast } from './Toast'
 
 type ActiveSettingsTab = ProviderType | 'default'
 
-export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[] }> = ({
-  initialConfigs,
-  models,
-}) => {
+const DefaultSettings: FC<{
+  defaultProvider: ProviderType
+  setDefaultProvider: (provider: ProviderType) => void
+  language: Language
+  setLanguage: (language: Language) => void
+}> = ({ defaultProvider, setDefaultProvider, language, setLanguage }) => (
+  <div className="space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+    <div>
+      <h3 className="mb-3 text-base font-semibold text-gray-800 dark:text-gray-200">
+        {Browser.i18n.getMessage('ext_default_model_label')}
+      </h3>
+      <div className="flex items-center space-x-4">
+        <label className="flex items-center space-x-2">
+          <input
+            type="radio"
+            name="default-provider"
+            value={ProviderType.ChatGPT}
+            checked={defaultProvider === ProviderType.ChatGPT}
+            onChange={(e) => setDefaultProvider(e.target.value as ProviderType)}
+            className="form-radio h-4 w-4 text-blue-600"
+          />
+          <span className="dark:text-gray-300">ChatGPT</span>
+        </label>
+        <label className="flex items-center space-x-2">
+          <input
+            type="radio"
+            name="default-provider"
+            value={ProviderType.Gemini}
+            checked={defaultProvider === ProviderType.Gemini}
+            onChange={(e) => setDefaultProvider(e.target.value as ProviderType)}
+            className="form-radio h-4 w-4 text-blue-600"
+          />
+          <span className="dark:text-gray-300">Gemini</span>
+        </label>
+      </div>
+    </div>
+    <div>
+      <h3 className="mb-3 text-base font-semibold text-gray-800 dark:text-gray-200">
+        {Browser.i18n.getMessage('ext_language_label')}
+      </h3>
+      <select
+        value={language}
+        onChange={(e) => setLanguage(e.target.value as Language)}
+        className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+      >
+        {Object.entries(Language).map(([key, value]) => (
+          <option key={value} value={value}>
+            {key}
+          </option>
+        ))}
+      </select>
+    </div>
+  </div>
+)
+
+export const ConfigPanel: FC<{
+  initialConfigs: ProviderConfigs
+  initialUserConfig: UserConfig
+  models: string[]
+}> = ({ initialConfigs, initialUserConfig, models }) => {
   const [activeTab, setActiveTab] = useState<ActiveSettingsTab>('default')
   const [defaultProvider, setDefaultProvider] = useState<ProviderType>(initialConfigs.provider) // For the radio buttons
+  const [language, setLanguage] = useState<Language>(initialUserConfig.language)
 
   // State for API keys and models
   const [chatGPTMode, setChatGPTMode] = useState<ChatGPTMode>(initialConfigs.configs.chatgpt.mode)
@@ -23,7 +88,6 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
   const [geminiApiKey, setGeminiApiKey] = useState(initialConfigs.configs.gemini.apiKey ?? '')
   const [geminiModel, setGeminiModel] = useState(initialConfigs.configs.gemini.model ?? models[0])
 
-  const [dynamicModels] = useState<string[]>(models)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
 
   const save = useCallback(async () => {
@@ -57,6 +121,7 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
 
     try {
       await saveProviderConfigs(newConfigs)
+      await updateUserConfig({ language })
       setToast({ message: Browser.i18n.getMessage('ext_toast_changes_saved'), type: 'success' })
     } catch (err) {
       setToast({
@@ -64,7 +129,15 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
         type: 'error',
       })
     }
-  }, [defaultProvider, chatGPTMode, chatGPTApiKey, chatGPTModel, geminiApiKey, geminiModel])
+  }, [
+    defaultProvider,
+    chatGPTMode,
+    chatGPTApiKey,
+    chatGPTModel,
+    geminiApiKey,
+    geminiModel,
+    language,
+  ])
 
   const tabClass = (isActive: boolean) =>
     `px-4 py-1.5 text-sm font-medium rounded-md focus:outline-none transition-colors ${
@@ -108,35 +181,12 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
       </div>
 
       {activeTab === 'default' && (
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
-          <h3 className="mb-3 text-base font-semibold text-gray-800 dark:text-gray-200">
-            {Browser.i18n.getMessage('ext_default_provider_label')}
-          </h3>
-          <div className="flex items-center space-x-4">
-            <label className="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="default-provider"
-                value={ProviderType.ChatGPT}
-                checked={defaultProvider === ProviderType.ChatGPT}
-                onChange={(e) => setDefaultProvider(e.target.value as ProviderType)}
-                className="form-radio h-4 w-4 text-blue-600"
-              />
-              <span className="dark:text-gray-300">ChatGPT</span>
-            </label>
-            <label className="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="default-provider"
-                value={ProviderType.Gemini}
-                checked={defaultProvider === ProviderType.Gemini}
-                onChange={(e) => setDefaultProvider(e.target.value as ProviderType)}
-                className="form-radio h-4 w-4 text-blue-600"
-              />
-              <span className="dark:text-gray-300">Gemini</span>
-            </label>
-          </div>
-        </div>
+        <DefaultSettings
+          defaultProvider={defaultProvider}
+          setDefaultProvider={setDefaultProvider}
+          language={language}
+          setLanguage={setLanguage}
+        />
       )}
 
       {activeTab === ProviderType.ChatGPT && (
@@ -173,7 +223,7 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
               }}
               model={chatGPTModel}
               setModel={setChatGPTModel}
-              dynamicModels={dynamicModels}
+              dynamicModels={models}
             />
           )}
         </div>
@@ -188,7 +238,7 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
             }}
             model={geminiModel}
             setModel={setGeminiModel}
-            dynamicModels={dynamicModels}
+            dynamicModels={models}
           />
         </div>
       )}
