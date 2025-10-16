@@ -15,7 +15,7 @@
     "@primer/octicons-react": "^17.9.0",
     "eventsource-parser": "^0.0.5",
     "expiry-map": "^2.0.0",
-    "github-markdown-css": "^5.1.0",
+
     "inter-ui": "^3.19.3",
     "lodash-es": "^4.17.21",
     "preact": "^10.11.3",
@@ -29,6 +29,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/preact": "^3.2.4",
     "@types/fs-extra": "^9.0.13",

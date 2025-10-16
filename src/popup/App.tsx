@@ -3,50 +3,27 @@ import Browser from 'webextension-polyfill'
 import logo from '../logo.png'
 
 function App() {
-  // 단일 기능(설정 진입)만 제공하는 심플 카드형 UI
   const openOptionsPage = useCallback(() => {
     Browser.runtime.sendMessage({ type: 'OPEN_OPTIONS_PAGE' })
   }, [])
+
   return (
-    <div
-      style={{
-        maxWidth: 340,
-        margin: '32px auto',
-        background: '#fff',
-        borderRadius: 16,
-        boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-        padding: '24px',
-        fontFamily: 'Inter, sans-serif',
-        color: '#222',
-        textAlign: 'center',
-      }}
-    >
-      <img src={logo} style={{ width: 32, height: 32, borderRadius: 8, marginBottom: 12 }} />
-      <div style={{ fontWeight: 700, fontSize: '1.1em', marginBottom: 8 }}>
-        {Browser.i18n.getMessage('ext_popup_title')}
-      </div>
+    <div className="w-80 p-8 mx-auto my-8 bg-white rounded-2xl shadow-lg text-center text-gray-800">
+      <img src={logo} className="w-8 h-8 rounded-lg mb-3 mx-auto" alt="Extension Logo" />
+      <div className="font-bold text-lg mb-2">{Browser.i18n.getMessage('ext_popup_title')}</div>
       <button
-        style={{
-          background: '#2563eb',
-          color: '#fff',
-          border: 'none',
-          borderRadius: 8,
-          padding: '10px 24px',
-          fontWeight: 600,
-          fontSize: '1em',
-          cursor: 'pointer',
-          marginTop: 16,
-        }}
+        className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg mt-4 cursor-pointer hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         onClick={openOptionsPage}
       >
         {Browser.i18n.getMessage('ext_popup_open_settings')}
       </button>
-      <div style={{ marginTop: 24, fontSize: '0.95em', color: '#888' }}>
+      <div className="mt-6 text-sm text-gray-500">
         {Browser.i18n.getMessage('ext_privacy_prefix')}{' '}
         <a
           href="https://github.com/git-ek/neo-chatgpt-browser-extension/blob/main/PRIVACY.md"
           target="_blank"
           rel="noreferrer"
+          className="underline hover:text-blue-600"
         >
           {Browser.i18n.getMessage('ext_privacy_link_text')}
         </a>

@@ -115,9 +115,11 @@ function ChatGPTQuery({ question }: Props) {
 
     if (answer) {
       return (
-        <ReactMarkdown rehypePlugins={[[rehypeHighlight, { detect: true }]]}>
-          {answer.text}
-        </ReactMarkdown>
+        <div className="prose dark:prose-invert max-w-none">
+          <ReactMarkdown rehypePlugins={[[rehypeHighlight, { detect: true }]]}>
+            {answer.text}
+          </ReactMarkdown>
+        </div>
       )
     }
 
