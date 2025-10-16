@@ -44,34 +44,40 @@ async function build() {
     // esbuild is now imported dynamically inside the try block
     const esbuild = await import('esbuild')
 
+    // Build UI scripts (content-script, options, popup)
     await esbuild.build({
-      entryPoints: [
-        'src/content-script/index.tsx',
-        'src/background/index.ts',
-        'src/options/index.tsx',
-        'src/popup/index.tsx',
-      ],
+      entryPoints: ['src/content-script/index.tsx', 'src/options/index.tsx', 'src/popup/index.tsx'],
       bundle: true,
       outdir: outdir,
       treeShaking: true,
       minify: true,
       legalComments: 'none',
-      define: {
-        'process.env.NODE_ENV': '"production"',
-      },
+      target: 'es2020',
+      define: { 'process.env.NODE_ENV': '"production"' },
       jsxFactory: 'h',
       jsxFragment: 'Fragment',
       jsx: 'automatic',
-      loader: {
-        '.png': 'dataurl',
-        '.css': 'css',
-      },
+      loader: { '.png': 'dataurl', '.css': 'css' },
+    })
+
+    // Build background script separately with IIFE wrapper
+    await esbuild.build({
+      entryPoints: ['src/background/index.ts'],
+      bundle: true,
+      outfile: `${outdir}/background.js`,
+      treeShaking: true,
+      minify: true,
+      legalComments: 'none',
+      target: 'es2020',
+      format: 'iife',
+      define: { 'process.env.NODE_ENV': '"production"' },
+      loader: { '.png': 'dataurl' },
     })
 
     const commonFiles = [
       { src: 'build/content-script/index.js', dst: 'content-script.js' },
       { src: 'build/content-script/index.css', dst: 'content-script.css' },
-      { src: 'build/background/index.js', dst: 'background.js' },
+      { src: 'build/background.js', dst: 'background.js' },
       { src: 'build/options/index.js', dst: 'options.js' },
       { src: 'build/options/index.css', dst: 'options.css' },
       { src: 'src/options/index.html', dst: 'options.html' },

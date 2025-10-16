@@ -1,50 +1,147 @@
-import { useState } from 'react'
+import { GearIcon } from '@primer/octicons-react'
+import { useEffect, useRef, useState } from 'react'
 import useSWR from 'swr'
+import Browser from 'webextension-polyfill'
 import ChatGPTQuery from './ChatGPTQuery'
-import logo from '../logo.png'
-import { getProviderConfigs, ProviderConfigs, ProviderType } from '../config'
+import {
+  getProviderConfigs,
+  ProviderConfigs,
+  ProviderType,
+  updateUserConfig,
+  getUserConfig,
+} from '../config'
+import ChatGPTFeedback from './ChatGPTFeedback'
+import { Answer } from '../messaging'
+import { ConfigPanel } from '../options/components/ConfigPanel'
+import { loadModels } from '../options/utils'
 
 interface ChatGPTCardProps {
   question: string
 }
 
-function ChatGPTCard({ question }: ChatGPTCardProps) {
-  const { data: configs } = useSWR<ProviderConfigs>('provider-configs', getProviderConfigs)
+type ActiveTab = ProviderType | 'settings'
 
-  const [userSelectedProvider, setUserSelectedProvider] = useState<ProviderType | null>(null)
-  const activeProvider = userSelectedProvider ?? configs?.provider
+function ChatGPTCard({ question }: ChatGPTCardProps) {
+  // Fetch configs for both query and settings panels
+  const { data: providerConfigs, error: providerConfigsError } = useSWR<ProviderConfigs>(
+    'provider-configs',
+    getProviderConfigs,
+  )
+  const { data: userConfig } = useSWR('user-config', getUserConfig)
+  const { data: models, error: modelsError } = useSWR(
+    () => (providerConfigs ? ['models', providerConfigs.provider] : null),
+    ([, provider]) => loadModels(provider),
+  )
+
+  const [activeTab, setActiveTab] = useState<ActiveTab>(providerConfigs?.provider ?? 'chatgpt')
+  const [activeProvider, setActiveProvider] = useState<ProviderType>(
+    providerConfigs?.provider ?? ProviderType.ChatGPT,
+  )
+  const [width, setWidth] = useState(userConfig?.cardWidth ?? 400)
+  const [answer, setAnswer] = useState<Answer | null>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!cardRef.current) return
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const newWidth = Math.round(entry.contentRect.width)
+        setWidth(newWidth)
+      }
+    })
+
+    resizeObserver.observe(cardRef.current)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [])
+
+  useEffect(() => {
+    const saveWidth = async () => {
+      if (width !== userConfig?.cardWidth) {
+        await updateUserConfig({ cardWidth: width })
+      }
+    }
+    const timer = setTimeout(saveWidth, 500) // Debounce saving
+    return () => clearTimeout(timer)
+  }, [width, userConfig?.cardWidth])
+
+  const handleTabClick = (tab: ActiveTab) => {
+    setActiveTab(tab)
+    if (tab !== 'settings') {
+      setActiveProvider(tab)
+    }
+  }
 
   const tabClass = (isActive: boolean) =>
-    `px-3 py-1 text-sm rounded-md focus:outline-none ${
+    `px-3 py-1.5 text-sm font-medium rounded-md focus:outline-none transition-colors ${
       isActive
-        ? 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
-        : 'text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+        ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-gray-100'
+        : 'text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-800'
     }`
+
+  const error = providerConfigsError || modelsError
 
   return (
     <div
-      className="w-[400px] min-w-[300px] max-w-[800px] resize-x overflow-auto rounded-lg border border-gray-200 bg-white p-4 text-black dark:border-gray-700 dark:bg-[#0d1117] dark:text-white"
+      ref={cardRef}
+      className="min-w-[400px] max-w-[800px] resize-x overflow-auto rounded-lg border border-gray-200 bg-white p-4 text-black dark:border-gray-700 dark:bg-[#0d1117] dark:text-white"
       aria-label="ChatGPT Answer Card"
+      style={{ width: `${width}px` }}
     >
-      <div className="mb-3 flex items-center">
-        <img src={logo} alt="ChatGPT" className="mr-3 h-8 w-8 rounded-lg" />
-        <div className="flex space-x-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
+      <div className="mb-3 flex items-center justify-between" data-testid="card-header">
+        <div className="flex space-x-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-900">
           <button
-            className={tabClass(activeProvider === ProviderType.ChatGPT)}
-            onClick={() => setUserSelectedProvider(ProviderType.ChatGPT)}
+            className={tabClass(activeTab === ProviderType.ChatGPT)}
+            onClick={() => handleTabClick(ProviderType.ChatGPT)}
           >
             ChatGPT
           </button>
           <button
-            className={tabClass(activeProvider === ProviderType.Gemini)}
-            onClick={() => setUserSelectedProvider(ProviderType.Gemini)}
+            className={tabClass(activeTab === ProviderType.Gemini)}
+            onClick={() => handleTabClick(ProviderType.Gemini)}
           >
             Gemini
           </button>
+          <button
+            className={tabClass(activeTab === 'settings')}
+            onClick={() => handleTabClick('settings')}
+            title={Browser.i18n.getMessage('ext_settings_title')}
+          >
+            <GearIcon size={14} />
+          </button>
         </div>
-        <span className="flex-1" />
+        <div className="pr-1" data-testid="feedback-container">
+          {answer && (
+            <ChatGPTFeedback
+              messageId={answer.messageId}
+              conversationId={answer.conversationId}
+              answerText={answer.text}
+            />
+          )}
+        </div>
       </div>
-      <ChatGPTQuery question={question} activeProvider={activeProvider} />
+      {error && <div className="p-2 text-red-500">{error.message}</div>}
+      {activeTab !== 'settings' && (
+        <ChatGPTQuery
+          question={question}
+          activeProvider={activeProvider}
+          onAnswer={setAnswer}
+          onOpenSettings={() => handleTabClick('settings')}
+        />
+      )}
+      {activeTab === 'settings' &&
+        (providerConfigs && models ? (
+          <div className="p-2">
+            <ConfigPanel initialConfigs={providerConfigs} models={models} />
+          </div>
+        ) : (
+          <div className="p-2" role="status">
+            Loading settings...
+          </div>
+        ))}
     </div>
   )
 }

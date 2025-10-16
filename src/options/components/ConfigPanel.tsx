@@ -19,9 +19,7 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
     initialConfigs.configs.chatgpt.model ?? models[0],
   )
   const [geminiApiKey, setGeminiApiKey] = useState(initialConfigs.configs.gemini.apiKey ?? '')
-  const [geminiModel, setGeminiModel] = useState(
-    initialConfigs.configs.gemini.model ?? 'gemini-1.5-pro-latest',
-  )
+  const [geminiModel, setGeminiModel] = useState(initialConfigs.configs.gemini.model ?? models[0])
 
   const [dynamicModels, setDynamicModels] = useState<string[]>(models)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
@@ -32,9 +30,14 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
       const loaded = await loadModels(newProvider)
       setDynamicModels(loaded)
       if (newProvider === ProviderType.ChatGPT) {
-        setChatGPTModel(loaded[0])
+        // Do not reset if a model is already selected or saved
+        if (!chatGPTModel || !loaded.includes(chatGPTModel)) {
+          setChatGPTModel(loaded[0])
+        }
       } else {
-        setGeminiModel(loaded[0])
+        if (!geminiModel || !loaded.includes(geminiModel)) {
+          setGeminiModel(loaded[0])
+        }
       }
     } catch (err) {
       setToast({ message: `Failed to load models: ${err.message}`, type: 'error' })
@@ -78,8 +81,10 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
   }, [provider, chatGPTMode, chatGPTApiKey, chatGPTModel, geminiApiKey, geminiModel])
 
   const tabClass = (isActive: boolean) =>
-    `px-4 py-2 text-sm font-medium rounded-md focus:outline-none ${
-      isActive ? 'bg-blue-600 text-white' : 'text-gray-600 bg-gray-200 hover:bg-gray-300'
+    `px-4 py-1.5 text-sm font-medium rounded-md focus:outline-none transition-colors ${
+      isActive
+        ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-600 dark:text-gray-100'
+        : 'text-gray-600 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-800'
     }`
 
   return (
@@ -87,8 +92,8 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
       {toast && (
         <Toast message={toast.message} type={toast.type} onDismiss={() => setToast(null)} />
       )}
-      <div className="flex justify-between items-center border-b border-gray-200 pb-3">
-        <div className="flex space-x-2">
+      <div className="flex items-center justify-between rounded-lg bg-gray-100 p-1 dark:bg-gray-900">
+        <div className="flex space-x-1">
           <button
             className={tabClass(provider === ProviderType.ChatGPT)}
             onClick={() => handleTabChange(ProviderType.ChatGPT)}

@@ -1,17 +1,20 @@
 import useSWR from 'swr'
 import Browser from 'webextension-polyfill'
-import { getProviderConfigs, ProviderType } from '../config'
+import { getProviderConfigs } from '../config'
 import { ConfigPanel } from './components/ConfigPanel'
 import { loadModels } from './utils'
 
 function ProviderSelect() {
-  const { data, error } = useSWR('provider-configs', async () => {
-    const [config, models] = await Promise.all([
-      getProviderConfigs(),
-      loadModels(new URLSearchParams(window.location.search).get('provider') as ProviderType),
-    ])
-    return { config, models }
-  })
+  // Step 1: Fetch the saved provider configurations
+  const { data: config, error: configError } = useSWR('provider-configs', getProviderConfigs)
+
+  // Step 2: Fetch the models for the saved provider
+  const { data: models, error: modelsError } = useSWR(
+    () => (config ? ['models', config.provider] : null),
+    ([, provider]) => loadModels(provider),
+  )
+
+  const error = configError || modelsError
 
   if (error) {
     return (
@@ -20,11 +23,11 @@ function ProviderSelect() {
       )} ${error.message}`}</div>
     )
   }
-  if (!data) {
-    return <div role="status">Loading...</div>
+  if (!config || !models) {
+    return <div role="status">{Browser.i18n.getMessage('ext_waiting_for_response')}</div>
   }
 
-  return <ConfigPanel initialConfigs={data.config} models={data.models} />
+  return <ConfigPanel initialConfigs={config} models={models} />
 }
 
 export default ProviderSelect

@@ -1,5 +1,4 @@
-import { GearIcon } from '@primer/octicons-react'
-import { useEffect, useState, memo, useCallback, FC } from 'react'
+import { useEffect, useState, memo, FC } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import useSWR from 'swr'
@@ -7,17 +6,18 @@ import Browser from 'webextension-polyfill'
 import { captureEvent } from '../analytics'
 import { getProviderConfigs, ProviderConfigs, ProviderType, ChatGPTMode } from '../config'
 import { Answer } from '../messaging'
-import ChatGPTFeedback from './ChatGPTFeedback'
 import { getErrorMessageKey } from './utils.js'
 
 interface Props {
   question: string
   activeProvider?: ProviderType
+  onAnswer: (answer: Answer | null) => void
+  onOpenSettings: () => void
 }
 
 export type QueryStatus = 'success' | 'error' | undefined
 
-const ChatGPTQuery: FC<Props> = ({ question, activeProvider }) => {
+const ChatGPTQuery: FC<Props> = ({ question, activeProvider, onAnswer, onOpenSettings }) => {
   const { data: configs, error: configsError } = useSWR<ProviderConfigs>(
     'provider-configs',
     getProviderConfigs,
@@ -41,9 +41,11 @@ const ChatGPTQuery: FC<Props> = ({ question, activeProvider }) => {
     const listener = (msg: Answer | { error: string } | { event: string }) => {
       if ('text' in msg) {
         setAnswer(msg)
+        onAnswer(msg)
         setStatus('success')
       } else if ('error' in msg) {
         setError(msg.error)
+        onAnswer(null)
         setStatus('error')
       }
     }
@@ -53,7 +55,7 @@ const ChatGPTQuery: FC<Props> = ({ question, activeProvider }) => {
       port.onMessage.removeListener(listener)
       port.disconnect()
     }
-  }, [question, retry, activeProvider])
+  }, [question, retry, activeProvider, onAnswer])
 
   useEffect(() => {
     const onFocus = () => {
@@ -73,10 +75,6 @@ const ChatGPTQuery: FC<Props> = ({ question, activeProvider }) => {
       captureEvent('show_answer', { host: location.host, language: navigator.language })
     }
   }, [question, status])
-
-  const openOptionsPage = useCallback(() => {
-    Browser.runtime.sendMessage({ type: 'OPEN_OPTIONS_PAGE' })
-  }, [])
 
   if (configsError) {
     return <div className="text-red-500">{Browser.i18n.getMessage('ext_error_load_settings')}</div>
@@ -101,8 +99,8 @@ const ChatGPTQuery: FC<Props> = ({ question, activeProvider }) => {
     if (apiKeyMissing) {
       return (
         <p className="text-sm">
-          {Browser.i18n.getMessage('ext_apikey_not_set', activeProvider.toUpperCase())}{' '}
-          <a href="#" onClick={openOptionsPage} className="underline">
+          {Browser.i18n.getMessage('ext_apikey_not_set', activeProvider.toUpperCase())}
+          <a href="#" onClick={onOpenSettings} className="underline">
             {Browser.i18n.getMessage('ext_apikey_link_to_options')}
           </a>
         </p>
@@ -141,24 +139,7 @@ const ChatGPTQuery: FC<Props> = ({ question, activeProvider }) => {
   }
 
   return (
-    <div id="gpt-answer" dir="auto">
-      <div className="mb-2.5 flex items-center justify-end gap-2">
-        <div className="flex items-center gap-2">
-          <span
-            className="cursor-pointer p-1 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
-            onClick={openOptionsPage}
-          >
-            <GearIcon size={14} />
-          </span>
-          {answer && (
-            <ChatGPTFeedback
-              messageId={answer.messageId}
-              conversationId={answer.conversationId}
-              answerText={answer.text}
-            />
-          )}
-        </div>
-      </div>
+    <div id="gpt-answer" dir="auto" className="p-1 text-sm">
       <div className="p-1 text-sm">{renderContent()}</div>
     </div>
   )

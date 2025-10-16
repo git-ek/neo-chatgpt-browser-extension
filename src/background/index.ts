@@ -22,11 +22,14 @@ async function generateAnswers(
     prompt: question,
     signal: controller.signal,
     onEvent(event) {
-      if (event.type === 'done') {
-        port.postMessage({ event: 'DONE' })
-        return
+      // Check if the port is still connected before sending a message
+      if (port) {
+        if (event.type === 'done') {
+          port.postMessage({ event: 'DONE' })
+          return
+        }
+        port.postMessage(event.data)
       }
-      port.postMessage(event.data)
     },
   })
 }

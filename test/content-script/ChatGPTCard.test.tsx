@@ -1,8 +1,8 @@
-import { render, screen, fireEvent } from '@testing-library/preact'
+import { render, screen, fireEvent, waitFor } from '@testing-library/preact'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import ChatGPTCard from '../../src/content-script/ChatGPTCard'
-import useSWR from 'swr'
-import { ProviderConfigs, ProviderType } from '../../src/config'
+import useSWR, { SWRResponse } from 'swr'
+import { ProviderConfigs, ProviderType, UserConfig } from '../../src/config'
 
 // Mock useSWR
 vi.mock('swr')
@@ -10,11 +10,17 @@ const mockedUseSWR = vi.mocked(useSWR)
 
 // Mock the child component to isolate the parent
 vi.mock('../../src/content-script/ChatGPTQuery', () => ({
-  default: vi.fn((props) => (
-    <div data-testid="chat-gpt-query">
-      {props.question}-{props.activeProvider}
-    </div>
-  )),
+  default: () => <div data-testid="ChatGPTQuery" />,
+}))
+vi.mock('../options/components/ConfigPanel', () => ({
+  ConfigPanel: () => <div data-testid="ConfigPanel" />,
+}))
+vi.mock('../../src/content-script/ChatGPTFeedback', () => ({
+  default: () => <div data-testid="ChatGPTFeedback" />,
+}))
+
+vi.mock('@primer/octicons-react', () => ({
+  GearIcon: () => <div data-testid="gear-icon" />,
 }))
 
 // Mock the logo import
@@ -22,24 +28,47 @@ vi.mock('../../src/logo.png', () => ({
   default: 'logo.png',
 }))
 
+// Mock ResizeObserver
+const mockResizeObserver = vi.fn(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}))
+vi.stubGlobal('ResizeObserver', mockResizeObserver)
+
 describe('ChatGPTCard', () => {
-  const mockConfigs: ProviderConfigs = {
+  const mockProviderConfigs: ProviderConfigs = {
     provider: ProviderType.ChatGPT,
     configs: {
       chatgpt: { mode: 'API', apiKey: 'test-key', model: 'gpt-4' },
       gemini: { apiKey: 'gemini-key', model: 'gemini-pro' },
     },
+    userConfig: { cardWidth: 500 },
+  }
+  const mockUserConfig: UserConfig = {
+    theme: 'light',
+    language: 'en',
+    triggerMode: 'always',
+    cardWidth: 500,
   }
 
   beforeEach(() => {
     vi.clearAllMocks()
-    mockedUseSWR.mockReturnValue({
-      data: mockConfigs,
-      error: undefined,
+    mockedUseSWR.mockImplementation((key) => {
+      if (key === 'provider-configs') {
+        return { data: mockProviderConfigs, error: undefined } as SWRResponse<ProviderConfigs>
+      }
+      if (key === 'user-config') {
+        return { data: mockUserConfig, error: undefined } as SWRResponse<UserConfig>
+      }
+      if (Array.isArray(key) && key[0] === 'models') {
+        return { data: ['gpt-4', 'gpt-3.5-turbo'], error: undefined } as SWRResponse<string[]>
+      }
+      return { data: undefined, error: undefined } as SWRResponse
     })
   })
 
-  it('should render the card with tabs, logo, and the query component', async () => {
+  it('should render the card with settings, tabs, and the query component', async () => {
     const question = 'What is React?'
 
     render(<ChatGPTCard question={question} />)
@@ -50,18 +79,19 @@ describe('ChatGPTCard', () => {
     expect(chatGPTTab).toBeInTheDocument()
     expect(geminiTab).toBeInTheDocument()
 
-    // Check for the logo
-    const logo = screen.getByAltText('ChatGPT')
-    expect(logo).toBeInTheDocument()
-    expect(logo).toHaveAttribute('src', 'logo.png')
+    // Check for the settings icon
+    const gearIcon = screen.getByTestId('gear-icon')
+    expect(gearIcon).toBeInTheDocument()
 
-    // Check that the mocked child component is rendered with the default provider
-    const queryComponent = screen.getByTestId('chat-gpt-query')
-    expect(queryComponent).toBeInTheDocument()
-    expect(queryComponent.textContent).toBe('What is React?-chatgpt')
+    // Check that ChatGPTQuery is rendered by default
+    expect(screen.getByTestId('ChatGPTQuery')).toBeInTheDocument()
 
-    // Click the Gemini tab and check if the prop changes
-    fireEvent.click(geminiTab)
-    expect(queryComponent.textContent).toBe('What is React?-gemini')
+    // Click settings icon and check that ConfigPanel is rendered
+    fireEvent.click(gearIcon.parentElement!)
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('ChatGPTQuery')).not.toBeInTheDocument()
+      expect(screen.getByTestId('ConfigPanel')).toBeInTheDocument()
+    })
   })
 })
