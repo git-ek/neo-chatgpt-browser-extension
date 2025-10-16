@@ -36,7 +36,12 @@
     "message": "APIキーエラー：APIキーの有効性と権限を確認してください。"
   },
   "ext_waiting_for_response": {
-    "message": "ChatGPTの応答を待っています..."
+    "message": "$provider$の応答を待っています...",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "ext_settings_title": {
     "message": "拡張機能の設定"

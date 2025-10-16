@@ -36,7 +36,13 @@
     "message": "Помилка ключа API: перевірте дійсність і дозволи свого ключа API."
   },
   "ext_waiting_for_response": {
-    "message": "Очікування відповіді ChatGPT..."
+    "message": "Очікування відповіді $provider$...",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "ChatGPT"
+      }
+    }
   },
   "ext_settings_title": {
     "message": "Налаштування розширення"

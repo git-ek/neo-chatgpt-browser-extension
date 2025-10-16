@@ -36,7 +36,13 @@
     "message": "API-kulcs hiba: Ellenőrizze az API-kulcs érvényességét és engedélyeit."
   },
   "ext_waiting_for_response": {
-    "message": "Várakozás a ChatGPT válaszára..."
+    "message": "Várakozás a $provider$ válaszára...",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "ChatGPT"
+      }
+    }
   },
   "ext_settings_title": {
     "message": "Bővítménybeállítások"

@@ -36,7 +36,12 @@
     "message": "API 키 오류: API 키 유효성 및 권한을 확인하세요."
   },
   "ext_waiting_for_response": {
-    "message": "ChatGPT 응답을 기다리는 중..."
+    "message": "$provider$ 응답을 기다리는 중...",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
   },
   "ext_settings_title": {
     "message": "확장 프로그램 설정"

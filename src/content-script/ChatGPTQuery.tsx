@@ -6,7 +6,7 @@ import Browser from 'webextension-polyfill'
 import { captureEvent } from '../analytics'
 import { getProviderConfigs, ProviderConfigs, ProviderType, ChatGPTMode } from '../config'
 import { Answer } from '../messaging'
-import { getErrorMessageKey } from './utils.js'
+import { getErrorMessageKey, upperFirst } from './utils.js'
 
 interface Props {
   question: string
@@ -84,7 +84,7 @@ const ChatGPTQuery: FC<Props> = ({ question, activeProvider, onAnswer, onOpenSet
     if (!configs || !activeProvider) {
       return (
         <p className="animate-pulse text-gray-400 dark:text-gray-500">
-          {Browser.i18n.getMessage('ext_waiting_for_response')}
+          {Browser.i18n.getMessage('ext_waiting_for_response', upperFirst(activeProvider))}
         </p>
       )
     }
@@ -133,7 +133,7 @@ const ChatGPTQuery: FC<Props> = ({ question, activeProvider, onAnswer, onOpenSet
 
     return (
       <p className="animate-pulse text-gray-400 dark:text-gray-500">
-        {Browser.i18n.getMessage('ext_waiting_for_response')}
+        {Browser.i18n.getMessage('ext_waiting_for_response', upperFirst(activeProvider))}
       </p>
     )
   }

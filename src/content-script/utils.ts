@@ -34,3 +34,10 @@ export function getErrorMessageKey(error: string): string {
   }
   return 'ext_error_generic'
 }
+
+export function upperFirst(str?: string): string {
+  if (!str) {
+    return ''
+  }
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}

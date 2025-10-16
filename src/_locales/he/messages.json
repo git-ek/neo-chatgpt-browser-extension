@@ -36,7 +36,13 @@
     "message": "שגיאת מפתח API: אנא בדוק את תוקף והרשאות מפתח ה-API שלך."
   },
   "ext_waiting_for_response": {
-    "message": "ממתין לתגובת ChatGPT..."
+    "message": "ממתין לתגובת $provider$...",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "ChatGPT"
+      }
+    }
   },
   "ext_settings_title": {
     "message": "הגדרות תוסף"

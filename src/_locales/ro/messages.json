@@ -36,7 +36,13 @@
     "message": "Eroare de cheie API: Vă rugăm să verificați validitatea și permisiunile cheii API."
   },
   "ext_waiting_for_response": {
-    "message": "Se așteaptă răspunsul ChatGPT..."
+    "message": "Se așteaptă răspunsul $provider$...",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "ChatGPT"
+      }
+    }
   },
   "ext_settings_title": {
     "message": "Setări extensie"

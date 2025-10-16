@@ -36,7 +36,13 @@
     "message": "API-Schlüsselfehler: Bitte überprüfen Sie die Gültigkeit und Berechtigungen Ihres API-Schlüssels."
   },
   "ext_waiting_for_response": {
-    "message": "Warte auf ChatGPT-Antwort..."
+    "message": "Warte auf $provider$-Antwort...",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "ChatGPT"
+      }
+    }
   },
   "ext_settings_title": {
     "message": "Erweiterungseinstellungen"

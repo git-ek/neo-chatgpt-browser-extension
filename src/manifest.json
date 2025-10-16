@@ -12,9 +12,9 @@
   },
     "host_permissions": [
       "https://*.openai.com/",
-      "https://*.chatgpt.com/"
+      "https://chat.openai.com/"
     ],
-  "permissions": ["storage"],
+  "permissions": ["storage", "offscreen"],
   "background": {
     "service_worker": "background.js"
   },

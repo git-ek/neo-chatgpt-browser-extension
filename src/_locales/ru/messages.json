@@ -36,7 +36,13 @@
     "message": "Ошибка API-ключа: проверьте действительность и разрешения своего API-ключа."
   },
   "ext_waiting_for_response": {
-    "message": "Ожидание ответа ChatGPT..."
+    "message": "Ожидание ответа $provider$...",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "ChatGPT"
+      }
+    }
   },
   "ext_settings_title": {
     "message": "Настройки расширения"

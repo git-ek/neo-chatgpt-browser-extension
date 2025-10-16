@@ -36,7 +36,13 @@
     "message": "API key error: Please check your API key validity and permissions."
   },
   "ext_waiting_for_response": {
-    "message": "Waiting for ChatGPT response..."
+    "message": "Waiting for $provider$ response...",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "ChatGPT"
+      }
+    }
   },
   "ext_settings_title": {
     "message": "Extension Settings"

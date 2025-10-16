@@ -36,7 +36,13 @@
     "message": "API密钥错误：请检查您的API密钥的有效性和权限。"
   },
   "ext_waiting_for_response": {
-    "message": "正在等待ChatGPT响应..."
+    "message": "正在等待 $provider$ 响应...",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "ChatGPT"
+      }
+    }
   },
   "ext_settings_title": {
     "message": "扩展设置"

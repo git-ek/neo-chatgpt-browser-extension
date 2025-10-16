@@ -36,7 +36,13 @@
     "message": "Erreur de clé API : Veuillez vérifier la validité et les autorisations de votre clé API."
   },
   "ext_waiting_for_response": {
-    "message": "En attente de la réponse de ChatGPT..."
+    "message": "En attente de la réponse de $provider$...",
+    "placeholders": {
+      "provider": {
+        "content": "$1",
+        "example": "ChatGPT"
+      }
+    }
   },
   "ext_settings_title": {
     "message": "Paramètres de l'extension"
