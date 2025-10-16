@@ -1,5 +1,5 @@
 import { GearIcon } from '@primer/octicons-react'
-import { useEffect, useState, memo, useCallback } from 'react'
+import { useEffect, useState, memo, useCallback, FC } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import useSWR from 'swr'
@@ -12,19 +12,16 @@ import { getErrorMessageKey } from './utils.js'
 
 interface Props {
   question: string
-  triggerMode?: string // triggerMode is passed but not used in this component anymore
+  activeProvider?: ProviderType
 }
 
 export type QueryStatus = 'success' | 'error' | undefined
 
-function ChatGPTQuery({ question }: Props) {
+const ChatGPTQuery: FC<Props> = ({ question, activeProvider }) => {
   const { data: configs, error: configsError } = useSWR<ProviderConfigs>(
     'provider-configs',
     getProviderConfigs,
   )
-
-  const [userSelectedProvider, setUserSelectedProvider] = useState<ProviderType | null>(null)
-  const activeProvider = userSelectedProvider ?? configs?.provider
 
   const [answer, setAnswer] = useState<Answer | null>(null)
   const [error, setError] = useState('')
@@ -143,30 +140,9 @@ function ChatGPTQuery({ question }: Props) {
     )
   }
 
-  const tabClass = (isActive: boolean) =>
-    `px-3 py-1 text-sm rounded-md focus:outline-none ${
-      isActive
-        ? 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
-        : 'text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
-    }`
-
   return (
     <div id="gpt-answer" dir="auto">
-      <div className="mb-2.5 flex items-center justify-between gap-2">
-        <div className="flex space-x-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
-          <button
-            className={tabClass(activeProvider === ProviderType.ChatGPT)}
-            onClick={() => setUserSelectedProvider(ProviderType.ChatGPT)}
-          >
-            {Browser.i18n.getMessage('ext_chatgpt_short')}
-          </button>
-          <button
-            className={tabClass(activeProvider === ProviderType.Gemini)}
-            onClick={() => setUserSelectedProvider(ProviderType.Gemini)}
-          >
-            {Browser.i18n.getMessage('ext_provider_gemini_label')}
-          </button>
-        </div>
+      <div className="mb-2.5 flex items-center justify-end gap-2">
         <div className="flex items-center gap-2">
           <span
             className="cursor-pointer p-1 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"

@@ -1,17 +1,10 @@
 import { FC, useCallback, useState } from 'react'
 import Browser from 'webextension-polyfill'
-import { ProviderConfigs, ProviderType, saveProviderConfigs, ChatGPTMode } from './src/config'
-import GeminiConfig from './src/options/GeminiConfig'
-import OpenAIConfig from './src/options/OpenAIConfig'
+import { ProviderConfigs, ProviderType, saveProviderConfigs, ChatGPTMode } from '../../config'
+import GeminiConfig from '../GeminiConfig'
+import OpenAIConfig from '../OpenAIConfig'
 import { Toast } from './Toast'
-
-async function loadModels(provider?: ProviderType): Promise<string[]> {
-  if (provider === ProviderType.Gemini) {
-    return ['gemini-1.5-pro-latest', 'gemini-1.5-flash-latest', 'gemini-pro']
-  }
-  // Return a default list for OpenAI or when no provider is specified
-  return ['gpt-4o', 'gpt-4-turbo', 'gpt-3.5-turbo']
-}
+import { loadModels } from '../utils'
 
 export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[] }> = ({
   initialConfigs,

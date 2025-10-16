@@ -1,15 +1,8 @@
 import useSWR from 'swr'
 import Browser from 'webextension-polyfill'
 import { getProviderConfigs, ProviderType } from '../config'
-import { ConfigPanel } from '../../ConfigPanel'
-
-async function loadModels(provider?: ProviderType): Promise<string[]> {
-  if (provider === ProviderType.Gemini) {
-    return ['gemini-1.5-pro-latest', 'gemini-1.5-flash-latest', 'gemini-pro']
-  }
-  // Return a default list for OpenAI or when no provider is specified
-  return ['gpt-4o', 'gpt-4-turbo', 'gpt-3.5-turbo']
-}
+import { ConfigPanel } from './components/ConfigPanel'
+import { loadModels } from './utils'
 
 function ProviderSelect() {
   const { data, error } = useSWR('provider-configs', async () => {

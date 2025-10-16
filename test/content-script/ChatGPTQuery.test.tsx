@@ -54,23 +54,23 @@ describe('ChatGPTQuery', () => {
 
   it('should render loading text while configs are loading', () => {
     mockedUseSWR.mockReturnValue({ data: undefined, error: undefined })
-    render(<ChatGPTQuery question="test" />)
+    render(<ChatGPTQuery question="test" activeProvider={ProviderType.ChatGPT} />)
     expect(screen.getByText('ext_waiting_for_response')).toBeInTheDocument()
   })
 
   it('should render error message if config loading fails', () => {
     mockedUseSWR.mockReturnValue({ data: undefined, error: new Error('Failed to load') })
-    render(<ChatGPTQuery question="test" />)
+    render(<ChatGPTQuery question="test" activeProvider={ProviderType.ChatGPT} />)
     expect(screen.getByText('ext_error_load_settings')).toBeInTheDocument()
   })
 
   it('should show waiting message initially', async () => {
-    render(<ChatGPTQuery question="test" />)
+    render(<ChatGPTQuery question="test" activeProvider={ProviderType.ChatGPT} />)
     expect(await screen.findByText('ext_waiting_for_response')).toBeInTheDocument()
   })
 
   it('should render the answer when received', async () => {
-    render(<ChatGPTQuery question="test" />)
+    render(<ChatGPTQuery question="test" activeProvider={ProviderType.ChatGPT} />)
     const answer = { text: 'This is the answer', messageId: '1', conversationId: '1' }
 
     await waitFor(() => expect(mockPort.onMessage.addListener).toHaveBeenCalled())
@@ -85,7 +85,7 @@ describe('ChatGPTQuery', () => {
   })
 
   it('should render error message when an error is received', async () => {
-    render(<ChatGPTQuery question="test" />)
+    render(<ChatGPTQuery question="test" activeProvider={ProviderType.ChatGPT} />)
     const error = { error: 'UNAUTHORIZED' }
 
     await waitFor(() => expect(mockPort.onMessage.addListener).toHaveBeenCalled())
@@ -109,7 +109,7 @@ describe('ChatGPTQuery', () => {
       },
       error: undefined,
     })
-    render(<ChatGPTQuery question="test" />)
+    render(<ChatGPTQuery question="test" activeProvider={ProviderType.ChatGPT} />)
     expect(await screen.findByText(/ext_apikey_not_set/)).toBeInTheDocument()
     expect(await screen.findByText('ext_apikey_link_to_options')).toBeInTheDocument()
   })
