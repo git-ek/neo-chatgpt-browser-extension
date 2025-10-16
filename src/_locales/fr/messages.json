@@ -148,4 +148,8 @@
   "ext_apikey_link_to_options": {
     "message": "Veuillez la définir dans la page des options."
   }
+,
+  "ext_default_provider_label": {
+    "message": "Fournisseur par défaut"
+  }
 }

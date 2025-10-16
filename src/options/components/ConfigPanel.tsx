@@ -4,13 +4,15 @@ import { ProviderConfigs, ProviderType, saveProviderConfigs, ChatGPTMode } from 
 import GeminiConfig from '../GeminiConfig'
 import OpenAIConfig from '../OpenAIConfig'
 import { Toast } from './Toast'
-import { loadModels } from '../utils'
+
+type ActiveSettingsTab = ProviderType | 'default'
 
 export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[] }> = ({
   initialConfigs,
   models,
 }) => {
-  const [provider, setProvider] = useState<ProviderType>(initialConfigs.provider)
+  const [activeTab, setActiveTab] = useState<ActiveSettingsTab>('default')
+  const [defaultProvider, setDefaultProvider] = useState<ProviderType>(initialConfigs.provider) // For the radio buttons
 
   // State for API keys and models
   const [chatGPTMode, setChatGPTMode] = useState<ChatGPTMode>(initialConfigs.configs.chatgpt.mode)
@@ -21,41 +23,25 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
   const [geminiApiKey, setGeminiApiKey] = useState(initialConfigs.configs.gemini.apiKey ?? '')
   const [geminiModel, setGeminiModel] = useState(initialConfigs.configs.gemini.model ?? models[0])
 
-  const [dynamicModels, setDynamicModels] = useState<string[]>(models)
+  const [dynamicModels] = useState<string[]>(models)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
 
-  const handleTabChange = async (newProvider: ProviderType) => {
-    setProvider(newProvider)
-    try {
-      const loaded = await loadModels(newProvider)
-      setDynamicModels(loaded)
-      if (newProvider === ProviderType.ChatGPT) {
-        // Do not reset if a model is already selected or saved
-        if (!chatGPTModel || !loaded.includes(chatGPTModel)) {
-          setChatGPTModel(loaded[0])
-        }
-      } else {
-        if (!geminiModel || !loaded.includes(geminiModel)) {
-          setGeminiModel(loaded[0])
-        }
-      }
-    } catch (err) {
-      setToast({ message: `Failed to load models: ${err.message}`, type: 'error' })
-    }
-  }
-
   const save = useCallback(async () => {
-    if (provider === ProviderType.ChatGPT && chatGPTMode === ChatGPTMode.API && !chatGPTApiKey) {
+    if (
+      defaultProvider === ProviderType.ChatGPT &&
+      chatGPTMode === ChatGPTMode.API &&
+      !chatGPTApiKey
+    ) {
       setToast({ message: Browser.i18n.getMessage('ext_toast_enter_openai_key'), type: 'error' })
       return
     }
-    if (provider === ProviderType.Gemini && !geminiApiKey) {
+    if (defaultProvider === ProviderType.Gemini && !geminiApiKey) {
       setToast({ message: Browser.i18n.getMessage('ext_toast_enter_gemini_key'), type: 'error' })
       return
     }
 
     const newConfigs: ProviderConfigs = {
-      provider,
+      provider: defaultProvider,
       configs: {
         chatgpt: {
           mode: chatGPTMode,
@@ -78,7 +64,7 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
         type: 'error',
       })
     }
-  }, [provider, chatGPTMode, chatGPTApiKey, chatGPTModel, geminiApiKey, geminiModel])
+  }, [defaultProvider, chatGPTMode, chatGPTApiKey, chatGPTModel, geminiApiKey, geminiModel])
 
   const tabClass = (isActive: boolean) =>
     `px-4 py-1.5 text-sm font-medium rounded-md focus:outline-none transition-colors ${
@@ -93,16 +79,22 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
         <Toast message={toast.message} type={toast.type} onDismiss={() => setToast(null)} />
       )}
       <div className="flex items-center justify-between rounded-lg bg-gray-100 p-1 dark:bg-gray-900">
-        <div className="flex space-x-1">
+        <div className="flex flex-1 space-x-1">
           <button
-            className={tabClass(provider === ProviderType.ChatGPT)}
-            onClick={() => handleTabChange(ProviderType.ChatGPT)}
+            className={tabClass(activeTab === 'default')}
+            onClick={() => setActiveTab('default')}
+          >
+            {Browser.i18n.getMessage('ext_default_provider_label')}
+          </button>
+          <button
+            className={tabClass(activeTab === ProviderType.ChatGPT)}
+            onClick={() => setActiveTab(ProviderType.ChatGPT)}
           >
             ChatGPT
           </button>
           <button
-            className={tabClass(provider === ProviderType.Gemini)}
-            onClick={() => handleTabChange(ProviderType.Gemini)}
+            className={tabClass(activeTab === ProviderType.Gemini)}
+            onClick={() => setActiveTab(ProviderType.Gemini)}
           >
             Gemini
           </button>
@@ -115,7 +107,39 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
         </button>
       </div>
 
-      {provider === ProviderType.ChatGPT && (
+      {activeTab === 'default' && (
+        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+          <h3 className="mb-3 text-base font-semibold text-gray-800 dark:text-gray-200">
+            {Browser.i18n.getMessage('ext_default_provider_label')}
+          </h3>
+          <div className="flex items-center space-x-4">
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="default-provider"
+                value={ProviderType.ChatGPT}
+                checked={defaultProvider === ProviderType.ChatGPT}
+                onChange={(e) => setDefaultProvider(e.target.value as ProviderType)}
+                className="form-radio h-4 w-4 text-blue-600"
+              />
+              <span className="dark:text-gray-300">ChatGPT</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="default-provider"
+                value={ProviderType.Gemini}
+                checked={defaultProvider === ProviderType.Gemini}
+                onChange={(e) => setDefaultProvider(e.target.value as ProviderType)}
+                className="form-radio h-4 w-4 text-blue-600"
+              />
+              <span className="dark:text-gray-300">Gemini</span>
+            </label>
+          </div>
+        </div>
+      )}
+
+      {activeTab === ProviderType.ChatGPT && (
         <div className="flex flex-col gap-4 p-4 border rounded-lg bg-gray-50">
           <div className="flex items-center space-x-4">
             <label className="flex items-center space-x-2">
@@ -155,7 +179,7 @@ export const ConfigPanel: FC<{ initialConfigs: ProviderConfigs; models: string[]
         </div>
       )}
 
-      {provider === ProviderType.Gemini && (
+      {activeTab === ProviderType.Gemini && (
         <div className="p-4 border rounded-lg bg-gray-50">
           <GeminiConfig
             apiKeyBindings={{

@@ -152,4 +152,8 @@
   "ext_apikey_link_to_options": {
     "message": "Please set it in the options page."
   }
+,
+  "ext_default_provider_label": {
+    "message": "Default Provider"
+  }
 }

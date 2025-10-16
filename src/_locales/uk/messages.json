@@ -148,4 +148,8 @@
   "ext_apikey_link_to_options": {
     "message": "Будь ласка, встановіть його на сторінці налаштувань."
   }
+,
+  "ext_default_provider_label": {
+    "message": "Постачальник за замовчуванням"
+  }
 }

@@ -148,4 +148,8 @@
   "ext_apikey_link_to_options": {
     "message": "אנא הגדר אותו בדף האפשרויות."
   }
+,
+  "ext_default_provider_label": {
+    "message": "ספק ברירת מחדל"
+  }
 }

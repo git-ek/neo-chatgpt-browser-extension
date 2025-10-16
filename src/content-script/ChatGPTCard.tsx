@@ -33,10 +33,10 @@ function ChatGPTCard({ question }: ChatGPTCardProps) {
     ([, provider]) => loadModels(provider),
   )
 
-  const [activeTab, setActiveTab] = useState<ActiveTab>(providerConfigs?.provider ?? 'chatgpt')
-  const [activeProvider, setActiveProvider] = useState<ProviderType>(
-    providerConfigs?.provider ?? ProviderType.ChatGPT,
-  )
+  // Derive the active provider from the loaded settings, falling back to a default.
+  const savedProvider = providerConfigs?.provider || ProviderType.ChatGPT
+  const [activeTab, setActiveTab] = useState<ActiveTab>(savedProvider)
+  const [activeProvider, setActiveProvider] = useState<ProviderType>(savedProvider)
   const [width, setWidth] = useState(userConfig?.cardWidth ?? 400)
   const [answer, setAnswer] = useState<Answer | null>(null)
   const cardRef = useRef<HTMLDivElement>(null)

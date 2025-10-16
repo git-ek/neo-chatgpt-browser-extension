@@ -147,4 +147,8 @@
   "ext_apikey_link_to_options": {
     "message": "옵션 페이지에서 설정해주세요."
   }
+,
+  "ext_default_provider_label": {
+    "message": "기본 공급자"
+  }
 }

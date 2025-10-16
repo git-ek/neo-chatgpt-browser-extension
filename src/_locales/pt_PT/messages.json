@@ -148,4 +148,8 @@
   "ext_apikey_link_to_options": {
     "message": "Defina-a na página de opções."
   }
+,
+  "ext_default_provider_label": {
+    "message": "Provedor Padrão"
+  }
 }

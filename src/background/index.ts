@@ -62,12 +62,18 @@ async function generateAnswers(
     signal: controller.signal,
     onEvent(event) {
       // Check if the port is still connected before sending a message
-      if (port) {
+      try {
         if (event.type === 'done') {
           port.postMessage({ event: 'DONE' })
           return
         }
         port.postMessage(event.data)
+      } catch (e) {
+        // This can happen if the port is disconnected, e.g., the user navigated away.
+        // We can safely ignore this error.
+        console.debug('Failed to post message to disconnected port:', e)
+        controller.abort()
+        cleanup?.()
       }
     },
   })

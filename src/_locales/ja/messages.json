@@ -147,4 +147,8 @@
   "ext_apikey_link_to_options": {
     "message": "オプションページで設定してください。"
   }
+,
+  "ext_default_provider_label": {
+    "message": "デフォルトのプロバイダー"
+  }
 }

@@ -148,4 +148,8 @@
   "ext_apikey_link_to_options": {
     "message": "Vă rugăm să o setați în pagina de opțiuni."
   }
+,
+  "ext_default_provider_label": {
+    "message": "Furnizor implicit"
+  }
 }

@@ -152,4 +152,8 @@
   "ext_apikey_link_to_options": {
     "message": "请在选项页面中设置。"
   }
+,
+  "ext_default_provider_label": {
+    "message": "默认提供商"
+  }
 }

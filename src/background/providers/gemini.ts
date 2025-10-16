@@ -1,7 +1,7 @@
 import { FetchSSEOptions } from '../fetch-sse'
 import { BaseJsonStreamProvider } from './base-json'
 import { ParsedEvent } from './base'
-import { handleProviderError } from '../utils'
+import { GenerateAnswerParams } from '../types'
 
 export class GeminiProvider extends BaseJsonStreamProvider {
   constructor(
@@ -25,82 +25,103 @@ export class GeminiProvider extends BaseJsonStreamProvider {
     }
   }
 
-  // The Gemini API returns a JSON stream that is not SSE.
-  // It's a series of JSON objects, sometimes chunked, that need to be parsed.
-  // We override the default stream processing logic from the base class.
-  async generateAnswer(params) {
-    let result: ParsedEvent = { text: '' }
-    let buffer = ''
+  protected parseEvent(message: string): ParsedEvent | null {
+    // The Gemini API stream may send a single '[' character as the first message.
+    if (message.startsWith('[')) {
+      return null
+    }
 
-    const fetchOptions = await this.getFetchOptions(params.prompt)
+    let data
+    try {
+      data = JSON.parse(message)
+    } catch (err) {
+      console.error('Failed to parse Gemini stream message', err)
+      return null
+    }
 
-    await fetch(fetchOptions.url, {
-      ...fetchOptions,
-      signal: params.signal,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-        const reader = response.body!.getReader()
-        const decoder = new TextDecoder()
+    const candidate = data.candidates?.[0]
+    if (!candidate) {
+      return null
+    }
 
-        const processStream = async () => {
-          while (true) {
-            const { done, value } = await reader.read()
-            if (done) break
+    const text = candidate.content?.parts?.[0]?.text
+    if (!text) {
+      return null
+    }
 
-            buffer += decoder.decode(value, { stream: true })
-
-            // The Gemini stream sometimes starts with `[` and ends with `]`.
-            // We'll clean it up and parse each object.
-            const jsonObjects = buffer.replace(/^\[|\]$/g, '').split('},{')
-
-            for (let i = 0; i < jsonObjects.length - 1; i++) {
-              const jsonStr = (i > 0 ? '{' : '') + jsonObjects[i] + '}'
-              this.parseAndDispatch(jsonStr, result, params.onEvent)
-            }
-            buffer = '{' + jsonObjects[jsonObjects.length - 1]
-          }
-          this.parseAndDispatch(buffer, result, params.onEvent)
-          params.onEvent({ type: 'done' })
-        }
-        return processStream()
-      })
-      .catch((err) => {
-        handleProviderError(params.onEvent, err)
-      })
-
-    return {}
+    return {
+      text,
+    }
   }
 
-  private parseAndDispatch(jsonStr, currentResult, onEvent) {
+  /**
+   * The Gemini API returns a JSON stream that is not standard SSE.
+   * It's a stream of JSON objects, sometimes chunked, that needs to be parsed manually.
+   * The entire stream is wrapped in `[` and `]`.
+   */
+  async generateAnswer(params: GenerateAnswerParams): Promise<{ cleanup?: () => void }> {
+    let result: ParsedEvent = { text: '' }
     try {
-      const data = JSON.parse(jsonStr)
-      const candidate = data.candidates?.[0]
-      if (!candidate) return
-
-      const text = candidate.content?.parts?.[0]?.text
-      if (!text) return
-
-      const newResult = {
-        ...currentResult,
-        text: currentResult.text + text,
-      }
-
-      onEvent({
-        type: 'answer',
-        data: {
-          text: newResult.text,
-        },
+      const fetchOptions = await this.getFetchOptions(params.prompt)
+      const response = await fetch(fetchOptions.url, {
+        ...fetchOptions,
+        signal: params.signal,
       })
-      // Update the reference for the next iteration
-      currentResult.text = newResult.text
-    } catch (err) {
-      // This can happen if the JSON is incomplete, just ignore it and wait for more data
-      if (process.env.NODE_ENV !== 'production') {
-        console.debug('Failed to parse Gemini stream chunk, waiting for more data.', err)
+
+      if (!response.ok) {
+        const errorBody = await response
+          .json()
+          .catch(() => ({ error: { message: 'Unknown error' } }))
+        throw new Error(errorBody.error.message || `HTTP error! status: ${response.status}`)
       }
+
+      const reader = response.body!.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
+      let braceCount = 0
+      let objectStartIndex = -1
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        buffer += decoder.decode(value, { stream: true })
+
+        for (let i = 0; i < buffer.length; i++) {
+          const char = buffer[i]
+
+          if (char === '{') {
+            if (braceCount === 0) {
+              objectStartIndex = i
+            }
+            braceCount++
+          } else if (char === '}') {
+            braceCount--
+            if (braceCount === 0 && objectStartIndex !== -1) {
+              const jsonStr = buffer.substring(objectStartIndex, i + 1)
+              objectStartIndex = -1
+
+              try {
+                const parsed = this.parseEvent(jsonStr)
+                if (parsed?.text) {
+                  result = { ...result, text: result.text + parsed.text }
+                  params.onEvent({ type: 'answer', data: result })
+                }
+              } catch (err) {
+                console.debug('Error parsing Gemini JSON chunk:', jsonStr, err)
+              }
+            }
+          }
+        }
+
+        // Keep only the unprocessed part of the buffer
+        buffer = objectStartIndex !== -1 ? buffer.substring(objectStartIndex) : ''
+      }
+    } catch (err) {
+      params.onEvent({ type: 'error', data: { error: err.message } })
     }
+
+    params.onEvent({ type: 'done' })
+    return {}
   }
 }

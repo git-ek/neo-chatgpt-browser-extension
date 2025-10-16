@@ -148,4 +148,8 @@
   "ext_apikey_link_to_options": {
     "message": "Пожалуйста, установите его на странице настроек."
   }
+,
+  "ext_default_provider_label": {
+    "message": "Поставщик по умолчанию"
+  }
 }
