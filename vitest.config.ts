@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     globals: true,
-    environment: 'jsdom',
+    environment: 'jsdom', // Keep jsdom for a consistent environment with necessary globals
     setupFiles: './test/setup.ts',
     include: ['test/**/*.{test,spec}.{js,ts,jsx,tsx}'],
   },
@@ -12,6 +12,7 @@ export default defineConfig({
       react: 'preact/compat',
       'react-dom/test-utils': 'preact/test-utils',
       'react-dom': 'preact/compat',
+      'react/jsx-runtime': 'preact/jsx-runtime',
     },
   },
 })

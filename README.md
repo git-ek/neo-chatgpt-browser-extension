@@ -54,6 +54,20 @@ rm -rf build/
 3. Select the `build/firefox/manifest.json` file.
 4. The extension will be loaded temporarily.
 
+## Testing
+
+This project uses [Vitest](https://vitest.dev/) for unit testing. To run the tests, use the following command:
+
+```bash
+npm run test
+```
+
+To generate a test coverage report, run:
+
+```bash
+npx vitest run --coverage
+```
+
 ## Screenshot
 
 ![Screenshot](screenshots/extension.png?raw=true)

@@ -49,4 +49,19 @@ export default [
 
   // Prettier config must be last to override other configs
   eslintConfigPrettier,
+
+  // Config for test files
+  {
+    files: ['**/*.test.{ts,tsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.vitest,
+      },
+    },
+    rules: {
+      'react/prop-types': 'off',
+      'react/display-name': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ]

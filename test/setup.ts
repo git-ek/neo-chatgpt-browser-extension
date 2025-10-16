@@ -1,14 +1,9 @@
-import '@testing-library/jest-dom'
+import 'preact/compat'
+import 'preact'
+import 'preact/hooks'
+import 'preact/debug'
 import { vi } from 'vitest'
-import fs from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-const messagesPath = path.resolve(__dirname, '../src/_locales/en/messages.json')
-const messages = JSON.parse(fs.readFileSync(messagesPath, 'utf-8'))
+import '@testing-library/jest-dom/vitest'
 
 vi.mock('webextension-polyfill', () => {
   return {
@@ -22,6 +17,14 @@ vi.mock('webextension-polyfill', () => {
           hasListener: vi.fn(() => true),
         },
         sendMessage: vi.fn(() => Promise.resolve()),
+        connect: vi.fn(),
+        onConnect: {
+          addListener: vi.fn(),
+        },
+        onInstalled: {
+          addListener: vi.fn(),
+        },
+        openOptionsPage: vi.fn(),
       },
       storage: {
         local: {
@@ -36,7 +39,7 @@ vi.mock('webextension-polyfill', () => {
         },
       },
       i18n: {
-        getMessage: vi.fn((key) => messages[key]?.message || key),
+        getMessage: vi.fn((key) => key),
       },
       tabs: {
         query: vi.fn(() => Promise.resolve([])),
