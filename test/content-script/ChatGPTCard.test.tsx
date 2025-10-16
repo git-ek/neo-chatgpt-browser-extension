@@ -17,9 +17,6 @@ vi.mock('../../src/content-script/ChatGPTQuery', () => ({
   )),
 }))
 
-// Mock Browser i18n
-vi.spyOn(window.browser.i18n, 'getMessage').mockImplementation((key) => key)
-
 // Mock the logo import
 vi.mock('../../src/logo.png', () => ({
   default: 'logo.png',
