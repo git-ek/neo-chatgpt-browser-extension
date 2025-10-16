@@ -12,6 +12,7 @@ import { getErrorMessageKey } from './utils.js'
 
 interface Props {
   question: string
+  triggerMode?: string // triggerMode is passed but not used in this component anymore
 }
 
 export type QueryStatus = 'success' | 'error' | undefined
@@ -81,15 +82,13 @@ function ChatGPTQuery({ question }: Props) {
   }, [])
 
   if (configsError) {
-    return (
-      <div className="gpt-error-message">{Browser.i18n.getMessage('ext_error_load_settings')}</div>
-    )
+    return <div className="text-red-500">{Browser.i18n.getMessage('ext_error_load_settings')}</div>
   }
 
   const renderContent = () => {
     if (!configs || !activeProvider) {
       return (
-        <p className="text-[#b6b8ba] animate-pulse">
+        <p className="animate-pulse text-gray-400 dark:text-gray-500">
           {Browser.i18n.getMessage('ext_waiting_for_response')}
         </p>
       )
@@ -104,7 +103,7 @@ function ChatGPTQuery({ question }: Props) {
 
     if (apiKeyMissing) {
       return (
-        <p>
+        <p className="text-sm">
           {Browser.i18n.getMessage('ext_apikey_not_set', activeProvider.toUpperCase())}{' '}
           <a href="#" onClick={openOptionsPage} className="underline">
             {Browser.i18n.getMessage('ext_apikey_link_to_options')}
@@ -115,7 +114,7 @@ function ChatGPTQuery({ question }: Props) {
 
     if (answer) {
       return (
-        <div className="prose dark:prose-invert max-w-none">
+        <div className="prose prose-sm max-w-none dark:prose-invert prose-p:my-2 prose-pre:my-2 prose-pre:bg-gray-100 prose-pre:p-2 dark:prose-pre:bg-gray-800">
           <ReactMarkdown rehypePlugins={[[rehypeHighlight, { detect: true }]]}>
             {answer.text}
           </ReactMarkdown>
@@ -127,10 +126,10 @@ function ChatGPTQuery({ question }: Props) {
       const messageKey = getErrorMessageKey(error)
       const helpMsg = Browser.i18n.getMessage(messageKey)
       return (
-        <div className="gpt-error-message">
-          <span className="font-bold">{Browser.i18n.getMessage('ext_error_prefix')}</span>
-          <span className="break-all block">{error}</span>
-          <div className="mt-2 text-xs">
+        <div className="text-red-500">
+          <p className="font-bold">{Browser.i18n.getMessage('ext_error_prefix')}</p>
+          <p className="block break-all">{error}</p>
+          <div className="mt-2 text-xs text-gray-500">
             <span>{helpMsg}</span>
           </div>
         </div>
@@ -138,7 +137,7 @@ function ChatGPTQuery({ question }: Props) {
     }
 
     return (
-      <p className="text-[#b6b8ba] animate-pulse">
+      <p className="animate-pulse text-gray-400 dark:text-gray-500">
         {Browser.i18n.getMessage('ext_waiting_for_response')}
       </p>
     )
@@ -146,13 +145,15 @@ function ChatGPTQuery({ question }: Props) {
 
   const tabClass = (isActive: boolean) =>
     `px-3 py-1 text-sm rounded-md focus:outline-none ${
-      isActive ? 'bg-gray-200 text-gray-800' : 'text-gray-500 hover:bg-gray-100'
+      isActive
+        ? 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+        : 'text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
     }`
 
   return (
-    <div className="markdown-body gpt-markdown" id="gpt-answer" dir="auto">
-      <div className="gpt-header">
-        <div className="flex space-x-1 p-1 bg-gray-100 rounded-lg">
+    <div id="gpt-answer" dir="auto">
+      <div className="mb-2.5 flex items-center justify-between gap-2">
+        <div className="flex space-x-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
           <button
             className={tabClass(activeProvider === ProviderType.ChatGPT)}
             onClick={() => setUserSelectedProvider(ProviderType.ChatGPT)}
@@ -166,19 +167,23 @@ function ChatGPTQuery({ question }: Props) {
             {Browser.i18n.getMessage('ext_provider_gemini_label')}
           </button>
         </div>
-        <span className="flex-grow"></span>
-        <span className="cursor-pointer p-2" onClick={openOptionsPage}>
-          <GearIcon size={14} />
-        </span>
-        {answer && (
-          <ChatGPTFeedback
-            messageId={answer.messageId}
-            conversationId={answer.conversationId}
-            answerText={answer.text}
-          />
-        )}
+        <div className="flex items-center gap-2">
+          <span
+            className="cursor-pointer p-1 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+            onClick={openOptionsPage}
+          >
+            <GearIcon size={14} />
+          </span>
+          {answer && (
+            <ChatGPTFeedback
+              messageId={answer.messageId}
+              conversationId={answer.conversationId}
+              answerText={answer.text}
+            />
+          )}
+        </div>
       </div>
-      <div className="p-2">{renderContent()}</div>
+      <div className="p-1 text-sm">{renderContent()}</div>
     </div>
   )
 }

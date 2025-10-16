@@ -8,22 +8,22 @@ function App() {
   }, [])
 
   return (
-    <div className="w-80 p-8 mx-auto my-8 bg-white rounded-2xl shadow-lg text-center text-gray-800">
-      <img src={logo} className="w-8 h-8 rounded-lg mb-3 mx-auto" alt="Extension Logo" />
-      <div className="font-bold text-lg mb-2">{Browser.i18n.getMessage('ext_popup_title')}</div>
+    <div className="flex h-screen flex-col items-center justify-center p-4 text-center text-gray-800 dark:text-gray-200">
+      <img src={logo} className="mb-3 h-12 w-12 rounded-lg" alt="Extension Logo" />
+      <div className="mb-2 text-lg font-bold">{Browser.i18n.getMessage('ext_popup_title')}</div>
       <button
-        className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg mt-4 cursor-pointer hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="mt-4 cursor-pointer rounded-lg bg-blue-600 px-6 py-2 font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
         onClick={openOptionsPage}
       >
         {Browser.i18n.getMessage('ext_popup_open_settings')}
       </button>
-      <div className="mt-6 text-sm text-gray-500">
+      <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
         {Browser.i18n.getMessage('ext_privacy_prefix')}{' '}
         <a
           href="https://github.com/git-ek/neo-chatgpt-browser-extension/blob/main/PRIVACY.md"
           target="_blank"
           rel="noreferrer"
-          className="underline hover:text-blue-600"
+          className="underline hover:text-blue-600 dark:hover:text-blue-400"
         >
           {Browser.i18n.getMessage('ext_privacy_link_text')}
         </a>

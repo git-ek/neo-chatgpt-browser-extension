@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### 리팩토링 (Refactoring)
+- **전체 UI Tailwind CSS 통합:** 프로젝트의 모든 UI 컴포넌트(옵션, 검색 결과, 팝업)를 기존의 인라인 스타일 및 SCSS에서 Tailwind CSS로 완전히 전환하여 스타일링 시스템을 일원화하고 유지보수성을 향상시켰습니다.
+  - **옵션 페이지:** `ProviderSelect`, `ConfigPanel` 등 관련 컴포넌트를 Tailwind CSS로 리팩토링하고, 재사용 가능한 `Toast` 컴포넌트를 분리했습니다.
+  - **검색 결과 페이지:** `ChatGPTCard`, `ChatGPTQuery` 등 컨텐츠 스크립트 UI를 Tailwind CSS로 마이그레이션하고, 불필요한 SCSS 파일(`styles.scss`, `dark.scss`, `light.scss`)을 제거했습니다.
+  - **팝업 페이지:** 팝업 UI를 Tailwind CSS로 업데이트하여 전체 UI의 디자인 일관성을 확보했습니다.
+
 ### Testing
 - **Unit Test Overhaul:** Implemented a comprehensive suite of unit tests from scratch, significantly increasing the project's overall test coverage to over 70%.
 - **Continuous Integration:** Added and debugged tests for all major components and logic across the `src` directory, including background scripts, providers, content scripts, and UI components.

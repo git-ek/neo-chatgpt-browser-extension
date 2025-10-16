@@ -1,30 +1,25 @@
-import { TriggerMode } from '../config'
 import ChatGPTQuery from './ChatGPTQuery'
 import logo from '../logo.png'
 import Browser from 'webextension-polyfill'
 
 interface ChatGPTCardProps {
   question: string
-  triggerMode: TriggerMode
 }
 
-function ChatGPTCard({ question, triggerMode }: ChatGPTCardProps) {
+function ChatGPTCard({ question }: ChatGPTCardProps) {
   return (
-    <div className="chat-gpt-card">
-      <div className="gpt-card" aria-label="ChatGPT Answer Card">
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
-          <img
-            src={logo}
-            alt="ChatGPT"
-            style={{ width: 32, height: 32, borderRadius: 8, marginRight: 12 }}
-          />
-          <span style={{ fontWeight: 600, fontSize: '1.1em' }}>
-            {Browser.i18n.getMessage('ext_chatgpt_answer')}
-          </span>
-          <span style={{ flex: 1 }} />
-        </div>
-        <ChatGPTQuery question={question} triggerMode={triggerMode} />
+    <div
+      className="w-[400px] min-w-[300px] max-w-[800px] resize-x overflow-auto rounded-lg border border-gray-200 bg-white p-4 text-black dark:border-gray-700 dark:bg-[#0d1117] dark:text-white"
+      aria-label="ChatGPT Answer Card"
+    >
+      <div className="mb-3 flex items-center">
+        <img src={logo} alt="ChatGPT" className="mr-3 h-8 w-8 rounded-lg" />
+        <span className="text-lg font-semibold">
+          {Browser.i18n.getMessage('ext_chatgpt_answer')}
+        </span>
+        <span className="flex-1" />
       </div>
+      <ChatGPTQuery question={question} />
     </div>
   )
 }

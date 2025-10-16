@@ -1,20 +1,21 @@
 
 # Neo ChatGPT for Browser Extension
 
-Neo ChatGPT for Browser Extension is an open-source browser extension that displays ChatGPT responses alongside search results on various search engines (Google, Bing, Naver, etc.).
+Neo ChatGPT for Browser Extension is an open-source browser extension that displays responses from various AI models (OpenAI, Gemini, etc.) alongside search results on major search engines.
 
 ## Features
 
 - Supports Google, Bing, Naver, and other major search engines
-- Supports both OpenAI official API and ChatGPT webapp API
-- Dark/Light theme, language selection, trigger modes (always/question/manual)
-- Markdown rendering, code highlighting, copy, feedback features
-- Fast setup and user-friendly UI
+- Supports multiple AI providers, including OpenAI (API & Webapp) and Gemini
+- Modern UI with Tailwind CSS, ensuring a consistent look and feel
+- Dark/Light theme support that automatically syncs with your system settings
+- Markdown rendering, code highlighting, and easy copy-to-clipboard functionality
+- i18n support for multiple languages
 
 ## Architecture
 
-- **Server-Independent:** This extension is self-contained and does not rely on any external backend servers for its core functionality, with the exception of the official AI provider APIs (OpenAI, Gemini, etc.).
-
+- **Server-Independent & Privacy-Focused:** This extension operates without any external backend servers, communicating only with the official AI provider APIs. All user data, including API keys, is stored exclusively in the browser's local storage, ensuring your privacy.
+- **Extensible by Design:** Built with a flexible factory pattern, the architecture allows for the easy addition of new AI providers in the future.
 
 ## Build & Install
 
@@ -70,13 +71,12 @@ npx vitest run --coverage
 
 ## Screenshot
 
-![Screenshot](screenshots/extension.png?raw=true)
+*(The screenshot section will be updated with the new UI design soon.)*
 
 ## FAQ & Troubleshooting
 
 - **Brave**: Disable "Prevent sites from fingerprinting me based on my language preferences" in `brave://settings/shields`.
 - **Opera**: Enable "Allow access to search page results" in the extension management page.
-
 ## Credits & License
 
 This project is based on [wong2/chatgpt-google-extension](https://github.com/wong2/chatgpt-google-extension) (Copyright © wong2).
@@ -86,7 +86,6 @@ Distributed under the GNU GPL v3 license. See LICENSE for details.
 
 ## External Resources & Licenses
 
-- [Geist UI](https://github.com/geist-org/react) - MIT License
 - [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) - MIT License
 - [Autoprefixer](https://github.com/postcss/autoprefixer) - MIT License
 - [esbuild](https://github.com/evanw/esbuild) - MIT License
@@ -98,7 +97,6 @@ Distributed under the GNU GPL v3 license. See LICENSE for details.
 
 Please refer to each library's documentation for details. Only GPL-compatible resources are used in this project.
 
-
 ## API Key Storage Policy
 
 ⚠️ **Warning:** Your API keys are stored in your browser's local extension storage after being obfuscated (Base64 encoded). While this is not full encryption, it prevents the key from being stored in plain text. For your security:
@@ -108,8 +106,6 @@ Please refer to each library's documentation for details. Only GPL-compatible re
 - We recommend periodically rotating your API keys.
 
 Future versions may support stronger encryption, but currently, browser extension APIs do not guarantee full protection for sensitive keys.
-
-
 
 ## Privacy & Data Policy
 

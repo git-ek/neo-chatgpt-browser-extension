@@ -60,20 +60,14 @@ function ChatGPTFeedback(props: Props) {
   }, [copied])
 
   return (
-    <div className="gpt-feedback">
-      <span
-        onClick={clickThumbsUp}
-        className={action === 'thumbsUp' ? 'gpt-feedback-selected' : undefined}
-      >
+    <div className="flex cursor-pointer gap-1.5">
+      <span onClick={clickThumbsUp} className={action === 'thumbsUp' ? 'text-red-500' : ''}>
         <ThumbsupIcon size={14} />
       </span>
-      <span
-        onClick={clickThumbsDown}
-        className={action === 'thumbsDown' ? 'gpt-feedback-selected' : undefined}
-      >
+      <span onClick={clickThumbsDown} className={action === 'thumbsDown' ? 'text-red-500' : ''}>
         <ThumbsdownIcon size={14} />
       </span>
-      <span onClick={clickCopyToClipboard}>
+      <span onClick={clickCopyToClipboard} className="ml-auto">
         {copied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
       </span>
     </div>
