@@ -1,7 +1,5 @@
 import { GearIcon } from '@primer/octicons-react'
-import { Tabs, Spinner } from '@geist-ui/core'
-import { useEffect, useState } from 'preact/hooks'
-import { memo, useCallback } from 'react'
+import { useEffect, useState, memo, useCallback } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 import useSWR from 'swr'
@@ -24,12 +22,8 @@ function ChatGPTQuery({ question }: Props) {
     getProviderConfigs,
   )
 
-  const [activeProvider, setActiveProvider] = useState<ProviderType | null>(null)
-  useEffect(() => {
-    if (configs && !activeProvider) {
-      setActiveProvider(configs.provider)
-    }
-  }, [configs, activeProvider])
+  const [userSelectedProvider, setUserSelectedProvider] = useState<ProviderType | null>(null)
+  const activeProvider = userSelectedProvider ?? configs?.provider
 
   const [answer, setAnswer] = useState<Answer | null>(null)
   const [error, setError] = useState('')
@@ -40,6 +34,7 @@ function ChatGPTQuery({ question }: Props) {
     if (!activeProvider) {
       return
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAnswer(null)
     setError('')
     setStatus(undefined)
@@ -93,7 +88,11 @@ function ChatGPTQuery({ question }: Props) {
 
   const renderContent = () => {
     if (!configs || !activeProvider) {
-      return <Spinner />
+      return (
+        <p className="text-[#b6b8ba] animate-pulse">
+          {Browser.i18n.getMessage('ext_waiting_for_response')}
+        </p>
+      )
     }
 
     const isChatGPTApi =
@@ -107,7 +106,7 @@ function ChatGPTQuery({ question }: Props) {
       return (
         <p>
           {Browser.i18n.getMessage('ext_apikey_not_set', activeProvider.toUpperCase())}{' '}
-          <a href="#" onClick={openOptionsPage}>
+          <a href="#" onClick={openOptionsPage} className="underline">
             {Browser.i18n.getMessage('ext_apikey_link_to_options')}
           </a>
         </p>
@@ -143,23 +142,29 @@ function ChatGPTQuery({ question }: Props) {
     )
   }
 
+  const tabClass = (isActive: boolean) =>
+    `px-3 py-1 text-sm rounded-md focus:outline-none ${
+      isActive ? 'bg-gray-200 text-gray-800' : 'text-gray-500 hover:bg-gray-100'
+    }`
+
   return (
     <div className="markdown-body gpt-markdown" id="gpt-answer" dir="auto">
       <div className="gpt-header">
-        <Tabs
-          value={activeProvider || ''}
-          onChange={(v) => setActiveProvider(v as ProviderType)}
-          className="flex-grow"
-        >
-          <Tabs.Item
-            label={Browser.i18n.getMessage('ext_chatgpt_short')}
-            value={ProviderType.ChatGPT}
-          />
-          <Tabs.Item
-            label={Browser.i18n.getMessage('ext_provider_gemini_api')}
-            value={ProviderType.Gemini}
-          />
-        </Tabs>
+        <div className="flex space-x-1 p-1 bg-gray-100 rounded-lg">
+          <button
+            className={tabClass(activeProvider === ProviderType.ChatGPT)}
+            onClick={() => setUserSelectedProvider(ProviderType.ChatGPT)}
+          >
+            {Browser.i18n.getMessage('ext_chatgpt_short')}
+          </button>
+          <button
+            className={tabClass(activeProvider === ProviderType.Gemini)}
+            onClick={() => setUserSelectedProvider(ProviderType.Gemini)}
+          >
+            {Browser.i18n.getMessage('ext_provider_gemini_label')}
+          </button>
+        </div>
+        <span className="flex-grow"></span>
         <span className="cursor-pointer p-2" onClick={openOptionsPage}>
           <GearIcon size={14} />
         </span>

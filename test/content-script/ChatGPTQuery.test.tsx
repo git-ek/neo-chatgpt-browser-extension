@@ -19,22 +19,8 @@ vi.mock('react-markdown', () => ({
 vi.mock('../../src/content-script/ChatGPTFeedback')
 const mockedChatGPTFeedback = vi.mocked(ChatGPTFeedback)
 
-vi.mock('@geist-ui/core', async (importOriginal) => {
-  const original = await importOriginal<typeof import('@geist-ui/core')>()
-  const MockTabs = (props) => <div data-testid="tabs">{props.children}</div>
-  MockTabs.Item = (props) => <div data-testid={`tab-${props.value}`}>{props.label}</div>
-  return {
-    ...original,
-    Spinner: () => <div data-testid="spinner" />,
-    Tabs: MockTabs,
-  }
-})
 vi.mock('@primer/octicons-react', () => ({
   GearIcon: () => <div data-testid="gear-icon" />,
-  ThumbsupIcon: () => <div />,
-  ThumbsdownIcon: () => <div />,
-  CopyIcon: () => <div />,
-  CheckIcon: () => <div />,
 }))
 
 // Mock Browser.runtime.connect
@@ -66,10 +52,10 @@ describe('ChatGPTQuery', () => {
     mockedChatGPTFeedback.mockReturnValue(<div data-testid="feedback" />)
   })
 
-  it('should render loading spinner while configs are loading', () => {
+  it('should render loading text while configs are loading', () => {
     mockedUseSWR.mockReturnValue({ data: undefined, error: undefined })
     render(<ChatGPTQuery question="test" />)
-    expect(screen.getByTestId('spinner')).toBeInTheDocument()
+    expect(screen.getByText('ext_waiting_for_response')).toBeInTheDocument()
   })
 
   it('should render error message if config loading fails', () => {
