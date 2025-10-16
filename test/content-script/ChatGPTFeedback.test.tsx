@@ -58,7 +58,7 @@ describe('ChatGPTFeedback', () => {
         rating: 'thumbsUp',
       },
     })
-    expect(thumbsUpButton.classList.contains('gpt-feedback-selected')).toBe(true)
+    expect(thumbsUpButton.classList.contains('text-red-500')).toBe(true)
 
     // Second click should do nothing
     await act(async () => {
@@ -85,7 +85,7 @@ describe('ChatGPTFeedback', () => {
         tags: [],
       },
     })
-    expect(thumbsDownButton.classList.contains('gpt-feedback-selected')).toBe(true)
+    expect(thumbsDownButton.classList.contains('text-red-500')).toBe(true)
   })
 
   it('should handle copy to clipboard click', async () => {

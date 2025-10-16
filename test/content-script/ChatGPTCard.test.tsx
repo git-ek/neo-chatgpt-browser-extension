@@ -1,15 +1,10 @@
 import { render, screen } from '@testing-library/preact'
 import { describe, it, expect, vi } from 'vitest'
 import ChatGPTCard from '../../src/content-script/ChatGPTCard'
-import { TriggerMode } from '../../src/config'
 
 // Mock the child component to isolate the parent
 vi.mock('../../src/content-script/ChatGPTQuery', () => ({
-  default: vi.fn((props) => (
-    <div data-testid="chat-gpt-query">
-      {props.question}-{props.triggerMode}
-    </div>
-  )),
+  default: vi.fn((props) => <div data-testid="chat-gpt-query">{props.question}</div>),
 }))
 
 // Mock the logo import
@@ -20,9 +15,8 @@ vi.mock('../../src/logo.png', () => ({
 describe('ChatGPTCard', () => {
   it('should render the card with title, logo, and the query component', () => {
     const question = 'What is React?'
-    const triggerMode = TriggerMode.Always
 
-    render(<ChatGPTCard question={question} triggerMode={triggerMode} />)
+    render(<ChatGPTCard question={question} />)
 
     // Check for the title
     expect(screen.getByText('ext_chatgpt_answer')).toBeInTheDocument()
@@ -35,6 +29,6 @@ describe('ChatGPTCard', () => {
     // Check that the mocked child component is rendered with correct props
     const queryComponent = screen.getByTestId('chat-gpt-query')
     expect(queryComponent).toBeInTheDocument()
-    expect(queryComponent.textContent).toBe('What is React?-always')
+    expect(queryComponent.textContent).toBe('What is React?')
   })
 })
