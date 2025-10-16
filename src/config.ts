@@ -43,6 +43,8 @@ const userConfigWithDefaultValue = {
   triggerMode: TriggerMode.Always,
   theme: Theme.Auto,
   language: Language.Auto,
+  cardWidth: 800,
+  cardHeight: 450,
 }
 
 export type UserConfig = typeof userConfigWithDefaultValue
