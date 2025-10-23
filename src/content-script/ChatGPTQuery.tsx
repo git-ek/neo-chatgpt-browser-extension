@@ -62,7 +62,8 @@ const ChatGPTQuery: FC<Props> = ({
       port.onMessage.removeListener(listener)
       port.disconnect()
     }
-  }, [question, retry, activeProvider, onAnswer, onError, answer])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question, retry, activeProvider, onAnswer, onError])
 
   useEffect(() => {
     const onFocus = () => {
