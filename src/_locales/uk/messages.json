@@ -147,8 +147,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "Будь ласка, встановіть його на сторінці налаштувань."
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "Налаштування за замовчуванням"
   },
@@ -157,5 +156,14 @@
   },
   "ext_default_model_label": {
     "message": "Модель за замовчуванням"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "Префікс запиту"
+  },
+  "options_promptPrefix_title": {
+    "message": "Налаштування префіксу запиту"
+  },
+  "options_promptPrefix_description": {
+    "message": "Цей вміст завжди буде додаватися на початок запиту, що надсилається до моделі ШІ."
   }
 }

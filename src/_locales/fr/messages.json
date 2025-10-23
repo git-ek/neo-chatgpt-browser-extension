@@ -147,8 +147,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "Veuillez la définir dans la page des options."
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "Paramètres par défaut"
   },
@@ -157,5 +156,14 @@
   },
   "ext_default_model_label": {
     "message": "Modèle par défaut"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "Préfixe d'Invite"
+  },
+  "options_promptPrefix_title": {
+    "message": "Paramètres du Préfixe d'Invite"
+  },
+  "options_promptPrefix_description": {
+    "message": "Ce contenu sera toujours ajouté au début de la question envoyée au modèle d'IA."
   }
 }

@@ -151,8 +151,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "Please set it in the options page."
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "Default Settings"
   },
@@ -161,5 +160,14 @@
   },
   "ext_default_model_label": {
     "message": "Default Model"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "Prompt Prefix"
+  },
+  "options_promptPrefix_title": {
+    "message": "Prompt Prefix Settings"
+  },
+  "options_promptPrefix_description": {
+    "message": "This content will always be prepended when sending a question to the AI model."
   }
 }

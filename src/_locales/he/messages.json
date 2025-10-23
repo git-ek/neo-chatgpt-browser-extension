@@ -147,8 +147,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "אנא הגדר אותו בדף האפשרויות."
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "הגדרות ברירת מחדל"
   },
@@ -157,5 +156,14 @@
   },
   "ext_default_model_label": {
     "message": "מודל ברירת מחדל"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "קידומת הנחיה"
+  },
+  "options_promptPrefix_title": {
+    "message": "הגדרות קידומת הנחיה"
+  },
+  "options_promptPrefix_description": {
+    "message": "תוכן זה יתווסף תמיד לפני שליחת שאלה למודל הבינה המלאכותית."
   }
 }

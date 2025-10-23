@@ -147,8 +147,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "Vă rugăm să o setați în pagina de opțiuni."
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "Setări implicite"
   },
@@ -157,5 +156,14 @@
   },
   "ext_default_model_label": {
     "message": "Model implicit"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "Prefix Prompt"
+  },
+  "options_promptPrefix_title": {
+    "message": "Setări Prefix Prompt"
+  },
+  "options_promptPrefix_description": {
+    "message": "Acest conținut va fi întotdeauna adăugat la începutul întrebării trimise modelului AI."
   }
 }

@@ -147,8 +147,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "Bitte legen Sie ihn auf der Optionsseite fest."
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "Standardeinstellungen"
   },
@@ -157,5 +156,14 @@
   },
   "ext_default_model_label": {
     "message": "Standardmodell"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "Präfix-Anweisung"
+  },
+  "options_promptPrefix_title": {
+    "message": "Präfix-Anweisung Einstellungen"
+  },
+  "options_promptPrefix_description": {
+    "message": "Dieser Inhalt wird immer vorangestellt, wenn eine Frage an das KI-Modell gesendet wird."
   }
 }

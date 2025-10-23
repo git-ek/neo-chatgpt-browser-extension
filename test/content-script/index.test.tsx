@@ -75,7 +75,7 @@ describe('content-script/index', () => {
       expect(document.querySelector('.chat-gpt-container')).toBeInTheDocument()
       expect(mockedChatGPTCard).toHaveBeenCalled()
       const props = mockedChatGPTCard.mock.calls[0][0]
-      expect(props.question).toBe('test query(in en)')
+      expect(props.question).toBe('test query')
     })
   })
 

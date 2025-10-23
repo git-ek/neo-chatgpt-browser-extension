@@ -146,8 +146,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "オプションページで設定してください。"
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "基本設定"
   },
@@ -156,5 +155,14 @@
   },
   "ext_default_model_label": {
     "message": "デフォルトモデル"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "事前指示"
+  },
+  "options_promptPrefix_title": {
+    "message": "事前指示設定"
+  },
+  "options_promptPrefix_description": {
+    "message": "AIモデルに質問を送信する際に、常に先頭に追加される内容です。"
   }
 }

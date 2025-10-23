@@ -51,8 +51,11 @@ async function generateAnswers(
   }
 
   let prompt = question
+  if (providerConfigs.promptPrefix) {
+    prompt = `${providerConfigs.promptPrefix}\n\n${prompt}`
+  }
   if (userConfig.language !== Language.Auto) {
-    prompt = `${question} (Respond in ${userConfig.language})`
+    prompt = `${prompt} (Respond in ${userConfig.language})`
   }
 
   const provider = await ProviderFactory.create(providerConfigs, providerToUse)

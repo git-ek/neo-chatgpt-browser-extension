@@ -147,8 +147,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "Kérjük, állítsa be a beállítások oldalon."
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "Alapértelmezett beállítások"
   },
@@ -157,5 +156,14 @@
   },
   "ext_default_model_label": {
     "message": "Alapértelmezett modell"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "Prompt Előtag"
+  },
+  "options_promptPrefix_title": {
+    "message": "Prompt Előtag Beállítások"
+  },
+  "options_promptPrefix_description": {
+    "message": "Ez a tartalom mindig a kérdés elé kerül, amikor kérdést küld az MI-modellnek."
   }
 }

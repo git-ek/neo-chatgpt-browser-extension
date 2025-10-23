@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import Browser from 'webextension-polyfill'
 import { ProviderFactory } from '../../src/background/providers/factory'
 import { Provider } from '../../src/background/types'
-import { getProviderConfigs } from '../../src/config'
+import { getProviderConfigs, getUserConfig, Language } from '../../src/config'
 import { sendMessageFeedback, getChatGPTAccessToken } from '../../src/background/providers/chatgpt'
 
 // Mock dependencies
@@ -29,6 +29,7 @@ const mockProvider = {
   generateAnswer: vi.fn().mockResolvedValue({ cleanup: vi.fn() }),
 }
 const mockedGetProviderConfigs = vi.mocked(getProviderConfigs)
+const mockedGetUserConfig = vi.mocked(getUserConfig)
 
 describe('background/index', () => {
   beforeEach(async () => {
@@ -61,7 +62,12 @@ describe('background/index', () => {
       vi.resetModules()
       await import('../../src/background/index')
       mockedProviderFactory.create.mockResolvedValue(mockProvider as Provider)
-      mockedGetProviderConfigs.mockResolvedValue({} as any) // Provide a default mock
+      mockedGetProviderConfigs.mockResolvedValue({
+        provider: 'chatgpt',
+        configs: { chatgpt: { mode: 'webapp' } },
+        promptPrefix: '',
+      } as any)
+      mockedGetUserConfig.mockResolvedValue({ language: Language.Auto } as any)
     })
 
     it('should handle connection and generate answer', async () => {

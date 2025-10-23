@@ -151,8 +151,7 @@ function ChatGPTCard({ question }: ChatGPTCardProps) {
       <div className="flex-1 overflow-y-auto p-4">
         {error && <div className="p-2 text-red-500">{error.message}</div>}
 
-        {/* Render each provider's query component but hide it if not active */}
-        <div style={{ display: finalActiveTab === ProviderType.ChatGPT ? 'block' : 'none' }}>
+        {finalActiveTab === ProviderType.ChatGPT && (
           <ChatGPTQuery
             key={`${ProviderType.ChatGPT}-${question}`}
             question={question}
@@ -162,8 +161,8 @@ function ChatGPTCard({ question }: ChatGPTCardProps) {
             error={chatGPTError}
             onOpenSettings={() => setUserSelectedTab('settings')}
           />
-        </div>
-        <div style={{ display: finalActiveTab === ProviderType.Gemini ? 'block' : 'none' }}>
+        )}
+        {finalActiveTab === ProviderType.Gemini && (
           <ChatGPTQuery
             key={`${ProviderType.Gemini}-${question}`}
             question={question}
@@ -173,7 +172,7 @@ function ChatGPTCard({ question }: ChatGPTCardProps) {
             error={geminiError}
             onOpenSettings={() => setUserSelectedTab('settings')}
           />
-        </div>
+        )}
 
         {finalActiveTab === 'settings' && // The settings tab does not need to be preserved
           (providerConfigs && models && userConfig ? (

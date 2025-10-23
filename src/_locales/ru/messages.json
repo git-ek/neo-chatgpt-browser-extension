@@ -147,8 +147,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "Пожалуйста, установите его на странице настроек."
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "Настройки по умолчанию"
   },
@@ -157,5 +156,14 @@
   },
   "ext_default_model_label": {
     "message": "Модель по умолчанию"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "Префикс запроса"
+  },
+  "options_promptPrefix_title": {
+    "message": "Настройки префикса запроса"
+  },
+  "options_promptPrefix_description": {
+    "message": "Это содержимое всегда будет добавляться в начало вопроса при отправке модели ИИ."
   }
 }

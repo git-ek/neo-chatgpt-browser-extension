@@ -147,8 +147,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "Establécela en la página de opciones."
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "Configuración predeterminada"
   },
@@ -157,5 +156,14 @@
   },
   "ext_default_model_label": {
     "message": "Modelo predeterminado"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "Prefijo de Prompt"
+  },
+  "options_promptPrefix_title": {
+    "message": "Configuración de Prefijo de Prompt"
+  },
+  "options_promptPrefix_description": {
+    "message": "Este contenido siempre se antepondrá al enviar una pregunta al modelo de IA."
   }
 }

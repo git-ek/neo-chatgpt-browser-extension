@@ -11,9 +11,10 @@ import {
 } from '../../config'
 import GeminiConfig from '../GeminiConfig'
 import OpenAIConfig from '../OpenAIConfig'
+import PromptPrefixConfig from '../PromptPrefixConfig'
 import { Toast } from './Toast'
 
-type ActiveSettingsTab = ProviderType | 'default'
+type ActiveSettingsTab = ProviderType | 'default' | 'prompt'
 
 const DefaultSettings: FC<{
   defaultProvider: ProviderType
@@ -78,6 +79,7 @@ export const ConfigPanel: FC<{
   const [activeTab, setActiveTab] = useState<ActiveSettingsTab>('default')
   const [defaultProvider, setDefaultProvider] = useState<ProviderType>(initialConfigs.provider) // For the radio buttons
   const [language, setLanguage] = useState<Language>(initialUserConfig.language)
+  const [promptPrefix, setPromptPrefix] = useState(initialConfigs.promptPrefix ?? '')
 
   // State for API keys and models
   const [chatGPTMode, setChatGPTMode] = useState<ChatGPTMode>(initialConfigs.configs.chatgpt.mode)
@@ -106,6 +108,7 @@ export const ConfigPanel: FC<{
 
     const newConfigs: ProviderConfigs = {
       provider: defaultProvider,
+      promptPrefix,
       configs: {
         chatgpt: {
           mode: chatGPTMode,
@@ -131,6 +134,7 @@ export const ConfigPanel: FC<{
     }
   }, [
     defaultProvider,
+    promptPrefix,
     chatGPTMode,
     chatGPTApiKey,
     chatGPTModel,
@@ -160,6 +164,12 @@ export const ConfigPanel: FC<{
             {Browser.i18n.getMessage('ext_default_provider_label')}
           </button>
           <button
+            className={tabClass(activeTab === 'prompt')}
+            onClick={() => setActiveTab('prompt')}
+          >
+            {Browser.i18n.getMessage('options_promptPrefix_tab_title')}
+          </button>
+          <button
             className={tabClass(activeTab === ProviderType.ChatGPT)}
             onClick={() => setActiveTab(ProviderType.ChatGPT)}
           >
@@ -187,6 +197,10 @@ export const ConfigPanel: FC<{
           language={language}
           setLanguage={setLanguage}
         />
+      )}
+
+      {activeTab === 'prompt' && (
+        <PromptPrefixConfig value={promptPrefix} onChange={setPromptPrefix} />
       )}
 
       {activeTab === ProviderType.ChatGPT && (

@@ -146,8 +146,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "옵션 페이지에서 설정해주세요."
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "기본 설정"
   },
@@ -156,5 +155,14 @@
   },
   "ext_default_model_label": {
     "message": "기본 모델"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "사전지침"
+  },
+  "options_promptPrefix_title": {
+    "message": "사전지침 설정"
+  },
+  "options_promptPrefix_description": {
+    "message": "AI 모델에 질문을 보낼 때 항상 앞에 붙일 내용입니다."
   }
 }

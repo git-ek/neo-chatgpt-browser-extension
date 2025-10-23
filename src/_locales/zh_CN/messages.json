@@ -68,7 +68,6 @@
   "ext_provider_openai_api_desc": {
     "message": "官方OpenAI API。更稳定，支持自定义模型。"
   },
-
   "ext_model_placeholder": {
     "message": "模型"
   },
@@ -151,8 +150,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "请在选项页面中设置。"
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "默认设置"
   },
@@ -161,5 +159,14 @@
   },
   "ext_default_model_label": {
     "message": "默认模型"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "前缀指令"
+  },
+  "options_promptPrefix_title": {
+    "message": "前缀指令设置"
+  },
+  "options_promptPrefix_description": {
+    "message": "发送问题给AI模型时，此内容将始终被添加到问题前面。"
   }
 }

@@ -71,6 +71,7 @@ export enum ChatGPTMode {
 
 export interface ProviderConfigs {
   provider: ProviderType
+  promptPrefix: string
   configs: {
     chatgpt: {
       mode: ChatGPTMode
@@ -86,6 +87,7 @@ export interface ProviderConfigs {
 
 const providerConfigsWithDefaultValue: ProviderConfigs = {
   provider: ProviderType.ChatGPT,
+  promptPrefix: '',
   configs: {
     chatgpt: {
       mode: ChatGPTMode.Webapp,

@@ -147,8 +147,7 @@
   },
   "ext_apikey_link_to_options": {
     "message": "Defina-a na página de opções."
-  }
-,
+  },
   "ext_default_provider_label": {
     "message": "Configurações Padrão"
   },
@@ -157,5 +156,14 @@
   },
   "ext_default_model_label": {
     "message": "Modelo Padrão"
+  },
+  "options_promptPrefix_tab_title": {
+    "message": "Prefixo de Prompt"
+  },
+  "options_promptPrefix_title": {
+    "message": "Configurações de Prefixo de Prompt"
+  },
+  "options_promptPrefix_description": {
+    "message": "Este conteúdo será sempre pré-anexado ao enviar uma pergunta para o modelo de IA."
   }
 }

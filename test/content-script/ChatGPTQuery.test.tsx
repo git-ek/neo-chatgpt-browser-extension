@@ -38,6 +38,7 @@ vi.spyOn(Browser.i18n, 'getMessage').mockImplementation((key, substitutions) => 
 describe('ChatGPTQuery', () => {
   const mockConfigs: ProviderConfigs = {
     provider: ProviderType.ChatGPT,
+    promptPrefix: '',
     configs: {
       chatgpt: { mode: ChatGPTMode.API, apiKey: 'test-key', model: 'gpt-4' },
       gemini: { apiKey: 'gemini-key', model: 'gemini-pro' },
@@ -49,16 +50,19 @@ describe('ChatGPTQuery', () => {
     mockedUseSWR.mockReturnValue({
       data: mockConfigs,
       error: undefined,
+      mutate: vi.fn(),
     })
   })
 
   it('should render loading text while configs are loading', () => {
-    mockedUseSWR.mockReturnValue({ data: undefined, error: undefined })
+    mockedUseSWR.mockReturnValue({ data: undefined, error: undefined, mutate: vi.fn() })
     render(
       <ChatGPTQuery
         question="test"
         activeProvider={ProviderType.ChatGPT}
         onAnswer={vi.fn()}
+        onError={vi.fn()}
+        error=""
         onOpenSettings={vi.fn()}
       />,
     )
@@ -66,12 +70,18 @@ describe('ChatGPTQuery', () => {
   })
 
   it('should render error message if config loading fails', () => {
-    mockedUseSWR.mockReturnValue({ data: undefined, error: new Error('Failed to load') })
+    mockedUseSWR.mockReturnValue({
+      data: undefined,
+      error: new Error('Failed to load'),
+      mutate: vi.fn(),
+    })
     render(
       <ChatGPTQuery
         question="test"
         activeProvider={ProviderType.ChatGPT}
         onAnswer={vi.fn()}
+        onError={vi.fn()}
+        error=""
         onOpenSettings={vi.fn()}
       />,
     )
@@ -84,6 +94,8 @@ describe('ChatGPTQuery', () => {
         question="test"
         activeProvider={ProviderType.ChatGPT}
         onAnswer={vi.fn()}
+        onError={vi.fn()}
+        error=""
         onOpenSettings={vi.fn()}
       />,
     )
@@ -97,6 +109,8 @@ describe('ChatGPTQuery', () => {
         question="test"
         activeProvider={ProviderType.ChatGPT}
         onAnswer={onAnswer}
+        onError={vi.fn()}
+        error=""
         onOpenSettings={vi.fn()}
       />,
     )
@@ -115,11 +129,14 @@ describe('ChatGPTQuery', () => {
 
   it('should render error message when an error is received', async () => {
     const onAnswer = vi.fn()
+    const onError = vi.fn()
     render(
       <ChatGPTQuery
         question="test"
         activeProvider={ProviderType.ChatGPT}
         onAnswer={onAnswer}
+        onError={onError}
+        error=""
         onOpenSettings={vi.fn()}
       />,
     )
@@ -131,9 +148,8 @@ describe('ChatGPTQuery', () => {
       mockPort.onMessage.addListener.mock.calls[0][0](error)
     })
 
-    expect(await screen.findByText('ext_error_prefix')).toBeInTheDocument()
-    expect(await screen.findByText('UNAUTHORIZED')).toBeInTheDocument()
     expect(onAnswer).toHaveBeenCalledWith(null)
+    expect(onError).toHaveBeenCalledWith('UNAUTHORIZED')
   })
 
   it('should show API key missing message if key is not set', async () => {
@@ -146,12 +162,15 @@ describe('ChatGPTQuery', () => {
         },
       },
       error: undefined,
+      mutate: vi.fn(),
     })
     render(
       <ChatGPTQuery
         question="test"
         activeProvider={ProviderType.ChatGPT}
         onAnswer={vi.fn()}
+        onError={vi.fn()}
+        error=""
         onOpenSettings={vi.fn()}
       />,
     )
