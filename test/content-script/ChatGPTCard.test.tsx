@@ -39,35 +39,44 @@ vi.stubGlobal('ResizeObserver', mockResizeObserver)
 describe('ChatGPTCard', () => {
   const mockProviderConfigs: ProviderConfigs = {
     provider: ProviderType.ChatGPT,
+    promptPrefix: '',
     configs: {
       chatgpt: { mode: 'API', apiKey: 'test-key', model: 'gpt-4' },
       gemini: { apiKey: 'gemini-key', model: 'gemini-pro' },
     },
-    userConfig: { cardWidth: 500 },
   }
   const mockUserConfig: UserConfig = {
     theme: 'light',
     language: 'en',
     triggerMode: 'always',
     cardWidth: 500,
+    cardHeight: 450,
   }
 
   beforeEach(() => {
     vi.clearAllMocks()
     mockedUseSWR.mockImplementation((key) => {
       if (key === 'provider-configs') {
-        return { data: mockProviderConfigs, error: undefined } as SWRResponse<ProviderConfigs>
+        return {
+          data: mockProviderConfigs,
+          error: undefined,
+          mutate: vi.fn(),
+        } as SWRResponse<ProviderConfigs>
       }
       if (key === 'user-config') {
-        return { data: mockUserConfig, error: undefined } as SWRResponse<UserConfig>
+        return {
+          data: mockUserConfig,
+          error: undefined,
+          mutate: vi.fn(),
+        } as SWRResponse<UserConfig>
       }
       if (Array.isArray(key) && key[0] === 'models') {
         // This hook depends on providerConfigs. If the key is generated (i.e., not null),
         // it means providerConfigs is available, so we should return model data.
         const models = key[1] === ProviderType.ChatGPT ? ['gpt-4', 'gpt-3.5-turbo'] : ['gemini-pro']
-        return { data: models, error: undefined } as SWRResponse<string[]>
+        return { data: models, error: undefined, mutate: vi.fn() } as SWRResponse<string[]>
       }
-      return { data: undefined, error: undefined } as SWRResponse
+      return { data: undefined, error: undefined, mutate: vi.fn() } as SWRResponse
     })
   })
 
