@@ -45,6 +45,8 @@ const userConfigWithDefaultValue = {
   language: Language.Auto,
   cardWidth: 800,
   cardHeight: 450,
+  promptPrefixCardWidth: 400,
+  promptPrefixCardHeight: 200,
 }
 
 export type UserConfig = typeof userConfigWithDefaultValue

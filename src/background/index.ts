@@ -54,6 +54,7 @@ async function generateAnswers(
   if (providerConfigs.promptPrefix) {
     prompt = `${providerConfigs.promptPrefix}\n\n${prompt}`
   }
+
   if (userConfig.language !== Language.Auto) {
     prompt = `${prompt} (Respond in ${userConfig.language})`
   }
@@ -65,7 +66,6 @@ async function generateAnswers(
     controller.abort()
     cleanup?.()
   })
-
   const { cleanup } = await provider.generateAnswer({
     prompt,
     signal: controller.signal,

@@ -4,13 +4,6 @@ import { fetchSSE } from '../../../src/background/fetch-sse'
 
 // Mock dependencies that are not dynamically imported
 vi.mock('../../../src/background/fetch-sse')
-vi.mock('webextension-polyfill')
-vi.stubGlobal('chrome', {
-  // Add runtime.id to satisfy webextension-polyfill check
-  runtime: {
-    id: 'test-extension-id',
-  },
-})
 
 describe('ChatGPT Provider related tests', () => {
   afterEach(() => {

@@ -11,6 +11,7 @@ import { getErrorMessageKey, upperFirst } from './utils.js'
 interface Props {
   question: string
   activeProvider?: ProviderType
+  answer: Answer | null
   onAnswer: (answer: Answer | null) => void
   onError: (error: string) => void
   error: string
@@ -22,6 +23,7 @@ export type QueryStatus = 'success' | 'error' | undefined
 const ChatGPTQuery: FC<Props> = ({
   question,
   activeProvider,
+  answer,
   onAnswer,
   onError,
   error,
@@ -32,19 +34,17 @@ const ChatGPTQuery: FC<Props> = ({
     getProviderConfigs,
   )
 
-  const [answer, setAnswer] = useState<Answer | null>(null)
   const [retry, setRetry] = useState(0)
-  const [status, setStatus] = useState<QueryStatus>()
+  const [status, setStatus] = useState<QueryStatus>(answer ? 'success' : undefined)
 
   useEffect(() => {
-    if (!activeProvider) {
+    if (!activeProvider || answer) {
       return
     }
 
     const port = Browser.runtime.connect()
     const listener = (msg: Answer | { error: string } | { event: string }) => {
       if ('text' in msg) {
-        setAnswer(msg)
         onAnswer(msg)
         setStatus('success')
       } else if ('error' in msg) {
@@ -62,7 +62,7 @@ const ChatGPTQuery: FC<Props> = ({
       port.onMessage.removeListener(listener)
       port.disconnect()
     }
-  }, [question, retry, activeProvider, onAnswer, onError])
+  }, [question, retry, activeProvider, onAnswer, onError, answer])
 
   useEffect(() => {
     const onFocus = () => {
